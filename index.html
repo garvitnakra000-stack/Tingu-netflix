@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tingu Pingu 🐧</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐧</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #141414;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── SCREENS ── */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: flex; }
+
+  /* ── INTRO ── */
+  #intro {
+    background: #000;
+    align-items: center;
+    justify-content: center;
+  }
+  .tadum-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 12vw, 96px);
+    color: #E50914;
+    letter-spacing: 8px;
+    opacity: 0;
+    transform: scale(0.6);
+    transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .tadum-logo.show { opacity: 1; transform: scale(1); }
+  .tadum-logo.hide { opacity: 0; transform: scale(1.5); transition: all 0.5s ease-in; }
+
+  /* ── PROFILES ── */
+  #profiles {
+    background: #141414;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 48px;
+    padding: 40px 20px;
+  }
+  .profile-who {
+    font-size: clamp(22px, 4vw, 34px);
+    font-weight: 400;
+    color: #e5e5e5;
+    letter-spacing: 2px;
+  }
+  .profiles-row {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .profile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .profile-card:hover { transform: scale(1.1); }
+  .profile-card:hover .pname { color: #fff; }
+  .pavatar {
+    width: 130px;
+    height: 130px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 56px;
+    border: 3px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .profile-card:hover .pavatar { border-color: #fff; }
+  .pavatar.tingu { background: linear-gradient(135deg, #ff6b9d, #e91e8c); }
+  .pavatar.pingu { background: linear-gradient(135deg, #4fc3f7, #0277bd); }
+  .pavatar.side  { background: linear-gradient(135deg, #555, #222); }
+  .pname { font-size: 16px; color: #808080; font-weight: 500; transition: color 0.2s; }
+
+  /* ── JOKE MODAL ── */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.88);
+    z-index: 900;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .overlay.open { display: flex; }
+  .joke-box {
+    background: #1c1c1c;
+    border: 2px solid #E50914;
+    border-radius: 14px;
+    padding: 48px 40px;
+    max-width: 460px;
+    width: 100%;
+    text-align: center;
+  }
+  .joke-emoji { font-size: 64px; display: block; margin-bottom: 18px; }
+  .joke-head { font-size: 22px; font-weight: 700; color: #E50914; margin-bottom: 10px; }
+  .joke-body { font-size: 16px; color: #ccc; line-height: 1.7; margin-bottom: 28px; }
+  .joke-cta {
+    background: #E50914; color: #fff; border: none;
+    padding: 13px 32px; border-radius: 7px;
+    font-size: 16px; font-weight: 700; cursor: pointer;
+  }
+  .joke-cta:hover { background: #f40612; }
+
+  /* ── NAVBAR ── */
+  .navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    padding: 16px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, transparent 100%);
+    transition: background 0.3s;
+  }
+  .navbar.solid { background: #141414; }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px; color: #E50914; letter-spacing: 4px;
+    cursor: pointer;
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-profile { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #e5e5e5; }
+  .nav-dot {
+    width: 34px; height: 34px; border-radius: 7px;
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+  }
+  .switch-btn {
+    background: transparent; border: 1px solid #666; color: #aaa;
+    padding: 7px 14px; border-radius: 5px; font-size: 13px;
+    cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif;
+  }
+  .switch-btn:hover { border-color: #fff; color: #fff; }
+
+  /* ── HERO ── */
+  #app { flex-direction: column; }
+  .hero {
+    height: 75vh; min-height: 420px;
+    position: relative;
+    display: flex; align-items: flex-end;
+    padding: 0 48px 64px;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background: radial-gradient(ellipse at 65% 35%, #2a1040 0%, #0a0a14 65%);
+  }
+  .hero-grad {
+    position: absolute; inset: 0; z-index: 1;
+    background:
+      linear-gradient(to right, rgba(0,0,0,0.85) 35%, transparent 70%),
+      linear-gradient(to top, #141414 4%, transparent 40%);
+  }
+  .floating-emojis { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+  .femoji {
+    position: absolute; opacity: 0.07;
+    animation: floatup linear infinite;
+  }
+  @keyframes floatup {
+    from { transform: translateY(110vh) rotate(0deg); }
+    to   { transform: translateY(-80px) rotate(360deg); }
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 520px; }
+  .hero-tag {
+    font-size: 12px; font-weight: 700; letter-spacing: 3px;
+    color: #E50914; text-transform: uppercase; margin-bottom: 12px;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 7vw, 70px);
+    line-height: 1; letter-spacing: 2px; margin-bottom: 14px;
+  }
+  .hero-desc {
+    font-size: 16px; color: #ccc; line-height: 1.65;
+    margin-bottom: 26px; max-width: 420px;
+  }
+  .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-play {
+    display: flex; align-items: center; gap: 8px;
+    background: #fff; color: #000; border: none;
+    padding: 12px 28px; border-radius: 6px;
+    font-size: 16px; font-weight: 700; cursor: pointer;
+    transition: background 0.2s; font-family: 'Inter', sans-serif;
+  }
+  .btn-play:hover { background: rgba(255,255,255,0.85); }
+  .btn-more {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(109,109,110,0.65); color: #fff; border: none;
+    padding: 12px 24px; border-radius: 6px;
+    font-size: 16px; font-weight: 600; cursor: pointer;
+    transition: background 0.2s; font-family: 'Inter', sans-serif;
+  }
+  .btn-more:hover { background: rgba(109,109,110,0.9); }
+
+  /* ── ROWS ── */
+  .section { padding: 0 48px 44px; }
+  .row-label {
+    font-size: 20px; font-weight: 600; color: #e5e5e5;
+    margin-bottom: 16px; letter-spacing: 0.3px;
+  }
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 8px;
+  }
+
+  /* ── MEMORY CARD ── */
+  .mcard {
+    border-radius: 6px; overflow: hidden;
+    cursor: pointer; position: relative;
+    aspect-ratio: 16/9; background: #1e1e1e;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .mcard:hover {
+    transform: scale(1.06);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+    z-index: 10; position: relative;
+  }
+  .mcard-thumb {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 44px;
+  }
+  .mcard-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, transparent 55%);
+    opacity: 0; transition: opacity 0.25s;
+    display: flex; flex-direction: column;
+    justify-content: flex-end; padding: 12px;
+  }
+  .mcard:hover .mcard-overlay { opacity: 1; }
+  .mcard-play {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 46px; height: 46px;
+    background: rgba(255,255,255,0.92); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.2s;
+  }
+  .mcard:hover .mcard-play { transform: translate(-50%,-50%) scale(1); }
+  .mcard-play svg { fill: #000; width: 18px; height: 18px; margin-left: 3px; }
+  .mcard-title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 3px; }
+  .mcard-date  { font-size: 11px; color: #aaa; }
+  .mcard-del {
+    position: absolute; top: 8px; right: 8px;
+    background: rgba(0,0,0,0.7); border: none; color: #fff;
+    width: 28px; height: 28px; border-radius: 50%;
+    font-size: 14px; cursor: pointer;
+    display: none; align-items: center; justify-content: center;
+    transition: background 0.2s;
+  }
+  .mcard:hover .mcard-del { display: flex; }
+  .mcard-del:hover { background: #E50914; }
+
+  /* ── ADD CARD ── */
+  .add-card {
+    border-radius: 6px; aspect-ratio: 16/9;
+    background: rgba(255,255,255,0.03);
+    border: 2px dashed rgba(255,255,255,0.14);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 8px; cursor: pointer; color: #555;
+    font-size: 13px; transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .add-card:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.28); color: #aaa; }
+  .add-card .plus { font-size: 28px; line-height: 1; }
+
+  /* ── VIDEO MODAL ── */
+  #vmodal {
+    position: fixed; inset: 0; z-index: 800;
+    background: rgba(0,0,0,0.93);
+    display: none; align-items: center; justify-content: center; padding: 20px;
+  }
+  #vmodal.open { display: flex; }
+  .vbox {
+    background: #0a0a0a; border-radius: 10px;
+    overflow: hidden; width: 100%; max-width: 900px;
+    position: relative;
+  }
+  .vclose {
+    position: absolute; top: 12px; right: 12px; z-index: 10;
+    background: rgba(20,20,20,0.8); border: none; color: #fff;
+    width: 38px; height: 38px; border-radius: 50%;
+    font-size: 18px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .vclose:hover { background: rgba(255,255,255,0.15); }
+  .vheader { padding: 22px 24px 16px; background: #0f0f0f; }
+  .vtitle { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .vmeta  { font-size: 13px; color: #888; }
+  .vframe { position: relative; padding-bottom: 56.25%; background: #000; }
+  .vframe iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+  .vplaceholder {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 14px; color: #555; font-size: 14px; text-align: center; padding: 20px;
+  }
+  .vplaceholder .bigmoji { font-size: 52px; }
+
+  /* ── ADD MEMORY MODAL ── */
+  #amodal {
+    position: fixed; inset: 0; z-index: 800;
+    background: rgba(0,0,0,0.88);
+    display: none; align-items: center; justify-content: center; padding: 20px;
+    overflow-y: auto;
+  }
+  #amodal.open { display: flex; }
+  .abox {
+    background: #1a1a1a; border-radius: 14px;
+    padding: 36px 32px; width: 100%; max-width: 500px;
+    position: relative; margin: auto;
+  }
+  .abox-title { font-size: 22px; font-weight: 700; margin-bottom: 26px; }
+  .fgroup { margin-bottom: 18px; }
+  .flabel { font-size: 13px; color: #888; margin-bottom: 7px; display: block; }
+  .finput, .fselect {
+    width: 100%; background: #252525; border: 1px solid #3a3a3a;
+    border-radius: 7px; color: #fff; font-size: 15px;
+    padding: 11px 14px; outline: none;
+    font-family: 'Inter', sans-serif; transition: border-color 0.2s;
+  }
+  .finput:focus, .fselect:focus { border-color: #E50914; }
+  .fselect option { background: #1a1a1a; }
+  .emoji-row {
+    display: grid; grid-template-columns: repeat(8, 1fr);
+    gap: 6px; margin-top: 8px;
+  }
+  .eopt {
+    font-size: 22px; padding: 5px; border-radius: 6px;
+    cursor: pointer; text-align: center;
+    border: 2px solid transparent; transition: all 0.15s;
+  }
+  .eopt:hover { background: rgba(255,255,255,0.08); }
+  .eopt.on { border-color: #E50914; background: rgba(229,9,20,0.12); }
+  .factions { display: flex; gap: 12px; margin-top: 26px; }
+  .fcancelbtn {
+    flex: 1; background: transparent; border: 1px solid #444;
+    color: #888; padding: 12px; border-radius: 7px;
+    font-size: 15px; cursor: pointer; font-family: 'Inter', sans-serif;
+  }
+  .fsavebtn {
+    flex: 2; background: #E50914; border: none; color: #fff;
+    padding: 12px; border-radius: 7px; font-size: 15px;
+    font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif;
+    transition: background 0.2s;
+  }
+  .fsavebtn:hover { background: #f40612; }
+
+  /* ── FOOTER ── */
+  .footer {
+    padding: 32px 48px 24px; text-align: center;
+    font-size: 13px; color: #444;
+  }
+  .footer span { color: #E50914; }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width: 600px) {
+    .navbar { padding: 14px 18px; }
+    .hero { padding: 0 18px 40px; }
+    .section { padding: 0 18px 32px; }
+    .cards-grid { grid-template-columns: repeat(2, 1fr); }
+    .profiles-row { gap: 20px; }
+    .pavatar { width: 95px; height: 95px; font-size: 42px; }
+    .abox { padding: 28px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ INTRO ═══ -->
+<div id="intro" class="screen active">
+  <div class="tadum-logo" id="tadumText">TINGU PINGU</div>
+</div>
+
+<!-- ═══ PROFILE SELECT ═══ -->
+<div id="profiles" class="screen">
+  <h1 class="profile-who">Kaun dekh raha hai? 👀</h1>
+  <div class="profiles-row">
+    <div class="profile-card" onclick="pickProfile('tingu')">
+      <div class="pavatar tingu">🌸</div>
+      <span class="pname">Tingu</span>
+    </div>
+    <div class="profile-card" onclick="pickProfile('pingu')">
+      <div class="pavatar pingu">🐧</div>
+      <span class="pname">Pingu</span>
+    </div>
+    <div class="profile-card" onclick="pickProfile('side')">
+      <div class="pavatar side">💅</div>
+      <span class="pname">Side Chick</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ JOKE MODAL ═══ -->
+<div class="overlay" id="jokeModal">
+  <div class="joke-box">
+    <span class="joke-emoji">🚫</span>
+    <div class="joke-head">Profile Not Found</div>
+    <div class="joke-body">
+      Bhai/Bahen, koi side chick nahi hai yahan.<br>
+      <em style="color:#E50914;font-style:normal;font-weight:600">Main wali hai toh wahi se ja. 😌</em>
+    </div>
+    <button class="joke-cta" onclick="closeJoke()">Main wali se milte hain →</button>
+  </div>
+</div>
+
+<!-- ═══ MAIN APP ═══ -->
+<div id="app" class="screen">
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo" onclick="goProfiles()">TINGU PINGU</div>
+    <div class="nav-right">
+      <div class="nav-profile">
+        <div class="nav-dot" id="navDot" style="background:linear-gradient(135deg,#ff6b9d,#e91e8c)">🌸</div>
+        <span id="navName">Tingu</span>
+      </div>
+      <button class="switch-btn" onclick="goProfiles()">Switch Profile</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="floating-emojis" id="floatEmojis"></div>
+    <div class="hero-grad"></div>
+    <div class="hero-content">
+      <div class="hero-tag">✨ Featured Memory</div>
+      <h1 class="hero-title" id="heroTitle">Hamari Pehli Mulaqat</h1>
+      <p class="hero-desc" id="heroDesc">The one where it all started. Jab sab kuch sirf ek nazar se shuru hua...</p>
+      <div class="hero-btns">
+        <button class="btn-play" onclick="playHero()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          Play
+        </button>
+        <button class="btn-more" onclick="playHero()">ℹ️ More Info</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEMORY ROWS (rendered by JS) -->
+  <div id="memorySections"></div>
+
+  <div class="footer">
+    Made with <span>♥</span> by Pingu, for Tingu 🐧&nbsp;•&nbsp;
+    <span style="color:#555">Edit memories.js to add yours</span>
+  </div>
+</div>
+
+<!-- ═══ VIDEO MODAL ═══ -->
+<div id="vmodal">
+  <div class="vbox">
+    <button class="vclose" onclick="closeVideo()">✕</button>
+    <div class="vheader">
+      <div class="vtitle" id="vTitle"></div>
+      <div class="vmeta"  id="vMeta"></div>
+    </div>
+    <div class="vframe" id="vFrame"></div>
+  </div>
+</div>
+
+<!-- ═══ ADD MEMORY MODAL ═══ -->
+<div id="amodal">
+  <div class="abox">
+    <button class="vclose" onclick="closeAdd()" style="position:absolute;top:14px;right:14px">✕</button>
+    <div class="abox-title">✨ Nayi Yaad Jodna</div>
+
+    <div class="fgroup">
+      <label class="flabel">Title</label>
+      <input class="finput" id="iTitle" placeholder="e.g. Pehli Date, Woh Rainy Evening..." />
+    </div>
+    <div class="fgroup">
+      <label class="flabel">Description (thoda sa)</label>
+      <input class="finput" id="iDesc" placeholder="Uss din kya hua tha..." />
+    </div>
+    <div class="fgroup">
+      <label class="flabel">YouTube Unlisted Link</label>
+      <input class="finput" id="iUrl" placeholder="https://youtube.com/watch?v=..." />
+    </div>
+    <div class="fgroup">
+      <label class="flabel">Date</label>
+      <input class="finput" id="iDate" type="date" />
+    </div>
+    <div class="fgroup">
+      <label class="flabel">Emoji (thumbnail ke liye)</label>
+      <div class="emoji-row" id="emojiRow"></div>
+    </div>
+    <div class="fgroup">
+      <label class="flabel">Category</label>
+      <select class="fselect" id="iCat">
+        <option value="Hamare Moments">💕 Hamare Moments</option>
+        <option value="Special Days">🎉 Special Days</option>
+        <option value="Random Adventures">🌍 Random Adventures</option>
+        <option value="Just Us">🤍 Just Us</option>
+      </select>
+    </div>
+
+    <div class="factions">
+      <button class="fcancelbtn" onclick="closeAdd()">Cancel</button>
+      <button class="fsavebtn"   onclick="saveMemory()">Save Memory ✨</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DATA + LOGIC ═══ -->
+<script>
+/* ─────────────────────────────────────────────
+   MEMORIES — Edit this array to add/remove/change memories.
+   To add a video: paste your YouTube unlisted URL in videoUrl.
+   Leave videoUrl as "" if you haven't uploaded yet.
+───────────────────────────────────────────── */
+let memories = [
+  {
+    id: 1,
+    title: "Hamari Pehli Mulaqat",
+    desc: "The one where it all started. Jab sab kuch sirf ek nazar se shuru hua...",
+    emoji: "🌸",
+    date: "Add your date",
+    videoUrl: "",
+    category: "Hamare Moments"
+  },
+  {
+    id: 2,
+    title: "Woh Rainy Day",
+    desc: "Baarish mein bheege, chai piya, aur sab kuch perfect tha.",
+    emoji: "🌧️",
+    date: "Add your date",
+    videoUrl: "",
+    category: "Hamare Moments"
+  },
+  {
+    id: 3,
+    title: "Pehli Road Trip",
+    desc: "Windows down, music loud, aur hum dono.",
+    emoji: "🚗",
+    date: "Add your date",
+    videoUrl: "",
+    category: "Random Adventures"
+  }
+];
+
+/* ── CONSTANTS ── */
+const EMOJIS = ['💕','🌸','🎉','🌍','🤍','🌙','☀️','🎵','🍕','🚗','✈️','🏖️','🎂','🌹','💫','🦋','🌊','🎬','📸','🥂'];
+const CARD_COLORS = ['#1a1040','#0f2a3c','#1a2a10','#2a1010','#102a2a','#1a1a30','#2a2010','#10201a'];
+let activeProfile = 'tingu';
+let selectedEmoji = '💕';
+
+/* ── AUDIO: TA-DUM ── */
+function playTaDum() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    [[0, 110, 0.45, 0.3],[0.38, 138, 0.55, 0.4],[0.72, 185, 0.75, 1.3]].forEach(([t,f,v,d]) => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.frequency.value = f; o.type = 'sine';
+      g.gain.setValueAtTime(0, ctx.currentTime + t);
+      g.gain.linearRampToValueAtTime(v, ctx.currentTime + t + 0.06);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + d);
+      o.start(ctx.currentTime + t);
+      o.stop(ctx.currentTime + t + d + 0.1);
+    });
+  } catch(e) {}
+}
+
+/* ── SCREEN SWITCH ── */
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+/* ── INIT ── */
+window.onload = function() {
+  const logo = document.getElementById('tadumText');
+  setTimeout(() => { logo.classList.add('show'); playTaDum(); }, 350);
+  setTimeout(() => logo.classList.add('hide'), 2100);
+  setTimeout(() => show('profiles'), 2700);
+
+  buildEmojiPicker();
+  spawnFloatingEmojis();
+  setupScrollNavbar();
+};
+
+/* ── FLOATING BG EMOJIS ── */
+function spawnFloatingEmojis() {
+  const c = document.getElementById('floatEmojis');
+  ['💕','🌸','✨','💫','🤍','🎬'].forEach((e, i) => {
+    for(let j = 0; j < 3; j++) {
+      const d = document.createElement('div');
+      d.className = 'femoji';
+      d.textContent = e;
+      d.style.cssText = `left:${Math.random()*100}%;font-size:${14+Math.random()*14}px;animation-duration:${9+Math.random()*10}s;animation-delay:${Math.random()*12}s`;
+      c.appendChild(d);
+    }
+  });
+}
+
+/* ── NAVBAR SCROLL ── */
+function setupScrollNavbar() {
+  const nav = document.getElementById('navbar');
+  document.getElementById('app').addEventListener('scroll', () => {
+    nav.classList.toggle('solid', document.getElementById('app').scrollTop > 60);
+  });
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('solid', window.scrollY > 60);
+  });
+}
+
+/* ── PROFILE SELECTION ── */
+function pickProfile(p) {
+  if(p === 'side') {
+    document.getElementById('jokeModal').classList.add('open');
+    return;
+  }
+  activeProfile = p;
+  const dot = document.getElementById('navDot');
+  const nm  = document.getElementById('navName');
+  if(p === 'tingu') {
+    dot.style.background = 'linear-gradient(135deg,#ff6b9d,#e91e8c)';
+    dot.textContent = '🌸'; nm.textContent = 'Tingu';
+  } else {
+    dot.style.background = 'linear-gradient(135deg,#4fc3f7,#0277bd)';
+    dot.textContent = '🐧'; nm.textContent = 'Pingu';
+  }
+  show('app');
+  renderAll();
+}
+
+function closeJoke() {
+  document.getElementById('jokeModal').classList.remove('open');
+  pickProfile('tingu');
+}
+function goProfiles() { show('profiles'); }
+
+/* ── RENDER EVERYTHING ── */
+function renderAll() {
+  updateHero();
+  renderSections();
+}
+
+function updateHero() {
+  if(!memories.length) return;
+  const m = memories[0];
+  document.getElementById('heroTitle').textContent = m.title;
+  document.getElementById('heroDesc').textContent  = m.desc;
+}
+
+function renderSections() {
+  const wrap = document.getElementById('memorySections');
+  wrap.innerHTML = '';
+
+  /* Group by category */
+  const cats = {};
+  memories.forEach(m => {
+    if(!cats[m.category]) cats[m.category] = [];
+    cats[m.category].push(m);
+  });
+
+  Object.entries(cats).forEach(([cat, items]) => {
+    const sec = document.createElement('div');
+    sec.className = 'section';
+    sec.innerHTML = `<div class="row-label">${catLabel(cat)}</div>`;
+    const grid = document.createElement('div');
+    grid.className = 'cards-grid';
+
+    items.forEach((m, i) => {
+      const card = document.createElement('div');
+      card.className = 'mcard';
+      card.style.background = CARD_COLORS[m.id % CARD_COLORS.length];
+      card.innerHTML = `
+        <div class="mcard-thumb">${m.emoji}</div>
+        <div class="mcard-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="mcard-overlay">
+          <div class="mcard-title">${m.title}</div>
+          <div class="mcard-date">${m.date}</div>
+        </div>
+        <button class="mcard-del" onclick="deleteMemory(event,${m.id})" title="Delete">✕</button>
+      `;
+      card.addEventListener('click', () => openVideo(m));
+      grid.appendChild(card);
+    });
+
+    /* Add card */
+    const add = document.createElement('div');
+    add.className = 'add-card';
+    add.innerHTML = `<div class="plus">＋</div><div>Nayi yaad jodna</div>`;
+    add.onclick = () => openAdd(cat);
+    grid.appendChild(add);
+
+    sec.appendChild(grid);
+    wrap.appendChild(sec);
+  });
+
+  /* If no memories yet, show one add section */
+  if(!memories.length) {
+    const sec = document.createElement('div');
+    sec.className = 'section';
+    sec.innerHTML = `<div class="row-label">💕 Hamare Moments</div>`;
+    const grid = document.createElement('div');
+    grid.className = 'cards-grid';
+    const add = document.createElement('div');
+    add.className = 'add-card';
+    add.style.cssText = 'grid-column:1/-1;aspect-ratio:unset;padding:40px;';
+    add.innerHTML = `<div class="plus">＋</div><div>Pehli yaad jodo!</div>`;
+    add.onclick = () => openAdd('Hamare Moments');
+    grid.appendChild(add);
+    sec.appendChild(grid);
+    wrap.appendChild(sec);
+  }
+}
+
+function catLabel(cat) {
+  const m = {'Hamare Moments':'💕 Hamare Moments','Special Days':'🎉 Special Days','Random Adventures':'🌍 Random Adventures','Just Us':'🤍 Just Us'};
+  return m[cat] || cat;
+}
+
+/* ── DELETE MEMORY ── */
+function deleteMemory(e, id) {
+  e.stopPropagation();
+  if(confirm('Yeh yaad delete karna chahte ho? 🥺')) {
+    memories = memories.filter(m => m.id !== id);
+    renderAll();
+  }
+}
+
+/* ── VIDEO MODAL ── */
+function ytId(url) {
+  if(!url) return null;
+  const m = url.match(/(?:v=|youtu\.be\/|embed\/)([a-zA-Z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+
+function openVideo(m) {
+  document.getElementById('vTitle').textContent = m.title;
+  document.getElementById('vMeta').textContent  = m.date + '  •  ' + m.category;
+  const frame = document.getElementById('vFrame');
+  const id = ytId(m.videoUrl);
+  frame.innerHTML = id
+    ? `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0" allow="autoplay;fullscreen" allowfullscreen></iframe>`
+    : `<div class="vplaceholder"><div class="bigmoji">${m.emoji}</div><div>Video abhi add nahi hua.<br><span style="color:#E50914">YouTube link jodo card se!</span></div></div>`;
+  document.getElementById('vmodal').classList.add('open');
+}
+
+function closeVideo() {
+  document.getElementById('vmodal').classList.remove('open');
+  document.getElementById('vFrame').innerHTML = '';
+}
+
+function playHero() { if(memories.length) openVideo(memories[0]); }
+
+/* ── ADD MEMORY MODAL ── */
+let addCat = 'Hamare Moments';
+
+function buildEmojiPicker() {
+  const row = document.getElementById('emojiRow');
+  EMOJIS.forEach(e => {
+    const d = document.createElement('div');
+    d.className = 'eopt' + (e === selectedEmoji ? ' on' : '');
+    d.textContent = e;
+    d.onclick = () => {
+      document.querySelectorAll('.eopt').forEach(x => x.classList.remove('on'));
+      d.classList.add('on');
+      selectedEmoji = e;
+    };
+    row.appendChild(d);
+  });
+}
+
+function openAdd(cat) {
+  addCat = cat || 'Hamare Moments';
+  document.getElementById('iTitle').value = '';
+  document.getElementById('iDesc').value  = '';
+  document.getElementById('iUrl').value   = '';
+  document.getElementById('iDate').value  = '';
+  document.getElementById('iCat').value   = addCat;
+  selectedEmoji = '💕';
+  document.querySelectorAll('.eopt').forEach((x,i) => x.classList.toggle('on', i===0));
+  document.getElementById('amodal').classList.add('open');
+}
+
+function closeAdd() { document.getElementById('amodal').classList.remove('open'); }
+
+function saveMemory() {
+  const title = document.getElementById('iTitle').value.trim();
+  if(!title) { document.getElementById('iTitle').focus(); return; }
+  const rawDate = document.getElementById('iDate').value;
+  let dateStr = 'Recently';
+  if(rawDate) {
+    dateStr = new Date(rawDate + 'T00:00:00').toLocaleDateString('en-IN', {day:'numeric',month:'long',year:'numeric'});
+  }
+  memories.unshift({
+    id: Date.now(),
+    title,
+    desc:     document.getElementById('iDesc').value.trim() || 'Ek pyaari yaad...',
+    emoji:    selectedEmoji,
+    date:     dateStr,
+    videoUrl: document.getElementById('iUrl').value.trim(),
+    category: document.getElementById('iCat').value
+  });
+  closeAdd();
+  renderAll();
+}
+
+/* ── KEYBOARD ESC ── */
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') { closeVideo(); closeAdd(); }
+});
+</script>
+</body>
+</html>
