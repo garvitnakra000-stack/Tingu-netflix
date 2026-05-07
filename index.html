@@ -703,7 +703,7 @@ body.noscroll { overflow: hidden; }
 
 <!-- ══ AUDIO ══ -->
 <!-- ══ AUDIO ══ -->
-<audio id="tadumAudio" preload="auto" src="https://github.com/garvitnakra000-stack/Tingu-netflix/blob/main/netflix-tudum-sfx-n-c.mp3"></audio>
+<audio id="tadumAudio" preload="auto" src="https://raw.githubusercontent.com/garvitnakrea000-stack/Tingu-netflix/main/netflix-tudum-sfx-n-c.mp3"></audio>
 
 <!-- ════════ INTRO ════════ -->
 <div id="intro" class="screen active">
@@ -717,16 +717,14 @@ body.noscroll { overflow: hidden; }
 
     <div class="profile-card" onclick="pickProfile('tingu')">
       <div class="pavatar tingu-bg" id="tinguAvatar">
-        <!-- REPLACE src with imgur URL e.g: src="https://i.imgur.com/XXXXX.jpg" -->
-        <div class="pavatar-placeholder">🌸</div>
+        <img src="data:image/jpeg;base64,TINGU_BASE64_HERE" alt="Tingu" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
       </div>
       <span class="pname">Tingu</span>
     </div>
 
     <div class="profile-card" onclick="pickProfile('pingu')">
-      <div class="pavatar pingu-bg" id="pinguAvatar">
-        <!-- REPLACE src with imgur URL e.g: src="https://i.imgur.com/XXXXX.jpg" -->
-        <div class="pavatar-placeholder">🐧</div>
+     <div class="pavatar pingu-bg" id="pinguAvatar">
+        <img src="data:image/jpeg;base64,PINGU_BASE64_HERE" alt="Pingu" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
       </div>
       <span class="pname">Pingu</span>
     </div>
@@ -915,15 +913,6 @@ function getThumb(m) {
 ═══════════════════ */
 const audio = document.getElementById('tadumAudio');
 const audioFileInput = document.getElementById('audioFile');
-
-// Load saved audio on startup
-(function loadSavedAudio() {
-  try {
-    const saved = localStorage.getItem('tadumAudioData');
-    if(saved) audio.src = saved;
-  } catch(e) {}
-})();
-
 /* ═══════════════════
    INTRO / TA-DUM
 ═══════════════════ */
@@ -997,8 +986,7 @@ function playIntro() {
     logo.classList.add('fadeout');
   }, 2400);
 
-  setTimeout(() => {
-    document.getElementById('audioUploadArea').classList.remove('visible');
+   setTimeout(() => {
     show('profiles');
     const p = document.getElementById('profiles');
     setTimeout(() => p.classList.add('fadein'), 50);
