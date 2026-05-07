@@ -703,7 +703,7 @@ body.noscroll { overflow: hidden; }
 
 <!-- ══ AUDIO ══ -->
 <!-- ══ AUDIO ══ -->
-<audio id="tadumAudio" preload="auto" src="PASTE_YOUR_DIRECT_AUDIO_URL_HERE"></audio>
+<audio id="tadumAudio" preload="auto" src="https://github.com/garvitnakra000-stack/Tingu-netflix/blob/main/netflix-tudum-sfx-n-c.mp3"></audio>
 
 <!-- ════════ INTRO ════════ -->
 <div id="intro" class="screen active">
@@ -916,21 +916,6 @@ function getThumb(m) {
 const audio = document.getElementById('tadumAudio');
 const audioFileInput = document.getElementById('audioFile');
 
-audioFileInput.addEventListener('change', function() {
-  const file = this.files[0];
-  if(file) {
-    const url = URL.createObjectURL(file);
-    audio.src = url;
-    localStorage.setItem('tadumAudioName', file.name);
-    // Store as data URL for persistence
-    const reader = new FileReader();
-    reader.onload = e => {
-      try { localStorage.setItem('tadumAudioData', e.target.result); } catch(e) {}
-    };
-    reader.readAsDataURL(file);
-  }
-});
-
 // Load saved audio on startup
 (function loadSavedAudio() {
   try {
@@ -946,7 +931,7 @@ let introPlayed = false;
 
 function playTaDumSound() {
   // Try uploaded audio first
-  if(audio.src && audio.src !== window.location.href) {
+ if(audio.src && audio.src !== window.location.href) {
     audio.currentTime = 0;
     audio.play().catch(() => synthesizeTaDum());
     return;
