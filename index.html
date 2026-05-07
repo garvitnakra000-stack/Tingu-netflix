@@ -750,7 +750,7 @@ function openVideo(m) {
   const frame = document.getElementById('vFrame');
   const id = ytId(m.videoUrl);
   frame.innerHTML = id
-    ? `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0" allow="autoplay;fullscreen" allowfullscreen></iframe>`
+    ? `<iframe src="`https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3`" allow="autoplay;fullscreen" allowfullscreen></iframe>`
     : `<div class="vplaceholder"><div class="bigmoji">${m.emoji}</div><div>Video abhi add nahi hua.<br><span style="color:#E50914">YouTube link jodo card se!</span></div></div>`;
   document.getElementById('vmodal').classList.add('open');
 }
