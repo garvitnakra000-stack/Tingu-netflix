@@ -3,820 +3,1333 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Netflix 🐧</title>
+<title>Tingu Pingu 🐧</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐧</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Netflix+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --red: #E50914;
+  --red-hover: #F40612;
+  --bg: #141414;
+  --card-bg: #1a1a1a;
+  --text: #fff;
+  --text-muted: #808080;
+  --text-dim: #b3b3b3;
+}
 
-  body {
-    background: #141414;
-    color: #fff;
-    font-family: 'Inter', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Bebas Neue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
-  /* ── SCREENS ── */
-  .screen { display: none; min-height: 100vh; }
-  .screen.active { display: flex; }
+body.noscroll { overflow: hidden; }
 
-  /* ── INTRO ── */
-  #intro {
-    background: #000;
-    align-items: center;
-    justify-content: center;
-  }
-  .tadum-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(48px, 12vw, 96px);
-    color: #E50914;
-    letter-spacing: 8px;
-    opacity: 0;
-    transform: scale(0.6);
-    transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-  .tadum-logo.show { opacity: 1; transform: scale(1); }
-  .tadum-logo.hide { opacity: 0; transform: scale(1.5); transition: all 0.5s ease-in; }
+/* ── SCREENS ── */
+.screen { display:none; min-height:100vh; }
+.screen.active { display:flex; }
 
-  /* ── PROFILES ── */
-  #profiles {
-    background: #141414;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 48px;
-    padding: 40px 20px;
-  }
-  .profile-who {
-    font-size: clamp(22px, 4vw, 34px);
-    font-weight: 400;
-    color: #e5e5e5;
-    letter-spacing: 2px;
-  }
-  .profiles-row {
-    display: flex;
-    gap: 32px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .profile-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
-  .profile-card:hover { transform: scale(1.1); }
-  .profile-card:hover .pname { color: #fff; }
-  .pavatar {
-    width: 130px;
-    height: 130px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 56px;
-    border: 3px solid transparent;
-    transition: border-color 0.2s;
-  }
-  .profile-card:hover .pavatar { border-color: #fff; }
-  .pavatar.tingu { background: linear-gradient(135deg, #ff6b9d, #e91e8c); }
-  .pavatar.pingu { background: linear-gradient(135deg, #4fc3f7, #0277bd); }
-  .pavatar.side  { background: linear-gradient(135deg, #555, #222); }
-  .pname { font-size: 16px; color: #808080; font-weight: 500; transition: color 0.2s; }
+/* ════════════════════════════
+   INTRO / TA-DUM
+════════════════════════════ */
+#intro {
+  background:#000;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:0;
+}
 
-  /* ── JOKE MODAL ── */
-  .overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.88);
-    z-index: 900;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-  .overlay.open { display: flex; }
-  .joke-box {
-    background: #1c1c1c;
-    border: 2px solid #E50914;
-    border-radius: 14px;
-    padding: 48px 40px;
-    max-width: 460px;
-    width: 100%;
-    text-align: center;
-  }
-  .joke-emoji { font-size: 64px; display: block; margin-bottom: 18px; }
-  .joke-head { font-size: 22px; font-weight: 700; color: #E50914; margin-bottom: 10px; }
-  .joke-body { font-size: 16px; color: #ccc; line-height: 1.7; margin-bottom: 28px; }
-  .joke-cta {
-    background: #E50914; color: #fff; border: none;
-    padding: 13px 32px; border-radius: 7px;
-    font-size: 16px; font-weight: 700; cursor: pointer;
-  }
-  .joke-cta:hover { background: #f40612; }
+.intro-logo {
+  font-family:'Bebas Neue',sans-serif;
+  font-size: clamp(52px,14vw,110px);
+  color: var(--red);
+  letter-spacing: 10px;
+  opacity:0;
+  transform: scaleX(0.4) scaleY(1.3);
+  filter: brightness(3);
+  transition: none;
+}
+.intro-logo.animate {
+  animation: tadum 1.8s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.intro-logo.fadeout {
+  animation: tadumout 0.5s ease-in forwards;
+}
+@keyframes tadum {
+  0%   { opacity:0; transform:scaleX(0.4) scaleY(1.3); filter:brightness(4); }
+  15%  { opacity:1; transform:scaleX(1.06) scaleY(0.94); filter:brightness(1.6); }
+  30%  { transform:scaleX(0.97) scaleY(1.03); filter:brightness(1.2); }
+  45%  { transform:scaleX(1.02) scaleY(0.98); filter:brightness(1); }
+  60%  { transform:scaleX(0.99) scaleY(1.01); }
+  100% { opacity:1; transform:scaleX(1) scaleY(1); filter:brightness(1); }
+}
+@keyframes tadumout {
+  0%   { opacity:1; transform:scale(1); }
+  100% { opacity:0; transform:scale(1.4); }
+}
 
-  /* ── NAVBAR ── */
-  .navbar {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-    padding: 16px 48px;
-    display: flex; align-items: center; justify-content: space-between;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, transparent 100%);
-    transition: background 0.3s;
-  }
-  .navbar.solid { background: #141414; }
-  .nav-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 30px; color: #E50914; letter-spacing: 4px;
-    cursor: pointer;
-  }
-  .nav-right { display: flex; align-items: center; gap: 16px; }
-  .nav-profile { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #e5e5e5; }
-  .nav-dot {
-    width: 34px; height: 34px; border-radius: 7px;
-    display: flex; align-items: center; justify-content: center; font-size: 18px;
-  }
-  .switch-btn {
-    background: transparent; border: 1px solid #666; color: #aaa;
-    padding: 7px 14px; border-radius: 5px; font-size: 13px;
-    cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif;
-  }
-  .switch-btn:hover { border-color: #fff; color: #fff; }
+/* Audio upload button — hidden in corner */
+#audioUploadArea {
+  position:fixed; bottom:16px; right:16px; z-index:9999;
+  opacity:0; pointer-events:none;
+}
+#audioUploadArea.visible { opacity:1; pointer-events:all; }
+#audioUploadArea label {
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.2);
+  color:#fff; font-size:11px; font-family:'Helvetica Neue',sans-serif;
+  padding:6px 12px; border-radius:4px; cursor:pointer;
+  letter-spacing:1px; text-transform:uppercase;
+}
+#audioFile { display:none; }
 
-  /* ── HERO ── */
-  #app { flex-direction: column; }
-  .hero {
-    height: 75vh; min-height: 420px;
-    position: relative;
-    display: flex; align-items: flex-end;
-    padding: 0 48px 64px;
-    overflow: hidden;
-  }
-  .hero-bg {
-    position: absolute; inset: 0; z-index: 0;
-    background: radial-gradient(ellipse at 65% 35%, #2a1040 0%, #0a0a14 65%);
-  }
-  .hero-grad {
-    position: absolute; inset: 0; z-index: 1;
-    background:
-      linear-gradient(to right, rgba(0,0,0,0.85) 35%, transparent 70%),
-      linear-gradient(to top, #141414 4%, transparent 40%);
-  }
-  .floating-emojis { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
-  .femoji {
-    position: absolute; opacity: 0.07;
-    animation: floatup linear infinite;
-  }
-  @keyframes floatup {
-    from { transform: translateY(110vh) rotate(0deg); }
-    to   { transform: translateY(-80px) rotate(360deg); }
-  }
-  .hero-content { position: relative; z-index: 2; max-width: 520px; }
-  .hero-tag {
-    font-size: 12px; font-weight: 700; letter-spacing: 3px;
-    color: #E50914; text-transform: uppercase; margin-bottom: 12px;
-  }
-  .hero-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(36px, 7vw, 70px);
-    line-height: 1; letter-spacing: 2px; margin-bottom: 14px;
-  }
-  .hero-desc {
-    font-size: 16px; color: #ccc; line-height: 1.65;
-    margin-bottom: 26px; max-width: 420px;
-  }
-  .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
-  .btn-play {
-    display: flex; align-items: center; gap: 8px;
-    background: #fff; color: #000; border: none;
-    padding: 12px 28px; border-radius: 6px;
-    font-size: 16px; font-weight: 700; cursor: pointer;
-    transition: background 0.2s; font-family: 'Inter', sans-serif;
-  }
-  .btn-play:hover { background: rgba(255,255,255,0.85); }
-  .btn-more {
-    display: flex; align-items: center; gap: 8px;
-    background: rgba(109,109,110,0.65); color: #fff; border: none;
-    padding: 12px 24px; border-radius: 6px;
-    font-size: 16px; font-weight: 600; cursor: pointer;
-    transition: background 0.2s; font-family: 'Inter', sans-serif;
-  }
-  .btn-more:hover { background: rgba(109,109,110,0.9); }
+/* ════════════════════════════
+   PROFILES
+════════════════════════════ */
+#profiles {
+  background: var(--bg);
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:52px;
+  padding:40px 20px;
+  opacity:0;
+  transition:opacity 0.4s ease;
+}
+#profiles.fadein { opacity:1; }
 
-  /* ── ROWS ── */
-  .section { padding: 0 48px 44px; }
-  .row-label {
-    font-size: 20px; font-weight: 600; color: #e5e5e5;
-    margin-bottom: 16px; letter-spacing: 0.3px;
-  }
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-    gap: 8px;
-  }
+.profile-who {
+  font-family:'Bebas Neue',sans-serif;
+  font-size: clamp(28px,4vw,38px);
+  font-weight:400;
+  color:#e5e5e5;
+  letter-spacing:3px;
+}
 
-  /* ── MEMORY CARD ── */
-  .mcard {
-    border-radius: 6px; overflow: hidden;
-    cursor: pointer; position: relative;
-    aspect-ratio: 16/9; background: #1e1e1e;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-  }
-  .mcard:hover {
-    transform: scale(1.06);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.7);
-    z-index: 10; position: relative;
-  }
-  .mcard-thumb {
-    width: 100%; height: 100%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 44px;
-  }
-  .mcard-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, transparent 55%);
-    opacity: 0; transition: opacity 0.25s;
-    display: flex; flex-direction: column;
-    justify-content: flex-end; padding: 12px;
-  }
-  .mcard:hover .mcard-overlay { opacity: 1; }
-  .mcard-play {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    width: 46px; height: 46px;
-    background: rgba(255,255,255,0.92); border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    transition: transform 0.2s;
-  }
-  .mcard:hover .mcard-play { transform: translate(-50%,-50%) scale(1); }
-  .mcard-play svg { fill: #000; width: 18px; height: 18px; margin-left: 3px; }
-  .mcard-title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 3px; }
-  .mcard-date  { font-size: 11px; color: #aaa; }
-  .mcard-del {
-    position: absolute; top: 8px; right: 8px;
-    background: rgba(0,0,0,0.7); border: none; color: #fff;
-    width: 28px; height: 28px; border-radius: 50%;
-    font-size: 14px; cursor: pointer;
-    display: none; align-items: center; justify-content: center;
-    transition: background 0.2s;
-  }
-  .mcard:hover .mcard-del { display: flex; }
-  .mcard-del:hover { background: #E50914; }
+.profiles-row {
+  display:flex;
+  gap:28px;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:flex-start;
+}
 
-  /* ── ADD CARD ── */
-  .add-card {
-    border-radius: 6px; aspect-ratio: 16/9;
-    background: rgba(255,255,255,0.03);
-    border: 2px dashed rgba(255,255,255,0.14);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 8px; cursor: pointer; color: #555;
-    font-size: 13px; transition: all 0.2s;
-    font-family: 'Inter', sans-serif;
-  }
-  .add-card:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.28); color: #aaa; }
-  .add-card .plus { font-size: 28px; line-height: 1; }
+.profile-card {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+  cursor:pointer;
+  transition:transform 0.15s ease;
+}
+.profile-card:hover { transform:scale(1.07); }
+.profile-card:hover .pname { color:#fff; }
+.profile-card:hover .pavatar { border-color:#fff; }
 
-  /* ── VIDEO MODAL ── */
-  #vmodal {
-    position: fixed; inset: 0; z-index: 800;
-    background: rgba(0,0,0,0.93);
-    display: none; align-items: center; justify-content: center; padding: 20px;
-  }
-  #vmodal.open { display: flex; }
-  .vbox {
-    background: #0a0a0a; border-radius: 10px;
-    overflow: hidden; width: 100%; max-width: 900px;
-    position: relative;
-  }
-  .vclose {
-    position: absolute; top: 12px; right: 12px; z-index: 10;
-    background: rgba(20,20,20,0.8); border: none; color: #fff;
-    width: 38px; height: 38px; border-radius: 50%;
-    font-size: 18px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .vclose:hover { background: rgba(255,255,255,0.15); }
-  .vheader { padding: 22px 24px 16px; background: #0f0f0f; }
-  .vtitle { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
-  .vmeta  { font-size: 13px; color: #888; }
-  .vframe { position: relative; padding-bottom: 56.25%; background: #000; }
-  .vframe iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
-  .vplaceholder {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 14px; color: #555; font-size: 14px; text-align: center; padding: 20px;
-  }
-  .vplaceholder .bigmoji { font-size: 52px; }
+.pavatar {
+  width:160px;
+  height:160px;
+  border-radius:4px;
+  overflow:hidden;
+  border:3px solid transparent;
+  transition:border-color 0.15s;
+  background:#333;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.pavatar img {
+  width:100%; height:100%;
+  object-fit:cover;
+  display:block;
+}
+.pavatar-placeholder {
+  width:100%; height:100%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:72px;
+}
+.pavatar.tingu-bg  { background:linear-gradient(135deg,#ff6b9d,#e91e8c); }
+.pavatar.pingu-bg  { background:linear-gradient(135deg,#4fc3f7,#0277bd); }
+.pavatar.side-bg   { background:linear-gradient(135deg,#555,#222); }
 
-  /* ── ADD MEMORY MODAL ── */
-  #amodal {
-    position: fixed; inset: 0; z-index: 800;
-    background: rgba(0,0,0,0.88);
-    display: none; align-items: center; justify-content: center; padding: 20px;
-    overflow-y: auto;
-  }
-  #amodal.open { display: flex; }
-  .abox {
-    background: #1a1a1a; border-radius: 14px;
-    padding: 36px 32px; width: 100%; max-width: 500px;
-    position: relative; margin: auto;
-  }
-  .abox-title { font-size: 22px; font-weight: 700; margin-bottom: 26px; }
-  .fgroup { margin-bottom: 18px; }
-  .flabel { font-size: 13px; color: #888; margin-bottom: 7px; display: block; }
-  .finput, .fselect {
-    width: 100%; background: #252525; border: 1px solid #3a3a3a;
-    border-radius: 7px; color: #fff; font-size: 15px;
-    padding: 11px 14px; outline: none;
-    font-family: 'Inter', sans-serif; transition: border-color 0.2s;
-  }
-  .finput:focus, .fselect:focus { border-color: #E50914; }
-  .fselect option { background: #1a1a1a; }
-  .emoji-row {
-    display: grid; grid-template-columns: repeat(8, 1fr);
-    gap: 6px; margin-top: 8px;
-  }
-  .eopt {
-    font-size: 22px; padding: 5px; border-radius: 6px;
-    cursor: pointer; text-align: center;
-    border: 2px solid transparent; transition: all 0.15s;
-  }
-  .eopt:hover { background: rgba(255,255,255,0.08); }
-  .eopt.on { border-color: #E50914; background: rgba(229,9,20,0.12); }
-  .factions { display: flex; gap: 12px; margin-top: 26px; }
-  .fcancelbtn {
-    flex: 1; background: transparent; border: 1px solid #444;
-    color: #888; padding: 12px; border-radius: 7px;
-    font-size: 15px; cursor: pointer; font-family: 'Inter', sans-serif;
-  }
-  .fsavebtn {
-    flex: 2; background: #E50914; border: none; color: #fff;
-    padding: 12px; border-radius: 7px; font-size: 15px;
-    font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif;
-    transition: background 0.2s;
-  }
-  .fsavebtn:hover { background: #f40612; }
+.pname {
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-size:16px;
+  color:var(--text-muted);
+  font-weight:400;
+  letter-spacing:0.5px;
+  transition:color 0.15s;
+}
 
-  /* ── FOOTER ── */
-  .footer {
-    padding: 32px 48px 24px; text-align: center;
-    font-size: 13px; color: #444;
-  }
-  .footer span { color: #E50914; }
+/* ════════════════════════════
+   JOKE MODAL
+════════════════════════════ */
+.overlay {
+  display:none;
+  position:fixed; inset:0;
+  background:rgba(0,0,0,0.88);
+  z-index:900;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.overlay.open { display:flex; }
+.joke-box {
+  background:#1c1c1c;
+  border:2px solid var(--red);
+  border-radius:8px;
+  padding:48px 40px;
+  max-width:440px;
+  width:100%;
+  text-align:center;
+}
+.joke-emoji { font-size:60px; display:block; margin-bottom:16px; }
+.joke-head  { font-family:'Bebas Neue',sans-serif; font-size:24px; color:var(--red); margin-bottom:10px; letter-spacing:2px; }
+.joke-body  { font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:15px; color:#ccc; line-height:1.7; margin-bottom:28px; }
+.joke-cta   {
+  background:var(--red); color:#fff; border:none;
+  padding:13px 32px; border-radius:4px;
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-size:15px; font-weight:700; cursor:pointer;
+}
+.joke-cta:hover { background:var(--red-hover); }
 
-  /* ── RESPONSIVE ── */
-  @media(max-width: 600px) {
-    .navbar { padding: 14px 18px; }
-    .hero { padding: 0 18px 40px; }
-    .section { padding: 0 18px 32px; }
-    .cards-grid { grid-template-columns: repeat(2, 1fr); }
-    .profiles-row { gap: 20px; }
-    .pavatar { width: 95px; height: 95px; font-size: 42px; }
-    .abox { padding: 28px 20px; }
-  }
+/* ════════════════════════════
+   NAVBAR
+════════════════════════════ */
+.navbar {
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  padding:0 60px;
+  height:68px;
+  display:flex; align-items:center; justify-content:space-between;
+  background:linear-gradient(to bottom,rgba(0,0,0,0.9) 0%,transparent 100%);
+  transition:background 0.4s;
+}
+.navbar.solid { background:#141414; }
+
+.nav-logo {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:32px; color:var(--red); letter-spacing:4px;
+  cursor:pointer; user-select:none;
+  text-decoration:none;
+}
+
+.nav-links {
+  display:flex; align-items:center; gap:20px;
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+}
+.nav-link {
+  font-size:14px; color:#e5e5e5; cursor:pointer;
+  transition:color 0.15s;
+  text-decoration:none;
+}
+.nav-link:hover { color:#b3b3b3; }
+
+.nav-right { display:flex; align-items:center; gap:20px; }
+
+.nav-profile-btn {
+  display:flex; align-items:center; gap:8px;
+  cursor:pointer; position:relative;
+}
+.nav-profile-btn:hover .nav-dropdown { display:block; }
+
+.nav-avatar {
+  width:32px; height:32px;
+  border-radius:4px; overflow:hidden;
+  background:#333;
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px;
+}
+.nav-avatar img { width:100%; height:100%; object-fit:cover; }
+
+.nav-caret {
+  border:4px solid transparent;
+  border-top:4px solid #e5e5e5;
+  border-bottom:none;
+  display:inline-block;
+  transition:transform 0.2s;
+}
+.nav-profile-btn:hover .nav-caret { transform:rotate(180deg); }
+
+.nav-dropdown {
+  display:none;
+  position:absolute; top:calc(100% + 12px); right:0;
+  background:rgba(0,0,0,0.9);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:4px;
+  min-width:180px;
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  overflow:hidden;
+}
+.nav-dropdown-item {
+  display:flex; align-items:center; gap:10px;
+  padding:10px 14px; font-size:13px; color:#e5e5e5;
+  cursor:pointer; transition:background 0.15s;
+}
+.nav-dropdown-item:hover { background:rgba(255,255,255,0.1); }
+.nav-dropdown-divider {
+  border-top:1px solid rgba(255,255,255,0.15);
+  margin:4px 0;
+}
+.nav-dropdown-item.switch { color:#b3b3b3; font-size:12px; }
+
+/* ════════════════════════════
+   APP SCREEN
+════════════════════════════ */
+#app { flex-direction:column; overflow-y:auto; }
+
+/* ════════════════════════════
+   HERO
+════════════════════════════ */
+.hero {
+  position:relative;
+  height:80vh;
+  min-height:500px;
+  display:flex;
+  align-items:flex-end;
+  overflow:hidden;
+}
+
+.hero-bg-img {
+  position:absolute; inset:0; z-index:0;
+  background-size:cover;
+  background-position:center top;
+  transition:opacity 0.8s ease;
+}
+
+.hero-vignette {
+  position:absolute; inset:0; z-index:1;
+  background:
+    linear-gradient(to right, rgba(20,20,20,0.9) 0%, rgba(20,20,20,0.5) 50%, transparent 75%),
+    linear-gradient(to top, #141414 0%, rgba(20,20,20,0.6) 15%, transparent 40%),
+    linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 20%);
+}
+
+.hero-content {
+  position:relative; z-index:2;
+  padding:0 60px 80px;
+  max-width:620px;
+}
+
+.hero-maturity {
+  display:inline-flex; align-items:center; gap:8px;
+  margin-bottom:16px;
+}
+.hero-tag-badge {
+  background:var(--red);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:11px; letter-spacing:2px;
+  padding:3px 8px; border-radius:2px;
+  color:#fff;
+}
+
+.hero-title {
+  font-family:'Bebas Neue',sans-serif;
+  font-size: clamp(42px,7vw,80px);
+  line-height:1;
+  letter-spacing:2px;
+  margin-bottom:20px;
+  text-shadow:2px 2px 8px rgba(0,0,0,0.5);
+}
+
+.hero-desc {
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-size:17px;
+  color:#e5e5e5;
+  line-height:1.55;
+  margin-bottom:28px;
+  max-width:380px;
+  font-weight:400;
+  text-shadow:1px 1px 4px rgba(0,0,0,0.8);
+}
+
+.hero-btns { display:flex; gap:12px; align-items:center; }
+
+.btn-play {
+  display:flex; align-items:center; gap:8px;
+  background:#fff; color:#000; border:none;
+  padding:10px 26px; border-radius:4px;
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-size:17px; font-weight:700; cursor:pointer;
+  transition:background 0.15s;
+  white-space:nowrap;
+}
+.btn-play svg { width:24px; height:24px; flex-shrink:0; }
+.btn-play:hover { background:rgba(255,255,255,0.8); }
+
+.btn-info {
+  display:flex; align-items:center; gap:8px;
+  background:rgba(109,109,110,0.7); color:#fff; border:none;
+  padding:10px 22px; border-radius:4px;
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-size:17px; font-weight:500; cursor:pointer;
+  transition:background 0.15s;
+  white-space:nowrap;
+}
+.btn-info:hover { background:rgba(109,109,110,0.5); }
+
+/* Hero progress dots */
+.hero-dots {
+  position:absolute;
+  bottom:28px; right:60px; z-index:3;
+  display:flex; gap:6px; align-items:center;
+}
+.hero-dot {
+  width:8px; height:2px;
+  background:rgba(255,255,255,0.35);
+  border-radius:1px;
+  cursor:pointer;
+  transition:all 0.3s;
+}
+.hero-dot.active { width:24px; background:#fff; }
+
+/* Hero progress bar */
+.hero-progress {
+  position:absolute; bottom:0; left:0; right:0; z-index:3;
+  height:3px; background:rgba(255,255,255,0.15);
+}
+.hero-progress-fill {
+  height:100%;
+  background:var(--red);
+  width:0%;
+  transition:width 0.1s linear;
+}
+
+/* ════════════════════════════
+   ROWS / SECTIONS
+════════════════════════════ */
+.rows-wrap { padding-bottom:60px; }
+
+.row-section {
+  padding:0 0 32px;
+  position:relative;
+}
+
+.row-label {
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-size:20px;
+  font-weight:700;
+  color:#e5e5e5;
+  padding:0 60px;
+  margin-bottom:12px;
+  letter-spacing:0.3px;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+.row-label:hover .explore-more { opacity:1; transform:translateX(0); }
+.explore-more {
+  font-size:13px; color:#54b9c5; font-weight:400;
+  letter-spacing:1px; text-transform:uppercase;
+  opacity:0; transform:translateX(-8px);
+  transition:all 0.3s;
+  display:flex; align-items:center; gap:4px;
+}
+.explore-more::after { content:'›'; font-size:16px; }
+
+/* Horizontal scroll slider */
+.row-slider-wrap {
+  position:relative;
+  overflow:hidden;
+}
+.row-slider {
+  display:flex;
+  gap:6px;
+  padding:4px 60px 16px;
+  overflow-x:auto;
+  scroll-behavior:smooth;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+}
+.row-slider::-webkit-scrollbar { display:none; }
+
+/* Slider arrow buttons */
+.slider-arrow {
+  position:absolute; top:0; bottom:16px; z-index:10;
+  width:60px;
+  background:linear-gradient(to right,rgba(20,20,20,0.95),transparent);
+  border:none; color:#fff; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; transition:opacity 0.3s;
+  font-size:28px;
+}
+.slider-arrow.right {
+  right:0;
+  background:linear-gradient(to left,rgba(20,20,20,0.95),transparent);
+}
+.row-slider-wrap:hover .slider-arrow { opacity:1; }
+.slider-arrow:hover { background:rgba(20,20,20,0.8); opacity:1; }
+
+/* ════════════════════════════
+   MEMORY CARD
+════════════════════════════ */
+.mcard {
+  flex-shrink:0;
+  width:260px;
+  border-radius:4px;
+  overflow:visible;
+  cursor:pointer;
+  position:relative;
+  transition:transform 0.25s ease, z-index 0s;
+  z-index:1;
+}
+.mcard:hover {
+  transform:scale(1.12);
+  z-index:50;
+}
+/* First and last cards — expand inward */
+.mcard:first-child:hover { transform-origin:left center; }
+.mcard:last-child:hover  { transform-origin:right center; }
+
+.mcard-inner {
+  border-radius:4px;
+  overflow:hidden;
+  position:relative;
+  aspect-ratio:16/9;
+  background:#181818;
+}
+
+.mcard-thumb {
+  width:100%; height:100%;
+  object-fit:cover;
+  display:block;
+  transition:filter 0.3s;
+}
+.mcard-thumb-placeholder {
+  width:100%; height:100%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:52px;
+  background:#1a1a1a;
+}
+
+.mcard-overlay {
+  position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%);
+  opacity:0;
+  transition:opacity 0.25s;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding:12px;
+}
+.mcard:hover .mcard-overlay { opacity:1; }
+
+.mcard-play-btn {
+  position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%) scale(0);
+  width:44px; height:44px;
+  background:rgba(255,255,255,0.9);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  transition:transform 0.2s ease;
+}
+.mcard:hover .mcard-play-btn { transform:translate(-50%,-50%) scale(1); }
+.mcard-play-btn svg { fill:#000; width:16px; height:16px; margin-left:3px; }
+
+.mcard-title {
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-size:13px; font-weight:700; color:#fff;
+  margin-bottom:2px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+
+/* Hover info panel — appears below card */
+.mcard-info {
+  position:absolute;
+  top:calc(100% - 4px); left:0; right:0;
+  background:#181818;
+  border-radius:0 0 4px 4px;
+  padding:10px 12px 12px;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.25s;
+  box-shadow:0 8px 24px rgba(0,0,0,0.8);
+}
+.mcard:hover .mcard-info { opacity:1; }
+
+.mcard-info-actions {
+  display:flex; align-items:center; gap:8px;
+  margin-bottom:10px;
+}
+.mcard-icon-btn {
+  width:30px; height:30px;
+  border-radius:50%;
+  border:2px solid rgba(255,255,255,0.5);
+  background:transparent;
+  color:#fff; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:border-color 0.15s;
+  font-size:13px;
+}
+.mcard-icon-btn.play-small {
+  background:#fff; border-color:#fff;
+  color:#000;
+}
+.mcard-icon-btn:hover { border-color:#fff; }
+.mcard-info-title {
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-size:12px; font-weight:700; color:#fff;
+  margin-bottom:4px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.mcard-info-meta {
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-size:11px; color:#46d369;
+  font-weight:700;
+}
+.mcard-info-category {
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-size:10px; color:var(--text-muted);
+  margin-top:3px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+
+/* ════════════════════════════
+   VIDEO MODAL
+════════════════════════════ */
+#vmodal {
+  position:fixed; inset:0; z-index:800;
+  background:rgba(0,0,0,0.7);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+#vmodal.open { display:flex; }
+
+.vbox {
+  background:#141414;
+  border-radius:8px;
+  overflow:hidden;
+  width:100%;
+  max-width:960px;
+  max-height:90vh;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 0 60px rgba(0,0,0,0.9);
+}
+
+.vclose {
+  position:absolute; top:14px; right:14px; z-index:10;
+  background:rgba(20,20,20,0.9);
+  border:none; color:#fff;
+  width:36px; height:36px;
+  border-radius:50%;
+  font-size:16px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:background 0.2s;
+}
+.vclose:hover { background:rgba(255,255,255,0.15); }
+
+.vframe {
+  position:relative;
+  padding-bottom:56.25%;
+  background:#000;
+  flex-shrink:0;
+}
+.vframe iframe {
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  border:none;
+}
+.vplaceholder {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  gap:16px; color:#555; font-size:15px;
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  text-align:center; padding:20px;
+}
+.vplaceholder .bigmoji { font-size:56px; }
+
+.vdetails {
+  padding:24px 28px 28px;
+  background:#181818;
+  overflow-y:auto;
+}
+.vtitle {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:28px; letter-spacing:2px;
+  margin-bottom:8px;
+}
+.vmeta {
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-size:14px; color:#46d369; font-weight:700;
+  margin-bottom:8px;
+}
+.vdesc {
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-size:14px; color:var(--text-dim);
+  line-height:1.6;
+}
+
+/* ════════════════════════════
+   FOOTER
+════════════════════════════ */
+.footer {
+  padding:32px 60px 28px;
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-size:13px; color:#3d3d3d;
+  text-align:center;
+}
+.footer span { color:var(--red); }
+
+/* ════════════════════════════
+   RESPONSIVE
+════════════════════════════ */
+@media(max-width:700px) {
+  .navbar { padding:0 18px; }
+  .hero-content { padding:0 20px 70px; }
+  .row-label { padding:0 20px; font-size:16px; }
+  .row-slider { padding:4px 20px 16px; }
+  .slider-arrow { display:none; }
+  .hero-dots { right:20px; }
+  .mcard { width:160px; }
+  .mcard-info { display:none; }
+  .footer { padding:24px 20px; }
+  .nav-links { display:none; }
+}
 </style>
 </head>
 <body>
 
-<!-- ═══ INTRO ═══ -->
-<div id="intro" class="screen active">
-  <div class="tadum-logo" id="tadumText">TINGU PINGU's Netflix</div>
+<!-- ══ AUDIO ══ -->
+<audio id="tadumAudio" preload="auto"></audio>
+<input type="file" id="audioFile" accept="audio/*" style="display:none">
+
+<!-- ══ AUDIO UPLOAD (secret corner — only visible on intro screen) ══ -->
+<div id="audioUploadArea" class="visible">
+  <label for="audioFile">🎵 Upload Ta-Dum</label>
 </div>
 
-<!-- ═══ PROFILE SELECT ═══ -->
+<!-- ════════ INTRO ════════ -->
+<div id="intro" class="screen active">
+  <div class="intro-logo" id="introLogo">TINGU PINGU</div>
+</div>
+
+<!-- ════════ PROFILES ════════ -->
 <div id="profiles" class="screen">
-  <h1 class="profile-who">Who's Watching? 👀</h1>
+  <h1 class="profile-who">Who's Watching?</h1>
   <div class="profiles-row">
+
     <div class="profile-card" onclick="pickProfile('tingu')">
-      <div class="pavatar tingu">🌸</div>
+      <div class="pavatar tingu-bg" id="tinguAvatar">
+        <!-- REPLACE src with imgur URL e.g: src="https://i.imgur.com/XXXXX.jpg" -->
+        <div class="pavatar-placeholder">🌸</div>
+      </div>
       <span class="pname">Tingu</span>
     </div>
+
     <div class="profile-card" onclick="pickProfile('pingu')">
-      <div class="pavatar pingu">🐧</div>
+      <div class="pavatar pingu-bg" id="pinguAvatar">
+        <!-- REPLACE src with imgur URL e.g: src="https://i.imgur.com/XXXXX.jpg" -->
+        <div class="pavatar-placeholder">🐧</div>
+      </div>
       <span class="pname">Pingu</span>
     </div>
+
     <div class="profile-card" onclick="pickProfile('side')">
-      <div class="pavatar side">💅</div>
+      <div class="pavatar side-bg">
+        <div class="pavatar-placeholder">💅</div>
+      </div>
       <span class="pname">Side Chick</span>
     </div>
+
   </div>
 </div>
 
-<!-- ═══ JOKE MODAL ═══ -->
+<!-- ════════ JOKE MODAL ════════ -->
 <div class="overlay" id="jokeModal">
   <div class="joke-box">
     <span class="joke-emoji">🚫</span>
     <div class="joke-head">Profile Not Found</div>
     <div class="joke-body">
       Tingu ji, koi side chick nahi hai!!<br>
-      <em style="color:#E50914;font-style:normal;font-weight:600">Ap main wali hai toh wahi se jao pls 😌</em>
+      <em style="color:var(--red);font-style:normal;font-weight:600">Ap main wali hai toh wahi se jao pls 😌</em>
     </div>
     <button class="joke-cta" onclick="closeJoke()">Mai hi hu main person →</button>
   </div>
 </div>
 
-<!-- ═══ MAIN APP ═══ -->
+<!-- ════════ MAIN APP ════════ -->
 <div id="app" class="screen">
 
+  <!-- NAVBAR -->
   <nav class="navbar" id="navbar">
-    <div class="nav-logo" onclick="goProfiles()">TINGU PINGU</div>
-    <div class="nav-right">
-      <div class="nav-profile">
-        <div class="nav-dot" id="navDot" style="background:linear-gradient(135deg,#ff6b9d,#e91e8c)">🌸</div>
-        <span id="navName">Tingu</span>
+    <div style="display:flex;align-items:center;gap:40px;">
+      <a class="nav-logo" onclick="goProfiles()">TINGU PINGU</a>
+      <div class="nav-links">
+        <span class="nav-link">Home</span>
+        <span class="nav-link">TV Shows</span>
+        <span class="nav-link">Movies</span>
+        <span class="nav-link">New & Popular</span>
+        <span class="nav-link">My List</span>
       </div>
-      <button class="switch-btn" onclick="goProfiles()">Switch Profile</button>
+    </div>
+    <div class="nav-right">
+      <div class="nav-profile-btn">
+        <div class="nav-avatar" id="navAvatar">
+          <div id="navAvatarInner" style="font-size:18px">🌸</div>
+        </div>
+        <div class="nav-caret"></div>
+        <div class="nav-dropdown">
+          <div class="nav-dropdown-item">
+            <span id="navAvatarDrop" style="font-size:16px">🌸</span>
+            <span id="navNameDrop">Tingu</span>
+          </div>
+          <div class="nav-dropdown-divider"></div>
+          <div class="nav-dropdown-item switch" onclick="goProfiles()">Switch Profile</div>
+        </div>
+      </div>
     </div>
   </nav>
 
   <!-- HERO -->
-  <div class="hero">
-    <div class="hero-bg"></div>
-    <div class="floating-emojis" id="floatEmojis"></div>
-    <div class="hero-grad"></div>
+  <div class="hero" id="hero">
+    <div class="hero-bg-img" id="heroBg"></div>
+    <div class="hero-vignette"></div>
     <div class="hero-content">
-      <div class="hero-tag">✨ Featured Memory</div>
+      <div class="hero-maturity">
+        <span class="hero-tag-badge">✨ MEMORY</span>
+      </div>
       <h1 class="hero-title" id="heroTitle">Hamari Pehli Mulaqat</h1>
-      <p class="hero-desc" id="heroDesc">The one where it all started. Jab sab kuch sirf ek nazar se shuru hua...</p>
+      <p class="hero-desc" id="heroDesc">The one where it all started...</p>
       <div class="hero-btns">
-        <button class="btn-play" onclick="playHero()">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        <button class="btn-play" id="heroPlayBtn" onclick="playHeroVideo()">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
           Play
         </button>
-        <button class="btn-more" onclick="playHero()">ℹ️ More Info</button>
+        <button class="btn-info" onclick="openInfoModal()">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+          More Info
+        </button>
       </div>
     </div>
+    <div class="hero-dots" id="heroDots"></div>
+    <div class="hero-progress"><div class="hero-progress-fill" id="heroProgressFill"></div></div>
   </div>
 
-  <!-- MEMORY ROWS (rendered by JS) -->
-  <div id="memorySections"></div>
+  <!-- MEMORY ROWS -->
+  <div class="rows-wrap" id="rowsWrap"></div>
 
   <div class="footer">
-    Made with <span>♥</span> by Pingu, for Tingu 🐧&nbsp;•&nbsp;
-    <span style="color:#555">Edit memories.js to add yours</span>
+    Made with <span>♥</span> for Tingu, by Pingu 🐧
   </div>
 </div>
 
-<!-- ═══ VIDEO MODAL ═══ -->
+<!-- ════════ VIDEO MODAL ════════ -->
 <div id="vmodal">
   <div class="vbox">
     <button class="vclose" onclick="closeVideo()">✕</button>
-    <div class="vheader">
+    <div class="vframe" id="vFrame"></div>
+    <div class="vdetails">
       <div class="vtitle" id="vTitle"></div>
       <div class="vmeta"  id="vMeta"></div>
-    </div>
-    <div class="vframe" id="vFrame"></div>
-  </div>
-</div>
-
-<!-- ═══ ADD MEMORY MODAL ═══ -->
-<div id="amodal">
-  <div class="abox">
-    <button class="vclose" onclick="closeAdd()" style="position:absolute;top:14px;right:14px">✕</button>
-    <div class="abox-title">✨ Nayi Yaad Jodna</div>
-
-    <div class="fgroup">
-      <label class="flabel">Title</label>
-      <input class="finput" id="iTitle" placeholder="e.g. Pehli Date, Woh Rainy Evening..." />
-    </div>
-    <div class="fgroup">
-      <label class="flabel">Description (thoda sa)</label>
-      <input class="finput" id="iDesc" placeholder="Uss din kya hua tha..." />
-    </div>
-    <div class="fgroup">
-      <label class="flabel">YouTube Unlisted Link</label>
-      <input class="finput" id="iUrl" placeholder="https://youtube.com/watch?v=..." />
-    </div>
-    <div class="fgroup">
-      <label class="flabel">Date</label>
-      <input class="finput" id="iDate" type="date" />
-    </div>
-    <div class="fgroup">
-      <label class="flabel">Emoji (thumbnail ke liye)</label>
-      <div class="emoji-row" id="emojiRow"></div>
-    </div>
-    <div class="fgroup">
-      <label class="flabel">Category</label>
-      <select class="fselect" id="iCat">
-        <option value="Hamare Moments">💕 Hamare Moments</option>
-        <option value="Special Days">🎉 Special Days</option>
-        <option value="Random Adventures">🌍 Random Adventures</option>
-        <option value="Just Us">🤍 Just Us</option>
-      </select>
-    </div>
-
-    <div class="factions">
-      <button class="fcancelbtn" onclick="closeAdd()">Cancel</button>
-      <button class="fsavebtn"   onclick="saveMemory()">Save Memory ✨</button>
+      <div class="vdesc"  id="vDesc"></div>
     </div>
   </div>
 </div>
 
-<!-- ═══ DATA + LOGIC ═══ -->
+<!-- ════════════════════════════════════════════
+     DATA & LOGIC
+════════════════════════════════════════════ -->
 <script>
-/* ─────────────────────────────────────────────
-   MEMORIES — Edit this array to add/remove/change memories.
-   To add a video: paste your YouTube unlisted URL in videoUrl.
-   Leave videoUrl as "" if you haven't uploaded yet.
-───────────────────────────────────────────── */
-let memories = [
+/* ═══════════════════════════════════════
+   MEMORIES — Edit this array to add/modify.
+   videoUrl: YouTube link (regular or Shorts, both work).
+   thumb: leave "" to use YouTube auto-thumbnail.
+         Or set to a custom image URL.
+═══════════════════════════════════════ */
+const memories = [
   {
     id: 1,
     title: "Woh Beach Day",
-    desc: "best beach day everrrrrr",
+    desc: "Best beach day everrrrrr 🏖️",
     emoji: "🌸",
-    date: "Add your date",
-    videoUrl: "https://youtube.com/shorts/l-3BV_pf8B4?si=b8fuHedlbuNU4Dwl",
+    videoUrl: "https://youtube.com/shorts/l-3BV_pf8B4",
+    thumb: "",
     category: "Hamare Moments"
   },
   {
     id: 2,
     title: "The 4 AM Vlog",
-    desc: "Bandra Baddie ko Saki Naka me Idli khilani ke badd...",
+    desc: "Bandra Baddie ko Saki Naka mein Idli khilaane ke baad...",
     emoji: "🌧️",
-    date: "Add your date",
-    videoUrl: "https://youtube.com/shorts/WtQid7TZeOU?si=fDCQz8zJ3_T27iwy",
+    videoUrl: "https://youtube.com/shorts/WtQid7TZeOU",
+    thumb: "",
     category: "Hamare Moments"
   },
   {
     id: 3,
-    title: "The First date",
-    desc: "The one where we go on our first date",
+    title: "The First Date",
+    desc: "The one where we went on our first date 🚗",
     emoji: "🚗",
-    date: "Add your date",
-    videoUrl: "https://youtube.com/shorts/0V4kwQw73VI?si=lVfgupVMKea0S-5y",
-    category: "Random Adventures"
+    videoUrl: "https://youtube.com/shorts/0V4kwQw73VI",
+    thumb: "",
+    category: "Special Days"
   }
 ];
 
-/* ── CONSTANTS ── */
-const EMOJIS = ['💕','🌸','🎉','🌍','🤍','🌙','☀️','🎵','🍕','🚗','✈️','🏖️','🎂','🌹','💫','🦋','🌊','🎬','📸','🥂'];
-const CARD_COLORS = ['#1a1040','#0f2a3c','#1a2a10','#2a1010','#102a2a','#1a1a30','#2a2010','#10201a'];
-let activeProfile = 'tingu';
-let selectedEmoji = '💕';
+/* ═══════════════════
+   PROFILE CONFIG
+   To use photos: change placeholder divs to <img src="YOUR_IMGUR_LINK" alt="Tingu">
+   in the HTML above (search for "REPLACE src")
+═══════════════════ */
+const PROFILES = {
+  tingu: { name:'Tingu', emoji:'🌸', bg:'linear-gradient(135deg,#ff6b9d,#e91e8c)' },
+  pingu: { name:'Pingu', emoji:'🐧', bg:'linear-gradient(135deg,#4fc3f7,#0277bd)' }
+};
 
-/* ── AUDIO: TA-DUM ── */
-function playTaDum() {
+/* ═══════════════════
+   HELPERS
+═══════════════════ */
+function ytId(url) {
+  if(!url) return null;
+  // Handles: watch?v=, youtu.be/, /shorts/, /embed/
+  const m = url.match(/(?:v=|youtu\.be\/|\/embed\/|\/shorts\/)([a-zA-Z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+
+function ytThumb(url) {
+  const id = ytId(url);
+  if(!id) return null;
+  return `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+}
+
+function ytEmbed(url) {
+  const id = ytId(url);
+  if(!id) return null;
+  return `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3`;
+}
+
+function getThumb(m) {
+  if(m.thumb) return m.thumb;
+  return ytThumb(m.videoUrl);
+}
+
+/* ═══════════════════
+   AUDIO SETUP
+═══════════════════ */
+const audio = document.getElementById('tadumAudio');
+const audioFileInput = document.getElementById('audioFile');
+
+audioFileInput.addEventListener('change', function() {
+  const file = this.files[0];
+  if(file) {
+    const url = URL.createObjectURL(file);
+    audio.src = url;
+    localStorage.setItem('tadumAudioName', file.name);
+    // Store as data URL for persistence
+    const reader = new FileReader();
+    reader.onload = e => {
+      try { localStorage.setItem('tadumAudioData', e.target.result); } catch(e) {}
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// Load saved audio on startup
+(function loadSavedAudio() {
+  try {
+    const saved = localStorage.getItem('tadumAudioData');
+    if(saved) audio.src = saved;
+  } catch(e) {}
+})();
+
+/* ═══════════════════
+   INTRO / TA-DUM
+═══════════════════ */
+let introPlayed = false;
+
+function playTaDumSound() {
+  // Try uploaded audio first
+  if(audio.src && audio.src !== window.location.href) {
+    audio.currentTime = 0;
+    audio.play().catch(() => synthesizeTaDum());
+    return;
+  }
+  synthesizeTaDum();
+}
+
+function synthesizeTaDum() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    [[0, 110, 0.45, 0.3],[0.38, 138, 0.55, 0.4],[0.72, 185, 0.75, 1.3]].forEach(([t,f,v,d]) => {
-      const o = ctx.createOscillator(), g = ctx.createGain();
-      o.connect(g); g.connect(ctx.destination);
-      o.frequency.value = f; o.type = 'sine';
-      g.gain.setValueAtTime(0, ctx.currentTime + t);
-      g.gain.linearRampToValueAtTime(v, ctx.currentTime + t + 0.06);
-      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + d);
-      o.start(ctx.currentTime + t);
-      o.stop(ctx.currentTime + t + d + 0.1);
+    const master = ctx.createGain();
+    master.connect(ctx.destination);
+    master.gain.setValueAtTime(0.7, ctx.currentTime);
+
+    // Netflix-style 3-note ta-dum: low thud, mid rise, high resonant hit
+    const notes = [
+      { t:0,    freq:55,  vol:0.5, dur:0.6,  type:'sine' },
+      { t:0,    freq:110, vol:0.3, dur:0.5,  type:'sine' },
+      { t:0.45, freq:82,  vol:0.6, dur:0.8,  type:'sine' },
+      { t:0.45, freq:164, vol:0.3, dur:0.7,  type:'sine' },
+      { t:0.85, freq:196, vol:0.8, dur:1.4,  type:'sine' },
+      { t:0.85, freq:392, vol:0.4, dur:1.2,  type:'sine' },
+      { t:0.85, freq:588, vol:0.15,dur:1.0,  type:'sine' }
+    ];
+
+    notes.forEach(n => {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.connect(g); g.connect(master);
+      o.type = n.type;
+      o.frequency.value = n.freq;
+      g.gain.setValueAtTime(0, ctx.currentTime + n.t);
+      g.gain.linearRampToValueAtTime(n.vol, ctx.currentTime + n.t + 0.04);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + n.t + n.dur);
+      o.start(ctx.currentTime + n.t);
+      o.stop(ctx.currentTime + n.t + n.dur + 0.05);
     });
   } catch(e) {}
 }
 
-/* ── SCREEN SWITCH ── */
+window.onload = function() {
+  playIntro();
+};
+
+function playIntro() {
+  const logo = document.getElementById('introLogo');
+
+  // Play sound immediately on first interaction
+  // (browsers require a user gesture — we'll play on first click/touch too)
+  document.body.addEventListener('click', function onFirstClick() {
+    playTaDumSound();
+    document.body.removeEventListener('click', onFirstClick);
+  }, { once: true });
+
+  // Also try to play immediately (works if page was previously interacted with)
+  setTimeout(() => playTaDumSound(), 100);
+
+  setTimeout(() => {
+    logo.classList.add('animate');
+  }, 200);
+
+  setTimeout(() => {
+    logo.classList.add('fadeout');
+  }, 2400);
+
+  setTimeout(() => {
+    document.getElementById('audioUploadArea').classList.remove('visible');
+    show('profiles');
+    const p = document.getElementById('profiles');
+    setTimeout(() => p.classList.add('fadein'), 50);
+  }, 3000);
+}
+
+/* ═══════════════════
+   SCREEN UTILS
+═══════════════════ */
 function show(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.remove('active');
+    s.style.display = '';
+  });
   document.getElementById(id).classList.add('active');
 }
 
-/* ── INIT ── */
-window.onload = function() {
-  const logo = document.getElementById('tadumText');
-  setTimeout(() => { logo.classList.add('show'); playTaDum(); }, 350);
-  setTimeout(() => logo.classList.add('hide'), 2100);
-  setTimeout(() => show('profiles'), 2700);
+/* ═══════════════════
+   PROFILES
+═══════════════════ */
+let activeProfile = 'tingu';
 
-  buildEmojiPicker();
-  spawnFloatingEmojis();
-  setupScrollNavbar();
-};
-
-/* ── FLOATING BG EMOJIS ── */
-function spawnFloatingEmojis() {
-  const c = document.getElementById('floatEmojis');
-  ['💕','🌸','✨','💫','🤍','🎬'].forEach((e, i) => {
-    for(let j = 0; j < 3; j++) {
-      const d = document.createElement('div');
-      d.className = 'femoji';
-      d.textContent = e;
-      d.style.cssText = `left:${Math.random()*100}%;font-size:${14+Math.random()*14}px;animation-duration:${9+Math.random()*10}s;animation-delay:${Math.random()*12}s`;
-      c.appendChild(d);
-    }
-  });
-}
-
-/* ── NAVBAR SCROLL ── */
-function setupScrollNavbar() {
-  const nav = document.getElementById('navbar');
-  document.getElementById('app').addEventListener('scroll', () => {
-    nav.classList.toggle('solid', document.getElementById('app').scrollTop > 60);
-  });
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('solid', window.scrollY > 60);
-  });
-}
-
-/* ── PROFILE SELECTION ── */
 function pickProfile(p) {
   if(p === 'side') {
     document.getElementById('jokeModal').classList.add('open');
     return;
   }
   activeProfile = p;
-  const dot = document.getElementById('navDot');
-  const nm  = document.getElementById('navName');
-  if(p === 'tingu') {
-    dot.style.background = 'linear-gradient(135deg,#ff6b9d,#e91e8c)';
-    dot.textContent = '🌸'; nm.textContent = 'Tingu';
-  } else {
-    dot.style.background = 'linear-gradient(135deg,#4fc3f7,#0277bd)';
-    dot.textContent = '🐧'; nm.textContent = 'Pingu';
-  }
+  const prof = PROFILES[p];
+
+  // Update navbar
+  document.getElementById('navAvatarInner').textContent = prof.emoji;
+  document.getElementById('navAvatarDrop').textContent  = prof.emoji;
+  document.getElementById('navNameDrop').textContent    = prof.name;
+
   show('app');
-  renderAll();
+  document.body.classList.add('noscroll');
+  setTimeout(() => document.body.classList.remove('noscroll'), 100);
+  renderApp();
 }
 
 function closeJoke() {
   document.getElementById('jokeModal').classList.remove('open');
   pickProfile('tingu');
 }
-function goProfiles() { show('profiles'); }
 
-/* ── RENDER EVERYTHING ── */
-function renderAll() {
-  updateHero();
-  renderSections();
+function goProfiles() {
+  show('profiles');
+  stopHeroRotation();
 }
 
-function updateHero() {
-  if(!memories.length) return;
-  const m = memories[0];
+/* ═══════════════════
+   APP RENDER
+═══════════════════ */
+function renderApp() {
+  setupNavbarScroll();
+  startHeroRotation();
+  renderRows();
+}
+
+/* ═══════════════════
+   HERO ROTATION
+═══════════════════ */
+let heroIndex = 0;
+let heroTimer = null;
+let heroProgressTimer = null;
+let heroProgressVal = 0;
+const HERO_DURATION = 15000; // 15 seconds
+const HERO_TICK = 100;
+
+function startHeroRotation() {
+  renderHeroDots();
+  setHero(0);
+  clearTimers();
+  tickProgress();
+}
+
+function stopHeroRotation() {
+  clearTimers();
+}
+
+function clearTimers() {
+  if(heroTimer) clearTimeout(heroTimer);
+  if(heroProgressTimer) clearInterval(heroProgressTimer);
+}
+
+function tickProgress() {
+  heroProgressVal = 0;
+  const fill = document.getElementById('heroProgressFill');
+  if(fill) fill.style.width = '0%';
+
+  heroProgressTimer = setInterval(() => {
+    heroProgressVal += HERO_TICK;
+    const pct = (heroProgressVal / HERO_DURATION) * 100;
+    if(fill) fill.style.width = Math.min(pct, 100) + '%';
+    if(heroProgressVal >= HERO_DURATION) {
+      clearInterval(heroProgressTimer);
+      heroIndex = (heroIndex + 1) % memories.length;
+      setHero(heroIndex);
+      tickProgress();
+    }
+  }, HERO_TICK);
+}
+
+function setHero(idx) {
+  heroIndex = idx;
+  const m = memories[idx];
+  const bg = document.getElementById('heroBg');
+  const thumb = getThumb(m);
+
+  if(thumb) {
+    bg.style.backgroundImage = `url(${thumb})`;
+    bg.style.backgroundSize = 'cover';
+    bg.style.backgroundPosition = 'center 20%';
+  } else {
+    bg.style.backgroundImage = 'none';
+    bg.style.background = 'radial-gradient(ellipse at 65% 35%, #2a1040 0%, #0a0a14 65%)';
+  }
+
   document.getElementById('heroTitle').textContent = m.title;
   document.getElementById('heroDesc').textContent  = m.desc;
+
+  // Update active dot
+  document.querySelectorAll('.hero-dot').forEach((d,i) => {
+    d.classList.toggle('active', i === idx);
+  });
 }
 
-function renderSections() {
-  const wrap = document.getElementById('memorySections');
+function renderHeroDots() {
+  const wrap = document.getElementById('heroDots');
+  wrap.innerHTML = '';
+  memories.forEach((m, i) => {
+    const d = document.createElement('div');
+    d.className = 'hero-dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => {
+      clearTimers();
+      setHero(i);
+      tickProgress();
+    };
+    wrap.appendChild(d);
+  });
+}
+
+function playHeroVideo() {
+  openVideo(memories[heroIndex]);
+}
+
+function openInfoModal() {
+  openVideo(memories[heroIndex]);
+}
+
+/* ═══════════════════
+   NAVBAR SCROLL
+═══════════════════ */
+function setupNavbarScroll() {
+  const nav = document.getElementById('navbar');
+  const appEl = document.getElementById('app');
+  const onScroll = () => nav.classList.toggle('solid', appEl.scrollTop > 80);
+  appEl.addEventListener('scroll', onScroll);
+}
+
+/* ═══════════════════
+   ROWS
+═══════════════════ */
+const CAT_LABELS = {
+  'Hamare Moments': '💕 Hamare Moments',
+  'Special Days':   '🎉 Special Days',
+  'Random Adventures': '🌍 Random Adventures',
+  'Just Us':        '🤍 Just Us'
+};
+
+function renderRows() {
+  const wrap = document.getElementById('rowsWrap');
   wrap.innerHTML = '';
 
-  /* Group by category */
-  const cats = {};
+  // Group by category preserving order
+  const catMap = new Map();
   memories.forEach(m => {
-    if(!cats[m.category]) cats[m.category] = [];
-    cats[m.category].push(m);
+    if(!catMap.has(m.category)) catMap.set(m.category, []);
+    catMap.get(m.category).push(m);
   });
 
-  Object.entries(cats).forEach(([cat, items]) => {
+  catMap.forEach((items, cat) => {
     const sec = document.createElement('div');
-    sec.className = 'section';
-    sec.innerHTML = `<div class="row-label">${catLabel(cat)}</div>`;
-    const grid = document.createElement('div');
-    grid.className = 'cards-grid';
+    sec.className = 'row-section';
 
-    items.forEach((m, i) => {
-      const card = document.createElement('div');
-      card.className = 'mcard';
-      card.style.background = CARD_COLORS[m.id % CARD_COLORS.length];
-      card.innerHTML = `
-        <div class="mcard-thumb">${m.emoji}</div>
-        <div class="mcard-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-        <div class="mcard-overlay">
-          <div class="mcard-title">${m.title}</div>
-          <div class="mcard-date">${m.date}</div>
-        </div>
-        <button class="mcard-del" onclick="deleteMemory(event,${m.id})" title="Delete">✕</button>
-      `;
-      card.addEventListener('click', () => openVideo(m));
-      grid.appendChild(card);
+    const label = document.createElement('div');
+    label.className = 'row-label';
+    label.innerHTML = (CAT_LABELS[cat] || cat) + '<span class="explore-more">Explore All</span>';
+    sec.appendChild(label);
+
+    const sliderWrap = document.createElement('div');
+    sliderWrap.className = 'row-slider-wrap';
+
+    const leftArrow = document.createElement('button');
+    leftArrow.className = 'slider-arrow left';
+    leftArrow.innerHTML = '&#8249;';
+    leftArrow.onclick = () => slider.scrollBy({ left:-300, behavior:'smooth' });
+
+    const rightArrow = document.createElement('button');
+    rightArrow.className = 'slider-arrow right';
+    rightArrow.innerHTML = '&#8250;';
+    rightArrow.onclick = () => slider.scrollBy({ left:300, behavior:'smooth' });
+
+    const slider = document.createElement('div');
+    slider.className = 'row-slider';
+
+    // Deduplicate by id just in case
+    const seen = new Set();
+    items.forEach(m => {
+      if(seen.has(m.id)) return;
+      seen.add(m.id);
+      slider.appendChild(buildCard(m));
     });
 
-    /* Add card */
-    const add = document.createElement('div');
-    add.className = 'add-card';
-    add.innerHTML = `<div class="plus">＋</div><div>Nayi yaad jodna</div>`;
-    add.onclick = () => openAdd(cat);
-    grid.appendChild(add);
-
-    sec.appendChild(grid);
+    sliderWrap.appendChild(leftArrow);
+    sliderWrap.appendChild(slider);
+    sliderWrap.appendChild(rightArrow);
+    sec.appendChild(sliderWrap);
     wrap.appendChild(sec);
   });
-
-  /* If no memories yet, show one add section */
-  if(!memories.length) {
-    const sec = document.createElement('div');
-    sec.className = 'section';
-    sec.innerHTML = `<div class="row-label">💕 Hamare Moments</div>`;
-    const grid = document.createElement('div');
-    grid.className = 'cards-grid';
-    const add = document.createElement('div');
-    add.className = 'add-card';
-    add.style.cssText = 'grid-column:1/-1;aspect-ratio:unset;padding:40px;';
-    add.innerHTML = `<div class="plus">＋</div><div>Pehli yaad jodo!</div>`;
-    add.onclick = () => openAdd('Hamare Moments');
-    grid.appendChild(add);
-    sec.appendChild(grid);
-    wrap.appendChild(sec);
-  }
 }
 
-function catLabel(cat) {
-  const m = {'Hamare Moments':'💕 Hamare Moments','Special Days':'🎉 Special Days','Random Adventures':'🌍 Random Adventures','Just Us':'🤍 Just Us'};
-  return m[cat] || cat;
+/* ═══════════════════
+   BUILD CARD
+═══════════════════ */
+function buildCard(m) {
+  const card = document.createElement('div');
+  card.className = 'mcard';
+
+  const thumb = getThumb(m);
+  const thumbHTML = thumb
+    ? `<img class="mcard-thumb" src="${thumb}" alt="${m.title}" onerror="this.style.display='none';this.nextSibling.style.display='flex'">`
+    + `<div class="mcard-thumb-placeholder" style="display:none">${m.emoji}</div>`
+    : `<div class="mcard-thumb-placeholder">${m.emoji}</div>`;
+
+  card.innerHTML = `
+    <div class="mcard-inner">
+      ${thumbHTML}
+      <div class="mcard-play-btn">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      <div class="mcard-overlay">
+        <div class="mcard-title">${m.title}</div>
+      </div>
+    </div>
+    <div class="mcard-info">
+      <div class="mcard-info-actions">
+        <button class="mcard-icon-btn play-small" title="Play">▶</button>
+        <button class="mcard-icon-btn" title="Add to My List">+</button>
+        <button class="mcard-icon-btn" title="Like">👍</button>
+      </div>
+      <div class="mcard-info-title">${m.title}</div>
+      <div class="mcard-info-meta">✨ Our Memory</div>
+      <div class="mcard-info-category">${CAT_LABELS[m.category] || m.category}</div>
+    </div>
+  `;
+
+  // Play button in info panel
+  card.querySelector('.mcard-icon-btn.play-small').addEventListener('click', e => {
+    e.stopPropagation();
+    openVideo(m);
+  });
+
+  card.addEventListener('click', () => openVideo(m));
+  return card;
 }
 
-/* ── DELETE MEMORY ── */
-function deleteMemory(e, id) {
-  e.stopPropagation();
-  if(confirm('Yeh yaad delete karna chahte ho? 🥺')) {
-    memories = memories.filter(m => m.id !== id);
-    renderAll();
-  }
-}
-
-/* ── VIDEO MODAL ── */
-function ytId(url) {
-  if(!url) return null;
-  const m = url.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([a-zA-Z0-9_-]{11})/);
-  return m ? m[1] : null;
-}
-
+/* ═══════════════════
+   VIDEO MODAL
+═══════════════════ */
 function openVideo(m) {
   document.getElementById('vTitle').textContent = m.title;
-  document.getElementById('vMeta').textContent  = m.date + '  •  ' + m.category;
+  document.getElementById('vMeta').textContent  = '✨ Our Memory  •  ' + (CAT_LABELS[m.category] || m.category);
+  document.getElementById('vDesc').textContent  = m.desc;
+
   const frame = document.getElementById('vFrame');
-  const id = ytId(m.videoUrl);
-  frame.innerHTML = id ? `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3" allow="autoplay;fullscreen" allowfullscreen></iframe>`
-    : `<div class="vplaceholder"><div class="bigmoji">${m.emoji}</div><div>Video abhi add nahi hua.<br><span style="color:#E50914">YouTube link jodo card se!</span></div></div>`;
+  const embedUrl = ytEmbed(m.videoUrl);
+
+  if(embedUrl) {
+    frame.innerHTML = `<iframe
+      src="${embedUrl}"
+      allow="autoplay; fullscreen; picture-in-picture"
+      allowfullscreen
+    ></iframe>`;
+  } else {
+    frame.innerHTML = `<div class="vplaceholder">
+      <div class="bigmoji">${m.emoji}</div>
+      <div>Video abhi add nahi hua.<br><span style="color:var(--red)">YouTube link jodo!</span></div>
+    </div>`;
+  }
+
   document.getElementById('vmodal').classList.add('open');
+  document.body.classList.add('noscroll');
+  stopHeroRotation();
 }
 
 function closeVideo() {
   document.getElementById('vmodal').classList.remove('open');
   document.getElementById('vFrame').innerHTML = '';
-}
-
-function playHero() { if(memories.length) openVideo(memories[0]); }
-
-/* ── ADD MEMORY MODAL ── */
-let addCat = 'Hamare Moments';
-
-function buildEmojiPicker() {
-  const row = document.getElementById('emojiRow');
-  EMOJIS.forEach(e => {
-    const d = document.createElement('div');
-    d.className = 'eopt' + (e === selectedEmoji ? ' on' : '');
-    d.textContent = e;
-    d.onclick = () => {
-      document.querySelectorAll('.eopt').forEach(x => x.classList.remove('on'));
-      d.classList.add('on');
-      selectedEmoji = e;
-    };
-    row.appendChild(d);
-  });
-}
-
-function openAdd(cat) {
-  addCat = cat || 'Hamare Moments';
-  document.getElementById('iTitle').value = '';
-  document.getElementById('iDesc').value  = '';
-  document.getElementById('iUrl').value   = '';
-  document.getElementById('iDate').value  = '';
-  document.getElementById('iCat').value   = addCat;
-  selectedEmoji = '💕';
-  document.querySelectorAll('.eopt').forEach((x,i) => x.classList.toggle('on', i===0));
-  document.getElementById('amodal').classList.add('open');
-}
-
-function closeAdd() { document.getElementById('amodal').classList.remove('open'); }
-
-function saveMemory() {
-  const title = document.getElementById('iTitle').value.trim();
-  if(!title) { document.getElementById('iTitle').focus(); return; }
-  const rawDate = document.getElementById('iDate').value;
-  let dateStr = 'Recently';
-  if(rawDate) {
-    dateStr = new Date(rawDate + 'T00:00:00').toLocaleDateString('en-IN', {day:'numeric',month:'long',year:'numeric'});
+  document.body.classList.remove('noscroll');
+  if(document.getElementById('app').classList.contains('active')) {
+    startHeroRotation();
   }
-  memories.unshift({
-    id: Date.now(),
-    title,
-    desc:     document.getElementById('iDesc').value.trim() || 'Ek pyaari yaad...',
-    emoji:    selectedEmoji,
-    date:     dateStr,
-    videoUrl: document.getElementById('iUrl').value.trim(),
-    category: document.getElementById('iCat').value
-  });
-  closeAdd();
-  renderAll();
 }
 
-/* ── KEYBOARD ESC ── */
+/* ═══════════════════
+   KEYBOARD
+═══════════════════ */
 document.addEventListener('keydown', e => {
-  if(e.key === 'Escape') { closeVideo(); closeAdd(); }
+  if(e.key === 'Escape') closeVideo();
 });
 </script>
 </body>
