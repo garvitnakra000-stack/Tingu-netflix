@@ -1,1 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Day For Tingu 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fdf0f5;
+    --warm: #fce4ee;
+    --rose: #c2527a;
+    --rose-light: #e8a0bb;
+    --brown: #3d1f2e;
+    --brown-light: #7a4060;
+    --text: #2a1020;
+    --muted: #9e6880;
+    --card-bg: rgba(255,255,255,0.82);
+    --locked-bg: rgba(252,228,238,0.45);
+  }
 
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* Soft background blobs */
+  .bg-blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .bg-blob-1 { width: 500px; height: 500px; top: -100px; right: -100px; background: rgba(0,120,160,0.14); }
+  .bg-blob-2 { width: 400px; height: 400px; bottom: 100px; left: -80px; background: rgba(0,120,160,0.09); }
+
+  /* Hero section */
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px 80px;
+    text-align: center;
+  }
+
+  .photo-frame {
+    position: relative;
+    width: 0px;
+    height: 280px;
+    margin-bottom: 40px;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(-1deg); }
+    50% { transform: translateY(-10px) rotate(1deg); }
+  }
+
+  .photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    border-radius: 8px;
+    display: block;
+  }
+
+  .photo-frame::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border: 1.5px solid var(--rose-light);
+    border-radius: 10px;
+    opacity: 0.6;
+  }
+
+  .photo-frame::after {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    background: transparent;
+    border-radius: 6px;
+    box-shadow: 0 20px 60px rgba(90,62,53,0.2);
+    z-index: -1;
+  }
+
+  .hero-date {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 12px;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(42px, 8vw, 68px);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--brown);
+    margin-bottom: 16px;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--rose);
+  }
+
+  .hero-subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    max-width: 300px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+
+  .scroll-hint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); opacity: 0.6; }
+    50% { transform: translateY(6px); opacity: 1; }
+  }
+
+  .scroll-hint svg { opacity: 0.5; }
+
+  /* Gifts section */
+  .gifts-section {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 20px 120px;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .section-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--brown);
+    margin-bottom: 8px;
+  }
+
+  .section-header p {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.3px;
+  }
+
+  /* Gift card */
+  .gift-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(193,123,114,0.2);
+    border-radius: 16px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+  }
+
+  .gift-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(90,62,53,0.1);
+  }
+
+  .gift-card.locked {
+    background: var(--locked-bg);
+    border-color: rgba(193,123,114,0.1);
+  }
+
+  .gift-card.unlocked {
+    border-color: rgba(193,123,114,0.35);
+    box-shadow: 0 4px 20px rgba(193,123,114,0.08);
+  }
+
+  .gift-card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    cursor: default;
+  }
+
+  .gift-card.unlocked .gift-card-header {
+    cursor: pointer;
+  }
+
+  .time-badge {
+    flex-shrink: 0;
+    background: var(--rose);
+    color: white;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .gift-card.locked .time-badge {
+    background: var(--muted);
+    opacity: 0.5;
+  }
+
+  .gift-meta {
+    flex: 1;
+  }
+
+  .gift-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--brown);
+    line-height: 1.2;
+  }
+
+  .gift-card.locked .gift-title {
+    color: var(--muted);
+  }
+
+  .gift-desc {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-weight: 300;
+  }
+
+  .gift-status {
+    flex-shrink: 0;
+    font-size: 20px;
+  }
+
+  .gift-countdown {
+    font-size: 11px;
+    color: var(--rose);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  /* Gift content (revealed) */
+  .gift-content {
+    display: none;
+    padding: 0 24px 28px;
+    border-top: 1px solid rgba(193,123,114,0.12);
+    animation: revealDown 0.5s ease;
+  }
+
+  .gift-content.open {
+    display: block;
+  }
+
+  @keyframes revealDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Message gift */
+  .message-body {
+    padding-top: 24px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--brown);
+    white-space: pre-wrap;
+  }
+
+  .message-sig {
+    margin-top: 20px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--rose);
+  }
+
+  /* Memory photos */
+  .memory-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding-top: 20px;
+  }
+
+  .memory-item {
+    aspect-ratio: 1;
+    background: var(--warm);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+    padding: 16px;
+    line-height: 1.5;
+    border: 1px dashed rgba(194,82,1,0.25);
+    overflow: hidden;
+  }
+
+  .memory-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+  }
+
+  .memory-note {
+    margin-top: 16px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* Song gift */
+  .song-card {
+    margin-top: 20px;
+    background: var(--warm);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .song-card:hover { background: #e8ddd3; }
+
+  .song-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--rose);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 20px;
+  }
+
+  .song-info .song-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--brown);
+    font-weight: 400;
+  }
+
+  .song-info .song-why {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 3px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .song-arrow { color: var(--rose); font-size: 18px; margin-left: auto; }
+
+  /* Selfie gift */
+  .selfie-wrap {
+    padding-top: 20px;
+    text-align: center;
+  }
+
+  .selfie-img {
+    width: 200px;
+    height: 250px;
+    object-fit: cover;
+    object-position: top center;
+    border-radius: 10px;
+    display: inline-block;
+    margin-bottom: 12px;
+    box-shadow: 0 8px 30px rgba(90,62,53,0.15);
+  }
+
+  .selfie-caption {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--muted);
+  }
+
+  /* Bouquet */
+  .bouquet-wrap {
+    padding-top: 20px;
+    text-align: center;
+  }
+
+  .bouquet-svg {
+    width: 180px;
+    height: 200px;
+    margin: 0 auto 16px;
+    display: block;
+    animation: sway 4s ease-in-out infinite;
+  }
+
+  @keyframes sway {
+    0%, 100% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
+  }
+
+  .bouquet-msg {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: var(--brown);
+    line-height: 1.6;
+  }
+
+  .bouquet-msg em {
+    font-style: italic;
+    color: var(--rose);
+  }
+
+  /* Video gift */
+  .video-placeholder {
+    margin-top: 20px;
+    background: var(--warm);
+    border-radius: 12px;
+    padding: 28px;
+    text-align: center;
+  }
+
+  .video-placeholder .play-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--rose);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 22px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s;
+    text-decoration: none;
+  }
+
+  .video-placeholder .play-icon:hover { transform: scale(1.08); }
+
+  .video-placeholder p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: var(--brown);
+    line-height: 1.6;
+  }
+
+  .video-placeholder small {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Final note */
+  .final-note {
+    text-align: center;
+    padding: 60px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .final-note p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--muted);
+    max-width: 380px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--rose-light);
+    margin: 20px auto;
+  }
+
+  /* Progress dots */
+  .progress-bar {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .progress-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--rose-light);
+    transition: background 0.3s, transform 0.3s;
+  }
+
+  .progress-dot.active { background: var(--rose); transform: scale(1.4); }
+  .progress-dot.done { background: var(--rose); opacity: 0.4; }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .hero-title { font-size: 38px; }
+    .memory-grid { grid-template-columns: 1fr; }
+    .progress-bar { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-blob bg-blob-1"></div>
+<div class="bg-blob bg-blob-2"></div>
+
+<!-- Progress dots -->
+<div class="progress-bar" id="progressBar">
+  <div class="progress-dot" id="dot-0"></div>
+  <div class="progress-dot" id="dot-1"></div>
+  <div class="progress-dot" id="dot-2"></div>
+  <div class="progress-dot" id="dot-3"></div>
+  <div class="progress-dot" id="dot-4"></div>
+  <div class="progress-dot" id="dot-5"></div>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="photo-frame">
+<img class="selfie-img" src="images/29-kiss.jpg" alt="Garvit" />  </div>
+  <p class="hero-date">29 · 05 · 2026</p>
+  <h1 class="hero-title">A Day For<br><em>Tingu Ji</em></h1>
+  <p class="hero-subtitle">Six little gifts, one for each time of day. Come back every few hours. Today is entirely yours.</p>
+  <div class="scroll-hint">
+    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
+    scroll
+  </div>
+</section>
+
+<!-- Gifts -->
+<section class="gifts-section">
+  <div class="section-header">
+    <h2>Your gifts today</h2>
+    <p>Each one unlocks at its time. Be patient, chatpati ladki.</p>
+  </div>
+
+  <!-- Gift 1 — 9 AM — Long message -->
+  <div class="gift-card" id="gift-0">
+    <div class="gift-card-header" onclick="toggleGift(0)">
+      <span class="time-badge">9 AM</span>
+      <div class="gift-meta">
+        <div class="gift-title">A letter, from me</div>
+        <div class="gift-desc">Words I've been wanting to say</div>
+      </div>
+      <span class="gift-status" id="status-0">🔒</span>
+    </div>
+    <div class="gift-content" id="content-0">
+      <div class="message-body" id="message-body-0">Good morning Tingu ji,
+
+I hope you're feeling better ab, agar better feel ni horha to I hope this small gift makes you feel better!
+        
+I've been thinking about what to say since last night, and honestly I still don't have the perfect words but here's what I know.
+
+We started talking on April 3rd. That's not even two months ago. And yet somehow you've become the person I want to tell everything to. The person I think about when something funny happens, if I am not feeling okay, any random boring bakwas bhi. The person I already talk about like you've been in my life forever (I think yeh hum dono ka 7va janam h saath me).
+
+You're genuinely one of the kindest people I've ever met not in a quiet, forgettable way, but in a way that actually makes me want to be better. You're patient with me when I probably don't deserve it. You give me context for everything so I never feel left out. You make me feel so secure and I don't think you even realise how rare that is.
+
+I notice the way your voice changes depending on what we're talking about (Ahaaa). I notice all your different expressions (Ashleelllll, only for you). I notice when you go a little shy (mera cute sa babyyyy). I notice everything, Tingu even from here.
+
+LDR is hard. Some days I just sit and think about April 25th and wish I could have more of those moments with you. More time. More memories to look back on. That's the part that gets me not the distance, but the feeling of wanting more time with you specifically.
+
+But today I just want you to know I see you (no ashleel thing here). I'm grateful for you. And I'm so glad you replyed on the first day.</div>
+      <div class="message-sig">— Yours, Pingu (Khaaaaaaaaaa Jaunga Apko)</div>
+    </div>
+  </div>
+
+  <!-- Gift 2 — 12 PM — Memories -->
+  <div class="gift-card" id="gift-1">
+    <div class="gift-card-header" onclick="toggleGift(1)">
+      <span class="time-badge">12 PM</span>
+      <div class="gift-meta">
+        <div class="gift-title">Some of our memories</div>
+        <div class="gift-desc">The ones I keep going back to</div>
+      </div>
+      <span class="gift-status" id="status-1">🔒</span>
+    </div>
+    <div class="gift-content" id="content-1">
+      <!--
+        HOW TO ADD YOUR PHOTOS FROM PHONE:
+        1. Upload photo to Google Drive
+        2. Right-click → Share → "Anyone with link" → Copy link
+        3. Take the ID from the link: https://drive.google.com/file/d/FILEID/view
+        4. Replace each src below with: https://drive.google.com/thumbnail?id=FILEID&sz=w600
+        
+        Example:
+        <img class="memory-photo" src="https://drive.google.com/thumbnail?id=1aBcDeFgHiJkLmNoPqRsTuVwXyZ&sz=w600" alt="memory" />
+        
+        Add or remove <img> tags as needed. Current: 4 placeholders below.
+      -->
+      <div class="memory-grid">
+        <!-- REPLACE src with your Google Drive thumbnail URL -->
+        <img class="memory-photo" src="https://drive.google.com/thumbnail?id=1poRfu91MnUdoIbO7h6hef-4yERD0E1wK&sz=w600" alt="memory" />
+        <img class="memory-photo" 
+  src="https://drive.google.com/thumbnail?id=153LHxslIzgvS7fLWMN42ksqqKf0wsjwm&sz=w600" 
+  alt="memory" />
+
+  <img class="memory-photo" 
+  src="https://drive.google.com/thumbnail?id=1ECB7ZOjeXKVM-NzGBKOGNC06LKvCJVM5&sz=w600" 
+  alt="memory" />
+
+  <img class="memory-photo" 
+  src="https://drive.google.com/thumbnail?id=1-HJyAEFVJD0wcKRSKh_Y7iJ5joDRc_ii&sz=w600" 
+  alt="memory" />
+      </div>
+      <p class="memory-note">April 25th and everything after it 🌸</p>
+    </div>
+  </div>
+
+  <!-- Gift 3 — 3 PM — Song -->
+  <div class="gift-card" id="gift-2">
+    <div class="gift-card-header" onclick="toggleGift(2)">
+      <span class="time-badge">3 PM</span>
+      <div class="gift-meta">
+        <div class="gift-title">A song, for you</div>
+        <div class="gift-desc">This one's been on repeat</div>
+      </div>
+      <span class="gift-status" id="status-2">🔒</span>
+    </div>
+    <div class="gift-content" id="content-2">
+      <!-- REPLACE: swap the href below with the actual Spotify / YouTube link for the song you want to dedicate -->
+      <a class="song-card" href="https://open.spotify.com/track/2HFVjplAK4y4yBibQbgNyT?si=ca34a1ee4f7544ef" target="_blank" rel="noopener">
+        <div class="song-icon">♪</div>
+        <div class="song-info">
+          <!-- REPLACE: Update song name and artist below -->
+          <div class="song-name">Nazm Nazm — Arko</div>
+          <div class="song-why">This reminds me of you because... calm, genuine, and the kind of love that quietly becomes everything ❤️</div>
+        </div>
+        <span class="song-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Gift 4 — 6 PM — Selfie -->
+  <div class="gift-card" id="gift-3">
+    <div class="gift-card-header" onclick="toggleGift(3)">
+      <span class="time-badge">6 PM</span>
+      <div class="gift-meta">
+        <div class="gift-title">Me, just for you</div>
+        <div class="gift-desc">Thinking about you, as always</div>
+      </div>
+      <span class="gift-status" id="status-3">🔒</span>
+    </div>
+    <div class="gift-content" id="content-3">
+      <div class="selfie-wrap">
+        <!-- 
+          REPLACE: Change the src below to your actual selfie URL or base64.
+          Example: <img class="selfie-img" src="https://meripyaritingu.xyz/selfies/may29.jpg" alt="Garvit" />
+          OR host the selfie anywhere and paste the URL here.
+        -->
+       <img class="selfie-img" src="images/29-kiss.jpg" alt="Garvit" />        <!-- REPLACE: Change this caption to something personal -->
+        <p class="selfie-caption">This is me, thinking about you. Surprise. 💛</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gift 5 — 8 PM — Bouquet -->
+  <div class="gift-card" id="gift-4">
+    <div class="gift-card-header" onclick="toggleGift(4)">
+      <span class="time-badge">8 PM</span>
+      <div class="gift-meta">
+        <div class="gift-title">A bouquet, from here</div>
+        <div class="gift-desc">Distance can't stop me from sending flowers</div>
+      </div>
+      <span class="gift-status" id="status-4">🔒</span>
+    </div>
+    <div class="gift-content" id="content-4">
+      <div class="bouquet-wrap">
+        <!-- Animated SVG Bouquet -->
+        <svg class="bouquet-svg" viewBox="0 0 180 200" xmlns="http://www.w3.org/2000/svg">
+          <!-- Stems -->
+          <line x1="90" y1="190" x2="90" y2="120" stroke="#6a9a5a" stroke-width="3" stroke-linecap="round"/>
+          <line x1="90" y1="160" x2="65" y2="130" stroke="#6a9a5a" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="90" y1="160" x2="115" y2="130" stroke="#6a9a5a" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="90" y1="150" x2="50" y2="118" stroke="#6a9a5a" stroke-width="2" stroke-linecap="round"/>
+          <line x1="90" y1="150" x2="130" y2="118" stroke="#6a9a5a" stroke-width="2" stroke-linecap="round"/>
+          <!-- Leaves -->
+          <ellipse cx="72" cy="148" rx="12" ry="6" fill="#7aaa68" transform="rotate(-40 72 148)" opacity="0.8"/>
+          <ellipse cx="108" cy="148" rx="12" ry="6" fill="#7aaa68" transform="rotate(40 108 148)" opacity="0.8"/>
+          <!-- Flowers: main center -->
+          <circle cx="90" cy="105" r="22" fill="#f2b8cc" opacity="0.9"/>
+          <circle cx="90" cy="105" r="10" fill="#c2527a"/>
+          <!-- Petals center -->
+          <ellipse cx="90" cy="84" rx="7" ry="12" fill="#f7cdd9" opacity="0.85"/>
+          <ellipse cx="90" cy="126" rx="7" ry="12" fill="#f7cdd9" opacity="0.85"/>
+          <ellipse cx="69" cy="105" rx="12" ry="7" fill="#f7cdd9" opacity="0.85"/>
+          <ellipse cx="111" cy="105" rx="12" ry="7" fill="#f7cdd9" opacity="0.85"/>
+          <ellipse cx="74" cy="90" rx="7" ry="12" fill="#f7cdd9" opacity="0.7" transform="rotate(-45 74 90)"/>
+          <ellipse cx="106" cy="90" rx="7" ry="12" fill="#f7cdd9" opacity="0.7" transform="rotate(45 106 90)"/>
+          <ellipse cx="74" cy="120" rx="7" ry="12" fill="#f7cdd9" opacity="0.7" transform="rotate(45 74 120)"/>
+          <ellipse cx="106" cy="120" rx="7" ry="12" fill="#f7cdd9" opacity="0.7" transform="rotate(-45 106 120)"/>
+          <!-- Left flower -->
+          <circle cx="55" cy="116" r="16" fill="#f9c8d8" opacity="0.85"/>
+          <circle cx="55" cy="116" r="7" fill="#c2527a"/>
+          <ellipse cx="55" cy="100" rx="5" ry="9" fill="#fde0ea" opacity="0.8"/>
+          <ellipse cx="55" cy="132" rx="5" ry="9" fill="#fde0ea" opacity="0.8"/>
+          <ellipse cx="39" cy="116" rx="9" ry="5" fill="#fde0ea" opacity="0.8"/>
+          <ellipse cx="71" cy="116" rx="9" ry="5" fill="#fde0ea" opacity="0.8"/>
+          <!-- Right flower -->
+          <circle cx="125" cy="116" r="16" fill="#f9c8d8" opacity="0.85"/>
+          <circle cx="125" cy="116" r="7" fill="#c2527a"/>
+          <ellipse cx="125" cy="100" rx="5" ry="9" fill="#fde0ea" opacity="0.8"/>
+          <ellipse cx="125" cy="132" rx="5" ry="9" fill="#fde0ea" opacity="0.8"/>
+          <ellipse cx="109" cy="116" rx="9" ry="5" fill="#fde0ea" opacity="0.8"/>
+          <ellipse cx="141" cy="116" rx="9" ry="5" fill="#fde0ea" opacity="0.8"/>
+          <!-- Far left small flower -->
+          <circle cx="35" cy="108" r="12" fill="#fbd4e2" opacity="0.8"/>
+          <circle cx="35" cy="108" r="5" fill="#d47090"/>
+          <!-- Far right small flower -->
+          <circle cx="145" cy="108" r="12" fill="#fbd4e2" opacity="0.8"/>
+          <circle cx="145" cy="108" r="5" fill="#d47090"/>
+          <!-- Ribbon -->
+          <path d="M75 185 Q90 178 105 185" stroke="#c2527a" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M80 185 Q72 192 78 196 Q84 190 90 192 Q96 190 102 196 Q108 192 100 185" fill="#f2b8cc" opacity="0.7"/>
+        </svg>
+        <p class="bouquet-msg">These are for you, Mrs. Nakra.<br><em>From wherever I am, to wherever you are.</em></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gift 6 — 10 PM — Poem video -->
+  <div class="gift-card" id="gift-5">
+    <div class="gift-card-header" onclick="toggleGift(5)">
+      <span class="time-badge">10:30 PM</span>
+      <div class="gift-meta">
+        <div class="gift-title">Me, reciting a poem</div>
+        <div class="gift-desc">Recorded just for you tonight</div>
+      </div>
+      <span class="gift-status" id="status-5">🔒</span>
+    </div>
+    <div class="gift-content" id="content-5">
+      <div class="video-placeholder">
+        <!-- 
+          REPLACE: Upload your poem video to YouTube as "Unlisted" and paste the link below.
+          Change href="https://youtu.be/REPLACE_WITH_YOUR_VIDEO_ID" to your actual link.
+        -->
+        <a class="play-icon" href="https://www.youtube.com/watch?v=M7d5iDnl-O4" target="_blank" rel="noopener">▶</a>
+        <p>I sat down and recorded something for you. Just me, a poem, and the thought of your face.</p>
+        <small>Click above to watch · recorded May 29, 2026</small>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- Final note -->
+<div class="final-note">
+  <div class="divider"></div>
+  <p>That's the whole day — every hour, a small piece of me, just for you.</p>
+  <div class="divider"></div>
+</div>
+
+<script>
+  // ─── TIME LOCK LOGIC ───────────────────────────────────────────
+  // All times in IST (UTC+5:30), for May 29, 2026
+  const GIFT_UNLOCK_TIMES = [
+    { hour: 9,  minute: 0  },  // Gift 0 — 9 AM
+    { hour: 12, minute: 0  },  // Gift 1 — 12 PM
+    { hour: 15, minute: 0  },  // Gift 2 — 3 PM
+    { hour: 19, minute: 0  },  // Gift 3 — 6 PM
+    { hour: 20, minute: 0  },  // Gift 4 — 8 PM
+    { hour: 22, minute: 30  },  // Gift 5 — 10 PM
+  ];
+
+  function getISTNow() {
+    const now = new Date();
+    // Convert to IST: UTC+5:30 = UTC + 330 minutes
+    const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+    return new Date(utc + 330 * 60000);
+  }
+
+  // ?preview=true unlocks everything for you to review
+  const PREVIEW_MODE = new URLSearchParams(window.location.search).get('preview') === 'true';
+
+  function isUnlocked(giftIndex) {
+    if (PREVIEW_MODE) return true;
+    const ist = getISTNow();
+    const unlockDate = new Date(2026, 4, 29); // May 29, 2026
+    const unlock = GIFT_UNLOCK_TIMES[giftIndex];
+    unlockDate.setHours(unlock.hour, unlock.minute, 0, 0);
+
+    // For testing: set ist manually by changing the line below
+    // const ist = new Date(2026, 4, 29, 23, 0); // uncomment to test all unlocked
+
+    return ist >= unlockDate;
+  }
+
+  function timeUntil(giftIndex) {
+    const ist = getISTNow();
+    const unlockDate = new Date(2026, 4, 29);
+    const unlock = GIFT_UNLOCK_TIMES[giftIndex];
+    unlockDate.setHours(unlock.hour, unlock.minute, 0, 0);
+    const diff = unlockDate - ist;
+    if (diff <= 0) return null;
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    if (h > 0) return `in ${h}h ${m}m`;
+    return `in ${m}m`;
+  }
+
+  function applyGiftStates() {
+    GIFT_UNLOCK_TIMES.forEach((_, i) => {
+      const card = document.getElementById(`gift-${i}`);
+      const status = document.getElementById(`status-${i}`);
+      const dot = document.getElementById(`dot-${i}`);
+
+      if (isUnlocked(i)) {
+        card.classList.remove('locked');
+        card.classList.add('unlocked');
+        status.textContent = '✦';
+        if (dot) dot.classList.add('active');
+      } else {
+        card.classList.add('locked');
+        card.classList.remove('unlocked');
+        const t = timeUntil(i);
+        status.innerHTML = t ? `<span class="gift-countdown">${t}</span>` : '🔒';
+        if (dot) dot.classList.remove('active');
+      }
+    });
+  }
+
+  function toggleGift(index) {
+    if (!isUnlocked(index)) return;
+    const content = document.getElementById(`content-${index}`);
+    content.classList.toggle('open');
+  }
+
+  // Run on load & every 60 seconds
+  applyGiftStates();
+  setInterval(applyGiftStates, 60000);
+</script>
+</body>
+</html>
