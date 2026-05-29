@@ -48,8 +48,8 @@
     pointer-events: none;
     z-index: 0;
   }
-  .bg-blob-1 { width: 500px; height: 500px; top: -100px; right: -100px; background: rgba(220,120,160,0.14); }
-  .bg-blob-2 { width: 400px; height: 400px; bottom: 100px; left: -80px; background: rgba(220,120,160,0.09); }
+  .bg-blob-1 { width: 500px; height: 500px; top: -100px; right: -100px; background: rgba(0,120,160,0.14); }
+  .bg-blob-2 { width: 400px; height: 400px; bottom: 100px; left: -80px; background: rgba(0,120,160,0.09); }
 
   /* Hero section */
   .hero {
@@ -66,7 +66,7 @@
 
   .photo-frame {
     position: relative;
-    width: 220px;
+    width: 0px;
     height: 280px;
     margin-bottom: 40px;
     animation: float 6s ease-in-out infinite;
@@ -334,7 +334,7 @@
     text-align: center;
     padding: 16px;
     line-height: 1.5;
-    border: 1px dashed rgba(194,82,122,0.25);
+    border: 1px dashed rgba(194,82,1,0.25);
     overflow: hidden;
   }
 
@@ -701,7 +701,7 @@ But today I just want you to know I see you (no ashleel thing here). I'm gratefu
           Example: <img class="selfie-img" src="https://meripyaritingu.xyz/selfies/may29.jpg" alt="Garvit" />
           OR host the selfie anywhere and paste the URL here.
         -->
-       <img class="selfie-img" src="images/29-kiss.jpg?v=1" alt="Garvit" />        <!-- REPLACE: Change this caption to something personal -->
+       <img class="selfie-img" src="images/29-kiss.jpg" alt="Garvit" />        <!-- REPLACE: Change this caption to something personal -->
         <p class="selfie-caption">This is me, thinking about you. Surprise. 💛</p>
       </div>
     </div>
@@ -774,7 +774,7 @@ But today I just want you to know I see you (no ashleel thing here). I'm gratefu
   <!-- Gift 6 — 10 PM — Poem video -->
   <div class="gift-card" id="gift-5">
     <div class="gift-card-header" onclick="toggleGift(5)">
-      <span class="time-badge">10 PM</span>
+      <span class="time-badge">11 PM</span>
       <div class="gift-meta">
         <div class="gift-title">Me, reciting a poem</div>
         <div class="gift-desc">Recorded just for you tonight</div>
@@ -812,7 +812,7 @@ But today I just want you to know I see you (no ashleel thing here). I'm gratefu
     { hour: 15, minute: 0  },  // Gift 2 — 3 PM
     { hour: 19, minute: 0  },  // Gift 3 — 6 PM
     { hour: 20, minute: 0  },  // Gift 4 — 8 PM
-    { hour: 22, minute: 0  },  // Gift 5 — 10 PM
+    { hour: 23, minute: 0  },  // Gift 5 — 10 PM
   ];
 
   function getISTNow() {
