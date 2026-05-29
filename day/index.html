@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>With Love, For You 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fdf0f5;
+    --warm: #fce4ee;
+    --rose: #c2527a;
+    --rose-light: #e8a0bb;
+    --brown: #3d1f2e;
+    --muted: #9e6880;
+    --card-bg: rgba(255,255,255,0.82);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--brown);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+  }
+
+  .bg-blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .bg-blob-1 { width: 400px; height: 400px; top: -80px; right: -80px; background: rgba(220,120,160,0.14); }
+  .bg-blob-2 { width: 350px; height: 350px; bottom: 60px; left: -60px; background: rgba(220,120,160,0.09); }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 480px;
+    text-align: center;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(38px, 8vw, 56px);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em { font-style: italic; color: var(--rose); }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+    margin-bottom: 52px;
+    line-height: 1.6;
+  }
+
+  /* Date cards */
+  .dates-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 48px;
+  }
+
+  .date-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(194,82,122,0.2);
+    border-radius: 16px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s;
+    backdrop-filter: blur(10px);
+  }
+
+  .date-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(194,82,122,0.12);
+    border-color: rgba(194,82,122,0.4);
+  }
+
+  .date-card.locked {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: default;
+  }
+
+  .date-number {
+    width: 52px;
+    height: 52px;
+    background: var(--warm);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid rgba(194,82,122,0.15);
+  }
+
+  .date-number .day {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--rose);
+    line-height: 1;
+  }
+
+  .date-number .month {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .date-info { flex: 1; text-align: left; }
+
+  .date-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--brown);
+    line-height: 1.2;
+  }
+
+  .date-desc {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-weight: 300;
+  }
+
+  .date-arrow {
+    font-size: 16px;
+    color: var(--rose-light);
+    flex-shrink: 0;
+    transition: transform 0.2s;
+  }
+
+  .date-card:hover .date-arrow { transform: translateX(3px); }
+
+  .lock-icon {
+    font-size: 16px;
+    color: var(--muted);
+    opacity: 0.5;
+    flex-shrink: 0;
+  }
+
+  /* Footer */
+  .footer-note {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .divider {
+    width: 30px;
+    height: 1px;
+    background: var(--rose-light);
+    margin: 16px auto;
+    opacity: 0.5;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-blob bg-blob-1"></div>
+<div class="bg-blob bg-blob-2"></div>
+
+<div class="container">
+  <p class="eyebrow">With Love, For You</p>
+  <h1>Every day,<br><em>something</em></h1>
+  <p class="subtitle">A little something for each day.<br>Tap a date to open your gift.</p>
+
+  <div class="dates-list" id="datesList">
+    <!-- Cards injected by JS -->
+  </div>
+
+  <div class="divider"></div>
+  <p class="footer-note">More days coming, Mrs. Nakra. 🌸</p>
+</div>
+
+<script>
+  // ─── ADD NEW DATES HERE ────────────────────────────────────────
+  // To add a new day: add an object to this array.
+  // path: the folder name (e.g. "29" → goes to /day/29)
+  // title: card heading
+  // desc: small subtitle
+  // unlockDate: "YYYY-MM-DD" — she can open it from this date onwards (IST)
+  const DAYS = [
+    {
+      day: "29",
+      month: "May",
+      path: "29",
+      title: "A full day of gifts",
+      desc: "Six surprises, one for each time of day",
+      unlockDate: "2026-05-29"
+    },
+    {
+      day: "30",
+      month: "May",
+      path: "30",
+      title: "Just a small thing",
+      desc: "Because yesterday wasn't enough",
+      unlockDate: "2026-05-30"
+    },
+    // ── ADD MORE DAYS BELOW THIS LINE ──
+    // {
+    //   day: "01",
+    //   month: "Jun",
+    //   path: "jun01",
+    //   title: "Your title here",
+    //   desc: "Your subtitle here",
+    //   unlockDate: "2026-06-01"
+    // },
+  ];
+
+  function getISTNow() {
+    const now = new Date();
+    const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+    return new Date(utc + 330 * 60000);
+  }
+
+  function isUnlocked(unlockDate) {
+    const ist = getISTNow();
+    const [y, m, d] = unlockDate.split('-').map(Number);
+    const unlock = new Date(y, m - 1, d, 0, 0, 0);
+    return ist >= unlock;
+  }
+
+  function renderCards() {
+    const list = document.getElementById('datesList');
+    DAYS.forEach(day => {
+      const unlocked = isUnlocked(day.unlockDate);
+      const card = document.createElement('a');
+      card.href = unlocked ? `/day/${day.path}` : '#';
+      card.className = `date-card${unlocked ? '' : ' locked'}`;
+      card.innerHTML = `
+        <div class="date-number">
+          <span class="day">${day.day}</span>
+          <span class="month">${day.month}</span>
+        </div>
+        <div class="date-info">
+          <div class="date-title">${day.title}</div>
+          <div class="date-desc">${day.desc}</div>
+        </div>
+        ${unlocked ? '<span class="date-arrow">→</span>' : '<span class="lock-icon">🔒</span>'}
+      `;
+      list.appendChild(card);
+    });
+  }
+
+  renderCards();
+</script>
+</body>
+</html>
