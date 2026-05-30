@@ -229,6 +229,15 @@
       desc: "Because yesterday wasn't enough",
       unlockDate: "2026-05-30"
     },
+
+     {
+      day: "31",
+      month: "May",
+      path: "30",
+       title: "After the hard conversations",
+      desc: "Still us, on the other side of it",
+      unlockDate: "2026-05-31T10:00"
+    },
     // ── ADD MORE DAYS BELOW THIS LINE ──
     // {
     //   day: "01",
@@ -247,10 +256,10 @@
   }
 
   function isUnlocked(unlockDate) {
-    const ist = getISTNow();
-    const [y, m, d] = unlockDate.split('-').map(Number);
-    const unlock = new Date(y, m - 1, d, 0, 0, 0);
-    return ist >= unlock;
+  const ist = getISTNow();
+  const unlock = new Date(unlockDate);
+  return ist >= unlock;
+}
   }
 
   function renderCards() {
