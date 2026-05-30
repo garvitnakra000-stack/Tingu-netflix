@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>May 31 — For Tingu 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fdf0f5;
+    --warm: #fce4ee;
+    --rose: #c2527a;
+    --rose-light: #e8a0bb;
+    --brown: #3d1f2e;
+    --muted: #9e6880;
+    --card-bg: rgba(255,255,255,0.82);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--brown);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+  }
+
+  .bg-blob {
+    position: fixed; border-radius: 50%;
+    filter: blur(80px); pointer-events: none; z-index: 0;
+  }
+  .bg-blob-1 { width: 400px; height: 400px; top: -80px; right: -80px; background: rgba(220,120,160,0.14); }
+  .bg-blob-2 { width: 350px; height: 350px; bottom: 60px; left: -60px; background: rgba(220,120,160,0.09); }
+
+  .container {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 520px;
+    text-align: center;
+  }
+
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--muted); text-decoration: none;
+    letter-spacing: 1px; text-transform: uppercase;
+    margin-bottom: 48px; transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--rose); }
+
+  .eyebrow {
+    font-size: 11px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--rose); margin-bottom: 10px;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 7vw, 52px);
+    font-weight: 300; line-height: 1.15; margin-bottom: 48px;
+  }
+  h1 em { font-style: italic; color: var(--rose); }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid rgba(194,82,122,0.2);
+    border-radius: 20px;
+    padding: 36px 32px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 24px rgba(194,82,122,0.07);
+    margin-bottom: 16px;
+    text-align: left;
+  }
+
+  .card-label {
+    font-size: 10px; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--rose);
+    margin-bottom: 16px; display: block;
+  }
+
+  .note-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px; font-weight: 300;
+    line-height: 1.9; color: var(--brown);
+    white-space: pre-wrap;
+  }
+
+  .note-sig {
+    margin-top: 24px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 15px; color: var(--rose);
+  }
+
+  /* Rules card */
+  .rules-card {
+    background: var(--warm);
+    border: 1px solid rgba(194,82,122,0.15);
+    border-radius: 20px;
+    padding: 28px 32px;
+    margin-bottom: 16px;
+    text-align: left;
+  }
+
+  .rules-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--rose);
+    margin-bottom: 18px;
+  }
+
+  .rule {
+    display: flex; align-items: flex-start; gap: 14px;
+    margin-bottom: 14px;
+  }
+  .rule:last-child { margin-bottom: 0; }
+
+  .rule-num {
+    width: 24px; height: 24px;
+    background: white; border-radius: 50%;
+    border: 1px solid rgba(194,82,122,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: var(--rose); font-weight: 500;
+    flex-shrink: 0; margin-top: 1px;
+  }
+
+  .rule-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px; font-weight: 300;
+    color: var(--brown); line-height: 1.4;
+  }
+
+  /* Song card */
+  .song-link {
+    display: flex; align-items: center; gap: 16px;
+    background: var(--card-bg);
+    border: 1px solid rgba(194,82,122,0.2);
+    border-radius: 14px;
+    padding: 18px 20px; text-decoration: none;
+    transition: background 0.2s, border-color 0.2s;
+    margin-bottom: 0;
+  }
+  .song-link:hover { background: #f5d4e4; border-color: rgba(194,82,122,0.4); }
+
+  .song-icon {
+    width: 46px; height: 46px;
+    background: var(--rose); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: white; flex-shrink: 0;
+  }
+
+  .song-info { flex: 1; }
+  .song-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; color: var(--brown); font-weight: 400;
+  }
+  .song-why {
+    font-size: 12px; color: var(--muted);
+    margin-top: 3px; font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    line-height: 1.5;
+  }
+  .song-arrow { color: var(--rose-light); font-size: 16px; }
+
+  .divider { width: 30px; height: 1px; background: var(--rose-light); margin: 32px auto; opacity: 0.5; }
+
+  .footer-note {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 14px; color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-blob bg-blob-1"></div>
+<div class="bg-blob bg-blob-2"></div>
+
+<div class="container">
+
+  <a class="back-link" href="/day">← all days</a>
+
+  <p class="eyebrow">31 · 05 · 2026</p>
+  <h1>After the hard<br><em>conversations</em></h1>
+
+  <!-- Note card -->
+  <div class="card">
+    <span class="card-label">A note</span>
+    <div class="note-text">Tingu ji,
+
+Yesterday was a yet again great day with you, though the night become a little difficult. And that's okay I think that's just what it looks like when two people actually care enough to figure things out instead of walking away.
+
+Jo bhi ho, jaisi bhi ho, ap sirf meri ho. I meant that. Not just on the good days.
+
+I will never let you sleep sad. That's not just a line I said that's something I want to be true every single night, even when things between us are messy and unresolved and hard.
+
+The rules we made yesterday I want to keep them. Not because they sound nice, but because I think they say something about the kind of relationship we're both choosing to build. Slowly. Carefully. With honesty.
+
+I'm glad we talked. I'm glad we didn't leave things heavy.
+And I'm glad it's still us on the other side of it.
+Thank you for this cuteeee website https://tingupingu.netlify.app/ this is one of the best things someone has ever done for me
+I am so grateful to have you in my life meri Tingu ji ♥️, (kha jau, Plij 🥺) 
+</div>
+    <div class="note-sig">— Garvit</div>
+  </div>
+
+  <!-- Rules card -->
+  <div class="rules-card">
+    <div class="rules-title">Our rules ♥️</div>
+    <div class="rule">
+      <div class="rule-num">1</div>
+      <div class="rule-text">Nothing on view once — always reply</div>
+    </div>
+    <div class="rule">
+      <div class="rule-num">2</div>
+      <div class="rule-text">Good morning & good night, no matter what</div>
+    </div>
+    <div class="rule">
+      <div class="rule-num">3</div>
+      <div class="rule-text">Always trusting and respecting each other ♥️</div>
+    </div>
+    <div class="rule">
+      <div class="rule-num">4</div>
+      <div class="rule-text">Be honest — always</div>
+    </div>
+  </div>
+
+  <!-- Song card -->
+  <a class="song-link" href="https://open.spotify.com/track/3ON2WCCKdbRVWTJ0wuQ2nJ?si=fb9c25ce5844465a" target="_blank" rel="noopener">
+    <div class="song-icon">♪</div>
+    <div class="song-info">
+      <div class="song-name">Today's song — for you</div>
+      <div class="song-why">The music might not hit right away — but sit with the lyrics. I think they're quietly one of the most beautiful things I've heard. Highly underrated.</div>
+    </div>
+    <span class="song-arrow">→</span>
+  </a>
+
+  <div class="divider"></div>
+  <p class="footer-note">Still us. Always us. 🌸</p>
+
+</div>
+</body>
+</html>
