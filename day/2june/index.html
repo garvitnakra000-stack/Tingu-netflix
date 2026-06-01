@@ -1,1 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>02 · 06 · 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf7f2;
+    --blush: #f5e6e0;
+    --rose: #e8c4b8;
+    --mauve: #c9a0a0;
+    --plum: #8b5e6e;
+    --deep: #4a3040;
+    --lavender: #d4c4d8;
+    --soft-purple: #9b7fb0;
+    --text-main: #3d2b35;
+    --text-soft: #7a5c68;
+    --text-muted: #b0909a;
+    --card-bg: rgba(255,255,255,0.72);
+    --border: rgba(200,160,170,0.3);
+    --shadow: 0 8px 40px rgba(139,94,110,0.12);
+    --radius: 20px;
+  }
 
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    min-height: 100%;
+    background: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-main);
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(232,196,184,0.35) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 90%, rgba(212,196,216,0.3) 0%, transparent 55%),
+      radial-gradient(ellipse 40% 40% at 60% 40%, rgba(245,230,224,0.2) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ========== LOCK SCREEN ========== */
+  #lock-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: linear-gradient(160deg, #faf0ec 0%, #f5e8e4 40%, #ede0f0 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    text-align: center;
+  }
+
+  #lock-screen .lock-icon {
+    font-size: 48px;
+    margin-bottom: 24px;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  #lock-screen h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    font-weight: 400;
+    color: var(--plum);
+    margin-bottom: 12px;
+  }
+
+  #lock-screen p.lock-sub {
+    font-size: 0.95rem;
+    color: var(--text-soft);
+    max-width: 280px;
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+
+  #lock-screen p.lock-tiny {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 36px;
+  }
+
+  .countdown-box {
+    background: rgba(255,255,255,0.6);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 20px 32px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .countdown-unit {
+    text-align: center;
+  }
+
+  .countdown-unit .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: var(--plum);
+    line-height: 1;
+    display: block;
+  }
+
+  .countdown-unit .label {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .countdown-sep {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    color: var(--rose);
+    margin-top: -8px;
+  }
+
+  /* ========== MAIN CONTENT ========== */
+  #main-content {
+    display: none;
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 0 80px;
+  }
+
+  #main-content.visible {
+    display: block;
+  }
+
+  /* HEADER */
+  .site-header {
+    padding: 52px 24px 32px;
+    text-align: center;
+  }
+
+  .date-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .site-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: var(--deep);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+
+  .site-header .sub {
+    font-size: 0.875rem;
+    color: var(--text-soft);
+    line-height: 1.6;
+  }
+
+  /* PROGRESS DOTS */
+  .progress-track {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 0 24px 32px;
+  }
+
+  .pdot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--rose);
+    opacity: 0.35;
+    transition: all 0.4s ease;
+    flex-shrink: 0;
+  }
+
+  .pdot.active {
+    opacity: 1;
+    background: var(--plum);
+    transform: scale(1.25);
+  }
+
+  .pdot.done {
+    opacity: 0.7;
+    background: var(--soft-purple);
+  }
+
+  .pline {
+    flex: 1;
+    height: 1px;
+    background: var(--rose);
+    opacity: 0.3;
+    max-width: 48px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(16px);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin: 0 16px 20px;
+    box-shadow: var(--shadow);
+  }
+
+  /* MUSIC CARD */
+  .music-card {
+    text-align: center;
+  }
+
+  .music-card .music-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--plum);
+    margin-bottom: 14px;
+  }
+
+  .spotify-embed {
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+
+  .spotify-fallback {
+    display: none;
+    margin-top: 10px;
+  }
+
+  .btn-spotify {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #1DB954;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-size: 0.85rem;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  /* SECTION TITLES */
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    text-align: center;
+    padding: 8px 0 4px;
+  }
+
+  /* LEVEL CARDS */
+  .level-card {
+    overflow: hidden;
+  }
+
+  .level-header {
+    margin-bottom: 20px;
+  }
+
+  .level-num {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    color: var(--mauve);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .level-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--deep);
+    margin-bottom: 6px;
+  }
+
+  .level-q {
+    font-size: 0.9rem;
+    color: var(--text-soft);
+    line-height: 1.65;
+  }
+
+  /* MEDIA */
+  .memory-img {
+    width: 100%;
+    border-radius: 14px;
+    display: block;
+    object-fit: cover;
+    max-height: 360px;
+    background: var(--blush);
+  }
+
+  .memory-img-wrap {
+    margin: 16px 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 14px;
+  }
+
+  .memory-video {
+    width: 100%;
+    border-radius: 14px;
+    display: block;
+    background: var(--deep);
+  }
+
+  /* ANSWER OPTIONS */
+  .options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 16px 0;
+  }
+
+  .opt-btn {
+    background: rgba(255,255,255,0.5);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 13px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.25s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .opt-btn:active { transform: scale(0.98); }
+
+  .opt-btn:hover {
+    background: rgba(255,255,255,0.8);
+    border-color: var(--mauve);
+  }
+
+  .opt-btn.correct {
+    background: rgba(155,127,176,0.15);
+    border-color: var(--soft-purple);
+    color: var(--plum);
+  }
+
+  .opt-btn.wrong {
+    background: rgba(232,196,184,0.2);
+    border-color: rgba(200,160,170,0.4);
+    color: var(--text-muted);
+    opacity: 0.6;
+  }
+
+  .opt-btn:disabled { cursor: default; }
+
+  /* REVEAL TEXT */
+  .reveal-block {
+    display: none;
+    animation: fadeSlide 0.5s ease both;
+  }
+
+  .reveal-block.show { display: block; }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    color: var(--deep);
+    line-height: 1.7;
+    margin: 8px 0;
+  }
+
+  .reveal-text.playful {
+    font-style: italic;
+    color: var(--text-soft);
+    font-size: 1rem;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 16px 0;
+  }
+
+  /* CTA BUTTONS */
+  .cta-btn {
+    display: block;
+    width: 100%;
+    background: linear-gradient(135deg, var(--plum) 0%, var(--soft-purple) 100%);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 15px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    margin-top: 16px;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: 0.02em;
+  }
+
+  .cta-btn:active { transform: scale(0.97); }
+  .cta-btn:hover { opacity: 0.92; }
+  .cta-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+    transform: none;
+  }
+
+  /* MEMORY FLIP CARDS (Level 2) */
+  .memory-cards-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .mem-card {
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    aspect-ratio: 3/4;
+    background: var(--blush);
+    transition: transform 0.2s ease;
+  }
+
+  .mem-card:active { transform: scale(0.97); }
+
+  .mem-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.3s ease;
+  }
+
+  .mem-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(74,48,64,0.85) 0%, transparent 50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 14px;
+    transition: opacity 0.3s ease;
+  }
+
+  .mem-card-overlay .emoji { font-size: 1.5rem; margin-bottom: 4px; }
+  .mem-card-overlay .label {
+    color: rgba(255,255,255,0.9);
+    font-size: 0.8rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+  }
+
+  .mem-card.opened .mem-card-overlay {
+    background: rgba(155,127,176,0.15);
+  }
+
+  .mem-card-reveal {
+    display: none;
+    padding: 14px;
+    background: var(--card-bg);
+  }
+
+  .hint-text {
+    font-size: 0.82rem;
+    color: var(--text-soft);
+    font-style: italic;
+    text-align: center;
+    padding: 8px 0;
+  }
+
+  /* LEVEL 2 EXPANDED */
+  .expanded-memory {
+    display: none;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    animation: fadeSlide 0.4s ease both;
+  }
+
+  .expanded-memory.show { display: block; }
+
+  /* FLOWERS / RUBBER BAND */
+  .final-section {
+    margin-bottom: 12px;
+  }
+
+  .final-section-title {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  /* LETTER */
+  .letter-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .letter-card::before {
+    content: '💌';
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 1.4rem;
+    opacity: 0.6;
+  }
+
+  .letter-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--deep);
+    margin-bottom: 20px;
+  }
+
+  .letter-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    color: var(--text-main);
+    line-height: 1.85;
+    font-weight: 300;
+  }
+
+  .letter-body p + p { margin-top: 16px; }
+
+  /* SECTIONS HIDDEN */
+  .site-section {
+    display: none;
+  }
+  .site-section.visible {
+    display: block;
+    animation: fadeSlide 0.6s ease both;
+  }
+
+  /* WRONG SHAKE */
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+  .shake { animation: shake 0.3s ease; }
+
+  /* UNLOCK ANIMATION */
+  @keyframes unlockPop {
+    0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .unlock-anim {
+    animation: unlockPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  /* IMAGE LOADING STATE */
+  .img-loading {
+    background: linear-gradient(90deg, var(--blush) 0%, var(--rose) 50%, var(--blush) 100%);
+    background-size: 200%;
+    animation: shimmer 1.5s infinite;
+    min-height: 200px;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200%; }
+    100% { background-position: -200%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== LOCK SCREEN ========== -->
+<div id="lock-screen">
+  <div class="lock-icon">🔒</div>
+  <h1>Too early, madam 😌</h1>
+  <p class="lock-sub">You really thought I'd let you open June 2 before 10 AM?</p>
+  <p class="lock-tiny">patience also = love language.</p>
+  <div class="countdown-box">
+    <div class="countdown-unit">
+      <span class="num" id="cd-h">00</span>
+      <span class="label">hours</span>
+    </div>
+    <div class="countdown-sep">:</div>
+    <div class="countdown-unit">
+      <span class="num" id="cd-m">00</span>
+      <span class="label">mins</span>
+    </div>
+    <div class="countdown-sep">:</div>
+    <div class="countdown-unit">
+      <span class="num" id="cd-s">00</span>
+      <span class="label">secs</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== MAIN CONTENT ========== -->
+<div id="main-content">
+
+  <!-- HEADER -->
+  <div class="site-header unlock-anim">
+    <p class="date-label">02 · 06 · 2026</p>
+    <h1>Yesterday felt familiar 💜</h1>
+    <p class="sub">Tiny mission before today's memories.</p>
+  </div>
+
+  <!-- PROGRESS DOTS -->
+  <div class="progress-track">
+    <div class="pdot active" id="dot-1"></div>
+    <div class="pline"></div>
+    <div class="pdot" id="dot-2"></div>
+    <div class="pline"></div>
+    <div class="pdot" id="dot-3"></div>
+    <div class="pline"></div>
+    <div class="pdot" id="dot-4"></div>
+  </div>
+
+  <!-- MUSIC CARD -->
+  <div class="card music-card">
+    <p class="music-title">🎵 Play this while opening today's little memory</p>
+    <div class="spotify-embed">
+      <iframe
+        id="spotify-iframe"
+        style="border-radius:12px"
+        src="https://open.spotify.com/embed/track/6VOKUdxhjSwbjinKbguOmy?utm_source=generator&theme=0"
+        width="100%"
+        height="152"
+        frameBorder="0"
+        allowfullscreen=""
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"
+        onerror="document.querySelector('.spotify-fallback').style.display='block'">
+      </iframe>
+    </div>
+    <div class="spotify-fallback">
+      <a class="btn-spotify" href="https://open.spotify.com/track/6VOKUdxhjSwbjinKbguOmy" target="_blank">
+        ♪ Open on Spotify
+      </a>
+    </div>
+  </div>
+
+  <!-- ======= LEVEL 1 ======= -->
+  <div class="site-section visible" id="section-1">
+    <p class="section-label">Level 1</p>
+    <div class="card level-card">
+      <div class="level-header">
+        <p class="level-num">A Familiar Feeling</p>
+        <h2 class="level-title">The black top 🖤</h2>
+        <p class="level-q">Yesterday, the top you wore… where did you wear it in Mumbai? 😌</p>
+      </div>
+
+      <div class="memory-img-wrap">
+        <img src="current-black-top.jpeg" class="memory-img" alt="The black top" onerror="this.style.minHeight='180px'; this.style.background='var(--blush)'">
+      </div>
+
+      <div class="options-grid" id="l1-opts">
+        <button class="opt-btn" onclick="checkL1(this, true)">Poptates ✅</button>
+        <button class="opt-btn" onclick="checkL1(this, false)">Airport</button>
+        <button class="opt-btn" onclick="checkL1(this, false)">Marine Drive</button>
+      </div>
+
+      <div class="reveal-block" id="l1-reveal">
+        <div class="memory-img-wrap">
+          <img src="poptates-memory.jpeg" class="memory-img" alt="Poptates memory" onerror="this.style.minHeight='180px'; this.style.background='var(--blush)'">
+        </div>
+        <div class="divider"></div>
+        <p class="reveal-text">hehe yes 😌</p>
+        <p class="reveal-text">When you reminded me yesterday, my brain instantly went back to this.</p>
+        <p class="reveal-text">Funny how one black top quietly took me back to us.</p>
+        <p class="reveal-text playful">Same top, same pretty girl, still distracting.</p>
+        <button class="cta-btn" onclick="goToLevel(2)">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= LEVEL 2 ======= -->
+  <div class="site-section" id="section-2">
+    <p class="section-label">Level 2</p>
+    <div class="card level-card">
+      <div class="level-header">
+        <p class="level-num">Pick your favourite</p>
+        <h2 class="level-title">Two memories 🥹</h2>
+        <p class="level-q">What was your favourite memory? 😌</p>
+      </div>
+
+      <div class="memory-cards-row">
+        <!-- Card 1: Food -->
+        <div class="mem-card" id="mc-food" onclick="openMemCard('food')">
+          <img src="poptates-wedges.jpeg" alt="Poptates wedges" onerror="this.style.opacity='0.5'">
+          <div class="mem-card-overlay" id="mc-food-overlay">
+            <div class="emoji">🍟</div>
+            <div class="label">tap to open</div>
+          </div>
+        </div>
+        <!-- Card 2: Cake -->
+        <div class="mem-card" id="mc-cake" onclick="openMemCard('cake')">
+          <img src="cute-cake.jpeg" alt="Cute cake" onerror="this.style.opacity='0.5'">
+          <div class="mem-card-overlay" id="mc-cake-overlay">
+            <div class="emoji">🎂</div>
+            <div class="label">tap to open</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hint -->
+      <p class="hint-text" id="l2-hint" style="display:none">One more tiny memory waiting 😌</p>
+
+      <!-- Expanded food -->
+      <div class="expanded-memory" id="exp-food">
+        <p class="reveal-text">Okay these wedges were actually ridiculously good 😭</p>
+        <p class="reveal-text playful">Lowkey still craving them.</p>
+      </div>
+
+      <!-- Expanded cake -->
+      <div class="expanded-memory" id="exp-cake">
+        <p class="reveal-text">Still not over this tiny sugar-free cake 🥹</p>
+        <p class="reveal-text playful">Such a tiny thing but weirdly one of my favourite memories.</p>
+      </div>
+
+      <button class="cta-btn" id="l2-continue" disabled onclick="goToLevel(3)">One more memory →</button>
+    </div>
+  </div>
+
+  <!-- ======= LEVEL 3 ======= -->
+  <div class="site-section" id="section-3">
+    <p class="section-label">Level 3</p>
+    <div class="card level-card">
+      <div class="level-header">
+        <p class="level-num">Version of Me</p>
+        <h2 class="level-title">The brave moment 😭</h2>
+        <p class="level-q">What did we do here that I would NEVER normally do in public? 😭</p>
+      </div>
+
+      <div class="options-grid" id="l3-opts">
+        <button class="opt-btn" onclick="checkL3(this, false)">Dance reel</button>
+        <button class="opt-btn" onclick="checkL3(this, true)">Fit check video ✅</button>
+        <button class="opt-btn" onclick="checkL3(this, false)">Random interview</button>
+      </div>
+
+      <div class="reveal-block" id="l3-reveal">
+        <div class="memory-img-wrap">
+          <video class="memory-video" id="fitcheck-vid" autoplay muted playsinline controls
+            onerror="document.getElementById('vid-fallback').style.display='block'; this.style.display='none'">
+            <source src="fit-check.mp4" type="video/mp4">
+          </video>
+          <div id="vid-fallback" style="display:none; padding:16px; text-align:center;">
+            <a href="fit-check.mp4" target="_blank" style="color:var(--plum); font-size:0.9rem;">▶ Open fit check video</a>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <p class="reveal-text">Still can't believe I recorded a fit check video in public 😭</p>
+        <p class="reveal-text">You genuinely bring out a version of me I don't think many people get to see.</p>
+        <p class="reveal-text">And honestly, I really like that version.</p>
+        <button class="cta-btn" onclick="goToLevel(4)">Open today's little note 💌</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= FINAL SECTION ======= -->
+  <div class="site-section" id="section-4">
+    <p class="section-label">tiny things I still think about</p>
+
+    <!-- Flowers -->
+    <div class="card final-section">
+      <p class="final-section-title">🌸 flowers</p>
+      <div class="memory-img-wrap">
+        <img src="flowers.jpeg" class="memory-img" alt="Flowers" onerror="this.style.minHeight='180px'; this.style.background='var(--blush)'">
+      </div>
+      <div class="divider"></div>
+      <p class="reveal-text">Still elite treatment btw 😌</p>
+      <p class="reveal-text playful">My first flowers and somehow you made it feel normal.</p>
+    </div>
+
+    <!-- Rubber band -->
+    <div class="card final-section">
+      <p class="final-section-title">🎀 rubber band</p>
+      <div class="memory-img-wrap">
+        <img src="rubber-band.jpeg" class="memory-img" alt="Rubber band" onerror="this.style.minHeight='180px'; this.style.background='var(--blush)'">
+      </div>
+      <div class="divider"></div>
+      <p class="reveal-text">Also… mission successful.</p>
+      <p class="reveal-text playful">Found item secured 🎀</p>
+    </div>
+
+    <!-- IIM Hoodie (bonus) -->
+    <div class="card final-section">
+      <p class="final-section-title">🧥 iim hoodie</p>
+      <div class="memory-img-wrap">
+        <img src="iim-hoodie.jpeg" class="memory-img" alt="IIM hoodie" onerror="this.style.minHeight='100px'; this.style.background='var(--blush)'">
+      </div>
+    </div>
+
+    <!-- LETTER -->
+    <div class="card letter-card">
+      <h2 class="letter-heading">A little note 💜</h2>
+      <div class="letter-body">
+        <p>Yesterday felt strangely familiar in the nicest way.</p>
+        <p>When you reminded me that you were wearing the same black top from our Poptates day, it quietly took me back to us — the food, that ridiculously cute little sugar-free cake, my first flowers (still undefeated treatment 😌), and somehow such an ordinary day becoming one of my favourite memories.</p>
+        <p>I think that's something I really love about us… tiny moments somehow become important without us even trying.</p>
+        <p>And honestly, thank you — for the thoughtful things, the little gestures, and for somehow bringing out a version of me that records fit check videos in public 😭 (still can't believe that happened).</p>
+        <p>You really do bring out the best in me.</p>
+        <p>And I'm very, very grateful I get to make these little memories with you 💜</p>
+      </div>
+    </div>
+
+  </div><!-- end section-4 -->
+
+</div><!-- end main-content -->
+
+<script>
+  // ========== LOCK LOGIC ==========
+  const UNLOCK_HOUR = 10; // 10 AM local time
+
+  function getUnlockTime() {
+    const now = new Date();
+    const unlock = new Date(now.getFullYear(), now.getMonth(), now.getDate(), UNLOCK_HOUR, 0, 0, 0);
+    // If today is not June 2, force show for development — remove in prod
+    return unlock;
+  }
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function updateCountdown() {
+    const now = new Date();
+    const unlock = getUnlockTime();
+    const diff = unlock - now;
+
+    if (diff <= 0) {
+      doUnlock();
+      return;
+    }
+
+    const totalSecs = Math.floor(diff / 1000);
+    const h = Math.floor(totalSecs / 3600);
+    const m = Math.floor((totalSecs % 3600) / 60);
+    const s = totalSecs % 60;
+
+    document.getElementById('cd-h').textContent = pad(h);
+    document.getElementById('cd-m').textContent = pad(m);
+    document.getElementById('cd-s').textContent = pad(s);
+  }
+
+  function doUnlock() {
+    clearInterval(countdownInterval);
+    const lock = document.getElementById('lock-screen');
+    const main = document.getElementById('main-content');
+    lock.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+    lock.style.opacity = '0';
+    lock.style.transform = 'scale(1.04)';
+    setTimeout(() => {
+      lock.style.display = 'none';
+      main.classList.add('visible');
+    }, 800);
+  }
+
+  updateCountdown();
+  const countdownInterval = setInterval(updateCountdown, 1000);
+
+  // ========== PROGRESS ==========
+  function updateDots(level) {
+    for (let i = 1; i <= 4; i++) {
+      const dot = document.getElementById('dot-' + i);
+      dot.classList.remove('active', 'done');
+      if (i < level) dot.classList.add('done');
+      else if (i === level) dot.classList.add('active');
+    }
+  }
+
+  function goToLevel(level) {
+    // Hide current, show next
+    const current = document.getElementById('section-' + (level - 1));
+    const next = document.getElementById('section-' + level);
+    if (current) {
+      current.style.opacity = '0';
+      current.style.transition = 'opacity 0.4s ease';
+      setTimeout(() => { current.classList.remove('visible'); current.style.opacity = ''; }, 400);
+    }
+    setTimeout(() => {
+      if (next) {
+        next.classList.add('visible');
+        next.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      updateDots(level);
+    }, 350);
+  }
+
+  // ========== LEVEL 1 ==========
+  function checkL1(btn, correct) {
+    const btns = document.querySelectorAll('#l1-opts .opt-btn');
+    btns.forEach(b => b.disabled = true);
+
+    if (correct) {
+      btn.classList.add('correct');
+      btns.forEach(b => { if (b !== btn) b.classList.add('wrong'); });
+      setTimeout(() => {
+        document.getElementById('l1-reveal').classList.add('show');
+      }, 300);
+    } else {
+      btn.classList.add('wrong');
+      btn.classList.add('shake');
+      btns.forEach(b => b.disabled = false);
+      btn.disabled = true;
+      btn.removeEventListener('click', null);
+      setTimeout(() => { btn.classList.remove('shake'); }, 400);
+    }
+  }
+
+  // ========== LEVEL 2 ==========
+  const openedCards = { food: false, cake: false };
+
+  function openMemCard(which) {
+    if (openedCards[which]) return;
+    openedCards[which] = true;
+
+    const card = document.getElementById('mc-' + which);
+    card.classList.add('opened');
+    const overlay = document.getElementById('mc-' + which + '-overlay');
+    overlay.querySelector('.label').textContent = 'opened ✓';
+
+    const exp = document.getElementById('exp-' + which);
+    exp.classList.add('show');
+
+    // Hint and continue logic
+    const both = openedCards.food && openedCards.cake;
+    const hint = document.getElementById('l2-hint');
+    const cont = document.getElementById('l2-continue');
+
+    if (!both) {
+      hint.style.display = 'block';
+    } else {
+      hint.style.display = 'none';
+      cont.disabled = false;
+    }
+  }
+
+  // ========== LEVEL 3 ==========
+  function checkL3(btn, correct) {
+    const btns = document.querySelectorAll('#l3-opts .opt-btn');
+    btns.forEach(b => b.disabled = true);
+
+    if (correct) {
+      btn.classList.add('correct');
+      btns.forEach(b => { if (b !== btn) b.classList.add('wrong'); });
+      setTimeout(() => {
+        document.getElementById('l3-reveal').classList.add('show');
+        // Try to play video
+        const vid = document.getElementById('fitcheck-vid');
+        if (vid) { vid.play().catch(() => {}); }
+      }, 300);
+    } else {
+      btn.classList.add('wrong');
+      btn.classList.add('shake');
+      btns.forEach(b => b.disabled = false);
+      btn.disabled = true;
+      setTimeout(() => { btn.classList.remove('shake'); }, 400);
+    }
+  }
+</script>
+</body>
+</html>
