@@ -837,66 +837,11 @@
 </div><!-- end main-content -->
 
 <script>
-  // ========== LOCK LOGIC ==========
-  const UNLOCK_HOUR = 10; // 10 AM local time
-
-  function getUnlockTime() {
-    const now = new Date();
-    const unlock = new Date(now.getFullYear(), now.getMonth(), now.getDate(), UNLOCK_HOUR, 0, 0, 0);
-    // If today is not June 2, force show for development — remove in prod
-    return unlock;
-  }
-
-  function pad(n) { return String(n).padStart(2, '0'); }
-
-  function updateCountdown() {
-    const now = new Date();
-    const unlock = getUnlockTime();
-    const diff = unlock - now;
-
-    if (diff <= 0) {
-      doUnlock();
-      return;
-    }
-
-    const totalSecs = Math.floor(diff / 1000);
-    const h = Math.floor(totalSecs / 3600);
-    const m = Math.floor((totalSecs % 3600) / 60);
-    const s = totalSecs % 60;
-
-    document.getElementById('cd-h').textContent = pad(h);
-    document.getElementById('cd-m').textContent = pad(m);
-    document.getElementById('cd-s').textContent = pad(s);
-  }
-
-  function doUnlock() {
-    clearInterval(countdownInterval);
-    const lock = document.getElementById('lock-screen');
-    const main = document.getElementById('main-content');
-    lock.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-    lock.style.opacity = '0';
-    lock.style.transform = 'scale(1.04)';
-    setTimeout(() => {
-      lock.style.display = 'none';
-      main.classList.add('visible');
-    }, 800);
-  }
-
-  // Skip lock if ?preview=true
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('preview') === 'true') {
-    doUnlock();
-  } else {
-    updateCountdown();
-  }
-  const countdownInterval = setInterval(() => {
-    if (params.get('preview') !== 'true') updateCountdown();
-  }, 1000);
-
   // ========== PROGRESS ==========
   function updateDots(level) {
     for (let i = 1; i <= 4; i++) {
       const dot = document.getElementById('dot-' + i);
+      if (!dot) continue;
       dot.classList.remove('active', 'done');
       if (i < level) dot.classList.add('done');
       else if (i === level) dot.classList.add('active');
@@ -904,7 +849,6 @@
   }
 
   function goToLevel(level) {
-    // Hide current, show next
     const current = document.getElementById('section-' + (level - 1));
     const next = document.getElementById('section-' + level);
     if (current) {
@@ -921,23 +865,50 @@
     }, 350);
   }
 
+  // ========== LOCK LOGIC ==========
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function getUnlockTime() {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0, 0);
+  }
+
+  function doUnlock() {
+    clearInterval(window._cdInterval);
+    const lock = document.getElementById('lock-screen');
+    const main = document.getElementById('main-content');
+    lock.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+    lock.style.opacity = '0';
+    lock.style.transform = 'scale(1.04)';
+    setTimeout(() => {
+      lock.style.display = 'none';
+      main.classList.add('visible');
+    }, 800);
+  }
+
+  function updateCountdown() {
+    const now = new Date();
+    const diff = getUnlockTime() - now;
+    if (diff <= 0) { doUnlock(); return; }
+    const totalSecs = Math.floor(diff / 1000);
+    document.getElementById('cd-h').textContent = pad(Math.floor(totalSecs / 3600));
+    document.getElementById('cd-m').textContent = pad(Math.floor((totalSecs % 3600) / 60));
+    document.getElementById('cd-s').textContent = pad(totalSecs % 60);
+  }
+
   // ========== LEVEL 1 ==========
   function checkL1(btn, correct) {
     const btns = document.querySelectorAll('#l1-opts .opt-btn');
     btns.forEach(b => b.disabled = true);
-
     if (correct) {
       btn.classList.add('correct');
       btns.forEach(b => { if (b !== btn) b.classList.add('wrong'); });
-      setTimeout(() => {
-        document.getElementById('l1-reveal').classList.add('show');
-      }, 300);
+      setTimeout(() => { document.getElementById('l1-reveal').classList.add('show'); }, 300);
     } else {
       btn.classList.add('wrong');
       btn.classList.add('shake');
       btns.forEach(b => b.disabled = false);
       btn.disabled = true;
-      btn.removeEventListener('click', null);
       setTimeout(() => { btn.classList.remove('shake'); }, 400);
     }
   }
@@ -948,41 +919,29 @@
   function openMemCard(which) {
     if (openedCards[which]) return;
     openedCards[which] = true;
-
     const card = document.getElementById('mc-' + which);
     card.classList.add('opened');
     const overlay = document.getElementById('mc-' + which + '-overlay');
     overlay.querySelector('.label').textContent = 'opened ✓';
-
-    const exp = document.getElementById('exp-' + which);
-    exp.classList.add('show');
-
-    // Hint and continue logic
+    document.getElementById('exp-' + which).classList.add('show');
     const both = openedCards.food && openedCards.cake;
     const hint = document.getElementById('l2-hint');
     const cont = document.getElementById('l2-continue');
-
-    if (!both) {
-      hint.style.display = 'block';
-    } else {
-      hint.style.display = 'none';
-      cont.disabled = false;
-    }
+    if (!both) { hint.style.display = 'block'; }
+    else { hint.style.display = 'none'; cont.disabled = false; }
   }
 
   // ========== LEVEL 3 ==========
   function checkL3(btn, correct) {
     const btns = document.querySelectorAll('#l3-opts .opt-btn');
     btns.forEach(b => b.disabled = true);
-
     if (correct) {
       btn.classList.add('correct');
       btns.forEach(b => { if (b !== btn) b.classList.add('wrong'); });
       setTimeout(() => {
         document.getElementById('l3-reveal').classList.add('show');
-        // Try to play video
         const vid = document.getElementById('fitcheck-vid');
-        if (vid) { vid.play().catch(() => {}); }
+        if (vid) vid.play().catch(() => {});
       }, 300);
     } else {
       btn.classList.add('wrong');
@@ -992,6 +951,19 @@
       setTimeout(() => { btn.classList.remove('shake'); }, 400);
     }
   }
+
+  // ========== INIT ==========
+  document.addEventListener('DOMContentLoaded', function () {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('preview') === 'true') {
+      document.getElementById('lock-screen').style.display = 'none';
+      document.getElementById('main-content').classList.add('visible');
+      updateDots(1);
+    } else {
+      updateCountdown();
+      window._cdInterval = setInterval(updateCountdown, 1000);
+    }
+  });
 </script>
 </body>
 </html>
