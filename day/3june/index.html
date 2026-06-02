@@ -13,7 +13,6 @@
     --mauve: #c9a0a0;
     --plum: #8b5e6e;
     --deep: #4a3040;
-    --lavender: #d4c4d8;
     --soft-purple: #9b7fb0;
     --text-main: #3d2b35;
     --text-soft: #7a5c68;
@@ -25,25 +24,12 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   html, body {
     min-height: 100%;
-    background: var(--cream);
+    background: #0d0608;
     font-family: 'DM Sans', sans-serif;
     color: var(--text-main);
     overflow-x: hidden;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(232,196,184,0.35) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 50% at 80% 90%, rgba(212,196,216,0.3) 0%, transparent 55%),
-      radial-gradient(ellipse 40% 40% at 60% 40%, rgba(245,230,224,0.2) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 0;
   }
 
   /* ========== LOCK SCREEN ========== */
@@ -59,75 +45,139 @@
     padding: 40px 24px;
     text-align: center;
   }
+  .lock-emoji { font-size: 52px; margin-bottom: 20px; animation: float 3s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .lock-title { font-family:'Cormorant Garamond',serif; font-size:2.3rem; font-weight:400; color:var(--plum); margin-bottom:10px; }
+  .lock-sub { font-size:0.92rem; color:var(--text-soft); max-width:290px; line-height:1.7; margin-bottom:6px; }
+  .lock-tiny { font-size:0.78rem; color:var(--text-muted); font-style:italic; margin-bottom:36px; }
+  .countdown-box { background:rgba(255,255,255,0.6); border:1px solid var(--border); backdrop-filter:blur(12px); border-radius:16px; padding:20px 32px; display:flex; gap:20px; align-items:center; }
+  .countdown-unit { text-align:center; }
+  .countdown-unit .num { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:300; color:var(--plum); line-height:1; display:block; }
+  .countdown-unit .lbl { font-size:0.65rem; color:var(--text-muted); letter-spacing:0.1em; text-transform:uppercase; }
+  .countdown-sep { font-family:'Cormorant Garamond',serif; font-size:1.6rem; color:var(--rose); margin-top:-8px; }
 
-  .lock-emoji {
-    font-size: 52px;
-    margin-bottom: 20px;
-    animation: float 3s ease-in-out infinite;
+  /* ========== TYPEWRITER SCREEN ========== */
+  #typewriter-screen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 900;
+    background: #0d0608;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 48px 32px;
   }
+  #typewriter-screen.active { display: flex; }
 
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-
-  .lock-title {
+  .tw-line {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 2.3rem;
-    font-weight: 400;
-    color: var(--plum);
-    margin-bottom: 10px;
-  }
-
-  .lock-sub {
-    font-size: 0.92rem;
-    color: var(--text-soft);
-    max-width: 290px;
-    line-height: 1.7;
-    margin-bottom: 6px;
-  }
-
-  .lock-tiny {
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    font-style: italic;
-    margin-bottom: 36px;
-  }
-
-  .countdown-box {
-    background: rgba(255,255,255,0.6);
-    border: 1px solid var(--border);
-    backdrop-filter: blur(12px);
-    border-radius: 16px;
-    padding: 20px 32px;
-    display: flex;
-    gap: 20px;
-    align-items: center;
-  }
-
-  .countdown-unit { text-align: center; }
-  .countdown-unit .num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.2rem;
+    font-size: 1.35rem;
     font-weight: 300;
-    color: var(--plum);
-    line-height: 1;
-    display: block;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.8;
+    min-height: 1.8em;
+    opacity: 0;
+    transition: opacity 0.4s ease;
   }
-  .countdown-unit .lbl {
-    font-size: 0.65rem;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
+  .tw-line.visible { opacity: 1; }
+  .tw-line.soft { color: rgba(255,255,255,0.45); font-style: italic; font-size: 1.05rem; }
+
+  .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.1em;
+    background: rgba(255,255,255,0.6);
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* ========== HEART SCREEN ========== */
+  #heart-screen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 800;
+    background: #0d0608;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+  }
+  #heart-screen.active { display: flex; }
+
+  .heart-hint {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.15em;
     text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif;
+    animation: fadeInSlow 3s ease both;
+    text-align: center;
   }
-  .countdown-sep {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.6rem;
-    color: var(--rose);
-    margin-top: -8px;
+  @keyframes fadeInSlow { from{opacity:0} to{opacity:1} }
+
+  #hold-heart {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  /* ========== MAIN ========== */
+  .heart-glow {
+    position: absolute;
+    inset: -20px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(220,50,80,0.3) 0%, transparent 70%);
+    animation: heartGlow 2.5s ease-in-out infinite;
+  }
+  @keyframes heartGlow {
+    0%,100% { transform: scale(0.9); opacity: 0.4; }
+    50% { transform: scale(1.3); opacity: 0.8; }
+  }
+
+  .heart-svg {
+    width: 72px;
+    height: 72px;
+    animation: heartbeat 2.5s ease-in-out infinite;
+    filter: drop-shadow(0 0 18px rgba(220,50,80,0.6));
+    transition: transform 0.1s ease;
+  }
+  @keyframes heartbeat {
+    0%,100% { transform: scale(1); }
+    15% { transform: scale(1.15); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.08); }
+    60% { transform: scale(1); }
+  }
+
+  /* Hold progress ring */
+  #progress-ring {
+    position: absolute;
+    inset: -8px;
+    width: calc(100% + 16px);
+    height: calc(100% + 16px);
+    transform: rotate(-90deg);
+  }
+  #progress-circle {
+    fill: none;
+    stroke: rgba(220,80,100,0.9);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-dasharray: 339;
+    stroke-dashoffset: 339;
+    transition: stroke-dashoffset 0.05s linear;
+  }
+
+  /* ========== MAIN CONTENT ========== */
   #main-content {
     display: none;
     position: relative;
@@ -135,45 +185,35 @@
     max-width: 480px;
     margin: 0 auto;
     padding: 0 0 80px;
+    background: var(--cream);
+    min-height: 100vh;
   }
   #main-content.visible { display: block; }
 
-  /* HEADER */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(232,196,184,0.35) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 90%, rgba(212,196,216,0.3) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
   .site-header {
     padding: 52px 24px 28px;
     text-align: center;
-    animation: fadeUp 0.8s ease both;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.9s ease both;
   }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
 
-  .date-label {
-    font-size: 0.72rem;
-    letter-spacing: 0.25em;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
+  .date-label { font-size:0.72rem; letter-spacing:0.25em; color:var(--text-muted); text-transform:uppercase; margin-bottom:14px; }
+  .site-header h1 { font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:400; color:var(--deep); line-height:1.25; margin-bottom:10px; }
+  .site-header .sub { font-size:0.875rem; color:var(--text-soft); line-height:1.6; }
 
-  .site-header h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.3rem;
-    font-weight: 400;
-    color: var(--deep);
-    line-height: 1.25;
-    margin-bottom: 10px;
-  }
-
-  .site-header .sub {
-    font-size: 0.875rem;
-    color: var(--text-soft);
-    line-height: 1.6;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* CARDS */
   .card {
     background: var(--card-bg);
     border: 1px solid var(--border);
@@ -182,421 +222,191 @@
     padding: 24px;
     margin: 0 16px 20px;
     box-shadow: var(--shadow);
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.7s ease both;
   }
 
-  /* ========== STAGE SYSTEM ========== */
-  .stage { display: none; }
-  .stage.active {
-    display: block;
-    animation: fadeUp 0.6s ease both;
-  }
+  .section-label { font-size:0.7rem; letter-spacing:0.2em; color:var(--text-muted); text-transform:uppercase; text-align:center; padding:8px 0 4px; position:relative; z-index:1; }
 
-  /* ========== STAGE 1: Sorry no gift ========== */
-  .sorry-card {
-    text-align: center;
-  }
+  .card-title { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:400; color:var(--deep); margin-bottom:12px; }
+  .card-body { font-family:'Cormorant Garamond',serif; font-size:1.05rem; color:var(--text-main); line-height:1.85; font-weight:300; }
+  .card-body p + p { margin-top:14px; }
+  .card-body .soft { font-style:italic; color:var(--text-soft); }
 
-  .sorry-emoji {
-    font-size: 3rem;
-    display: block;
-    margin-bottom: 16px;
-    animation: float 3s ease-in-out infinite;
+  /* poem note */
+  .poem-note {
+    background: rgba(155,127,176,0.08);
+    border-left: 3px solid var(--soft-purple);
+    border-radius: 0 12px 12px 0;
+    padding: 14px 16px;
+    margin: 12px 0;
   }
-
-  .sorry-title {
+  .poem-note p {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.9rem;
-    font-weight: 400;
-    color: var(--deep);
-    margin-bottom: 8px;
-  }
-
-  .sorry-body {
-    font-size: 0.9rem;
-    color: var(--text-soft);
-    line-height: 1.7;
-    margin-bottom: 28px;
-    max-width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .choices-row {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .choice-btn {
-    background: rgba(255,255,255,0.5);
-    border: 1.5px solid var(--border);
-    border-radius: 14px;
-    padding: 14px 20px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.88rem;
-    color: var(--text-main);
-    cursor: pointer;
-    transition: all 0.25s ease;
-    -webkit-tap-highlight-color: transparent;
-    text-align: center;
-    line-height: 1.5;
-  }
-
-  .choice-btn:hover { background: rgba(255,255,255,0.85); border-color: var(--mauve); }
-  .choice-btn:active { transform: scale(0.97); }
-
-  .choice-btn.okay {
-    background: rgba(232,196,184,0.2);
-    border-color: var(--rose);
-    color: var(--text-soft);
-  }
-
-  .choice-btn.trust {
-    background: linear-gradient(135deg, rgba(155,127,176,0.15) 0%, rgba(139,94,110,0.1) 100%);
-    border-color: var(--soft-purple);
-    color: var(--plum);
-    font-weight: 500;
-  }
-
-  /* ========== STAGE 2: Are you sure? ========== */
-  .areyousure-card { text-align: center; }
-
-  .areyousure-emoji {
-    font-size: 2.8rem;
-    display: block;
-    margin-bottom: 16px;
-  }
-
-  .areyousure-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.8rem;
-    color: var(--deep);
-    margin-bottom: 10px;
-  }
-
-  .areyousure-body {
-    font-size: 0.88rem;
-    color: var(--text-soft);
-    line-height: 1.7;
-    margin-bottom: 24px;
-    max-width: 280px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  /* ========== STAGE 3: Yes I would ========== */
-  .yes-card { text-align: center; }
-
-  .yes-emoji {
-    font-size: 2.8rem;
-    display: block;
-    margin-bottom: 16px;
-  }
-
-  .yes-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.9rem;
-    color: var(--deep);
-    margin-bottom: 10px;
-  }
-
-  .yes-body {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: var(--text-soft);
     line-height: 1.75;
-    margin-bottom: 24px;
-  }
-
-  /* CTA */
-  .cta-btn {
-    display: block;
-    width: 100%;
-    background: linear-gradient(135deg, var(--plum) 0%, var(--soft-purple) 100%);
-    color: white;
-    border: none;
-    border-radius: 14px;
-    padding: 15px 24px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-    margin-top: 8px;
-    -webkit-tap-highlight-color: transparent;
-    letter-spacing: 0.02em;
-  }
-  .cta-btn:active { transform: scale(0.97); }
-  .cta-btn:hover { opacity: 0.92; }
-
-  .cta-btn.secondary {
-    background: transparent;
-    border: 1.5px solid var(--border);
-    color: var(--text-soft);
-    margin-top: 10px;
-  }
-
-  /* ========== STAGE 4: VIDEO ========== */
-  .video-section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
     font-style: italic;
-    color: var(--text-soft);
-    text-align: center;
-    margin-bottom: 16px;
   }
 
+  /* video */
   .video-wrap {
-    border-radius: 16px;
+    border-radius: 14px;
     overflow: hidden;
-    background: var(--deep);
-    aspect-ratio: 9/16;
-    max-height: 520px;
+    background: #111;
     position: relative;
-  }
-
-  .video-wrap iframe {
     width: 100%;
-    height: 100%;
-    border: none;
-    display: block;
+    padding-top: 177.77%; /* 9:16 */
   }
-
-  .video-fallback {
+  .video-wrap iframe {
     position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: rgba(255,255,255,0.7);
-    gap: 12px;
-    font-size: 0.85rem;
-    padding: 20px;
-    text-align: center;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: none;
   }
-
-  .video-fallback a {
-    color: white;
-    font-size: 0.9rem;
-    background: rgba(255,255,255,0.15);
-    padding: 10px 20px;
-    border-radius: 50px;
+  .video-open-link {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
     text-decoration: none;
   }
 
-  /* MUSIC CARD */
-  .music-card { text-align: center; }
-  .music-label {
+  /* spotify */
+  .spotify-wrap { border-radius: 12px; overflow: hidden; }
+
+  /* jam line */
+  .jam-line {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1rem;
     font-style: italic;
     color: var(--text-soft);
-    margin-bottom: 14px;
-  }
-
-  .spotify-wrap {
-    border-radius: 12px;
-    overflow: hidden;
-  }
-
-  /* LETTER */
-  .letter-card { position: relative; overflow: hidden; }
-  .letter-card::before {
-    content: '💌';
-    position: absolute;
-    top: 18px;
-    right: 20px;
-    font-size: 1.3rem;
-    opacity: 0.5;
-  }
-
-  .letter-heading {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.55rem;
-    font-weight: 400;
-    color: var(--deep);
-    margin-bottom: 18px;
-  }
-
-  .letter-body {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.05rem;
-    color: var(--text-main);
-    line-height: 1.9;
-    font-weight: 300;
-  }
-
-  .letter-body p + p { margin-top: 14px; }
-
-  .divider {
-    height: 1px;
-    background: var(--border);
-    margin: 16px 0;
-  }
-
-  /* SECTION LABEL */
-  .section-label {
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    color: var(--text-muted);
-    text-transform: uppercase;
     text-align: center;
-    padding: 8px 0 4px;
+    margin-top: 14px;
+    line-height: 1.6;
   }
 
-  /* reveal text */
-  .reveal-text {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-    color: var(--deep);
-    line-height: 1.75;
-    margin: 6px 0;
-  }
-  .reveal-text.soft {
-    font-style: italic;
-    color: var(--text-soft);
-    font-size: 1rem;
-  }
+  /* letter */
+  .letter-card::before { content:'💌'; position:absolute; top:18px; right:20px; font-size:1.3rem; opacity:0.45; }
+  .letter-heading { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:400; color:var(--deep); margin-bottom:18px; }
+  .letter-body { font-family:'Cormorant Garamond',serif; font-size:1.05rem; color:var(--text-main); line-height:1.9; font-weight:300; }
+  .letter-body p+p { margin-top:14px; }
+
+  .divider { height:1px; background:var(--border); margin:16px 0; }
 </style>
 </head>
 <body>
 
-<!-- ========== LOCK SCREEN ========== -->
+<!-- ====== LOCK SCREEN ====== -->
 <div id="lock-screen">
   <div class="lock-emoji">🌙</div>
   <h1 class="lock-title">not yet, love 😌</h1>
-  <p class="lock-sub">I know you're excited. I know you want to open it right now. But this one comes at noon — no exceptions.</p>
+  <p class="lock-sub">I know you want to open it right now. But this one comes at noon — no exceptions.</p>
   <p class="lock-tiny">good things take a little patience. you know this. 😌</p>
   <div class="countdown-box">
-    <div class="countdown-unit">
-      <span class="num" id="cd-h">00</span>
-      <span class="lbl">hours</span>
-    </div>
+    <div class="countdown-unit"><span class="num" id="cd-h">00</span><span class="lbl">hours</span></div>
     <div class="countdown-sep">:</div>
-    <div class="countdown-unit">
-      <span class="num" id="cd-m">00</span>
-      <span class="lbl">mins</span>
-    </div>
+    <div class="countdown-unit"><span class="num" id="cd-m">00</span><span class="lbl">mins</span></div>
     <div class="countdown-sep">:</div>
-    <div class="countdown-unit">
-      <span class="num" id="cd-s">00</span>
-      <span class="lbl">secs</span>
-    </div>
+    <div class="countdown-unit"><span class="num" id="cd-s">00</span><span class="lbl">secs</span></div>
   </div>
 </div>
 
-<!-- ========== MAIN ========== -->
+<!-- ====== TYPEWRITER SCREEN ====== -->
+<div id="typewriter-screen">
+  <div id="tw-line-1" class="tw-line"></div>
+  <div id="tw-line-2" class="tw-line"></div>
+  <div id="tw-line-3" class="tw-line"></div>
+  <div id="tw-line-4" class="tw-line soft"></div>
+</div>
+
+<!-- ====== HEART SCREEN ====== -->
+<div id="heart-screen">
+  <p class="heart-hint">hold to open</p>
+  <div id="hold-heart"
+    onmousedown="startHold()" onmouseup="cancelHold()" onmouseleave="cancelHold()"
+    ontouchstart="startHold(event)" ontouchend="cancelHold()" ontouchcancel="cancelHold()">
+    <div class="heart-glow"></div>
+    <svg class="heart-svg" viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg">
+      <path d="M50 85 C50 85 5 55 5 28 C5 14 16 5 28 5 C36 5 44 10 50 18 C56 10 64 5 72 5 C84 5 95 14 95 28 C95 55 50 85 50 85Z" fill="#dc3251"/>
+    </svg>
+    <svg id="progress-ring" viewBox="0 0 116 116">
+      <circle id="progress-circle" cx="58" cy="58" r="54"/>
+    </svg>
+  </div>
+</div>
+
+<!-- ====== MAIN CONTENT ====== -->
 <div id="main-content">
 
-  <!-- HEADER -->
   <div class="site-header">
     <p class="date-label">03 · 06 · 2026</p>
-    <h1>sorry, no gift today 🙈</h1>
-    <p class="sub">…or is there?</p>
+    <h1>I love you. 💜</h1>
+    <p class="sub">even on the quiet days.</p>
   </div>
 
-  <!-- STAGE 1: Sorry no gift -->
-  <div class="stage active" id="stage-1">
-    <div class="card sorry-card">
-      <span class="sorry-emoji">🤒</span>
-      <h2 class="sorry-title">yesterday was rough.</h2>
-      <p class="sorry-body">I wasn't feeling well and needed some space. You gave it without making it weird. Thank you for that, genuinely.<br><br>So… no gift today. I'm sorry.</p>
-      <div class="choices-row">
-        <button class="choice-btn okay" onclick="chooseOkay()">
-          it's okay 🤍<br>
-          <span style="font-size:0.78rem;opacity:0.7;">take all the time you need</span>
-        </button>
-        <button class="choice-btn trust" onclick="chooseTrust()">
-          no — I know you would do it 😌<br>
-          <span style="font-size:0.78rem;opacity:0.8;">you always do</span>
-        </button>
-      </div>
+  <!-- Thank you note -->
+  <div class="card">
+    <h2 class="card-title">thank you for yesterday.</h2>
+    <div class="card-body">
+      <p>Yesterday I wasn't okay. I needed space and quiet — and without making it a thing, you just… gave it. No questions, no guilt, no weirdness.</p>
+      <p>I'm feeling better now 😌 And the first thing I wanted to do was make sure you knew — that kind of patience isn't small. To me, it's everything.</p>
+      <p class="soft">You're really good at loving me in the ways I actually need. I don't say that enough.</p>
     </div>
   </div>
 
-  <!-- STAGE 2: Are you sure? (shown after "it's okay") -->
-  <div class="stage" id="stage-2">
-    <div class="card areyousure-card">
-      <span class="areyousure-emoji">🫣</span>
-      <h2 class="areyousure-title">are you sure? 😌</h2>
-      <p class="areyousure-body">because maybe… just maybe… there's something here. You'd really leave without checking?</p>
-      <button class="cta-btn" onclick="showYes()">okay fine, show me 😭</button>
-      <button class="cta-btn secondary" onclick="showYes()">…you're right, I knew it 😌</button>
+  <!-- Video -->
+  <p class="section-label">made this for you</p>
+  <div class="card" style="padding:20px;">
+    <div class="poem-note">
+      <p>Tom Hiddleston once read a poem about love — not the loud, grand kind, but the quiet, steady kind that just stays. I heard it and thought of you immediately. So I made this.</p>
+    </div>
+    <div style="height:12px"></div>
+    <div class="video-wrap">
+      <iframe
+        src="https://www.youtube.com/embed/ZpSCTkWbCeE?autoplay=0&rel=0&modestbranding=1"
+        allowfullscreen
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+      </iframe>
+    </div>
+    <a class="video-open-link" href="https://youtube.com/shorts/ZpSCTkWbCeE" target="_blank">open fullscreen ↗</a>
+  </div>
+
+  <!-- Song -->
+  <p class="section-label">and one more thing</p>
+  <div class="card">
+    <p style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--deep); margin-bottom:14px;">🎵 this song felt like today.</p>
+    <div class="spotify-wrap">
+      <iframe
+        style="border-radius:12px"
+        src="https://open.spotify.com/embed/track/1pNTwQvMOD7NRJtRwHlRRf?utm_source=generator&theme=0"
+        width="100%" height="152" frameBorder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy">
+      </iframe>
+    </div>
+    <p class="jam-line">let's do a jam session again soon 🎧<br>just us, the same queue, different cities.</p>
+  </div>
+
+  <!-- Letter -->
+  <div class="card letter-card">
+    <h2 class="letter-heading">a small note 💜</h2>
+    <div class="letter-body">
+      <p>I don't always say it right. Sometimes I go quiet, sometimes I need space, and sometimes the words just don't come in the moment.</p>
+      <p>But I want you to know — you are the thing I come back to. Every single time.</p>
+      <p>Yesterday reminded me how lucky I am to have someone who loves me without making me explain myself. That's rare. That's you.</p>
+      <p>I made you that video because when I heard that poem, I didn't think of anything grand — I just thought of the small, ordinary moments with you. And how those are somehow the most important ones.</p>
+      <p class="soft">Thank you for being patient. Thank you for being soft with me. I love you. A lot. 💜</p>
     </div>
   </div>
 
-  <!-- STAGE 3: Yes I would -->
-  <div class="stage" id="stage-3">
-    <div class="card yes-card">
-      <span class="yes-emoji">💜</span>
-      <h2 class="yes-title">yes. of course I would.</h2>
-      <p class="yes-body">Even on the days I don't feel like myself — you're still the reason I try.<br><br>So here's a little something, even on a quiet day. 😌</p>
-      <button class="cta-btn" onclick="showVideo()">open it 💌</button>
-    </div>
-  </div>
-
-  <!-- STAGE 4: Video + Music + Letter -->
-  <div class="stage" id="stage-4">
-
-    <p class="section-label">made this for you</p>
-
-    <!-- Video -->
-    <div class="card">
-      <p class="video-section-title">🎬 a little something I made…</p>
-      <div class="video-wrap" id="video-wrap">
-        <iframe
-          src="https://collection.cloudinary.com/dckjjkd1z/1fb7d75645417af191742ba1b0e3fbd1"
-          allowfullscreen
-          allow="autoplay; fullscreen"
-          onerror="document.getElementById('vid-fallback').style.display='flex'; this.style.display='none'">
-        </iframe>
-        <div class="video-fallback" id="vid-fallback" style="display:none;">
-          <span>tap to watch the video 🎬</span>
-          <a href="https://collection.cloudinary.com/dckjjkd1z/1fb7d75645417af191742ba1b0e3fbd1" target="_blank">open video ↗</a>
-        </div>
-      </div>
-      <div style="margin-top:12px; text-align:center;">
-        <a href="https://collection.cloudinary.com/dckjjkd1z/1fb7d75645417af191742ba1b0e3fbd1" target="_blank" style="font-size:0.8rem; color:var(--text-muted); text-decoration:none;">open in full screen ↗</a>
-      </div>
-    </div>
-
-    <!-- Music -->
-    <div class="card music-card">
-      <p class="music-label">🎵 and this song felt right today</p>
-      <div class="spotify-wrap">
-        <iframe
-          style="border-radius:12px"
-          src="https://open.spotify.com/embed/track/1pNTwQvMOD7NRJtRwHlRRf?utm_source=generator&theme=0"
-          width="100%"
-          height="152"
-          frameBorder="0"
-          allowfullscreen=""
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          loading="lazy">
-        </iframe>
-      </div>
-    </div>
-
-    <!-- Letter -->
-    <div class="card letter-card">
-      <h2 class="letter-heading">a small note 💜</h2>
-      <div class="letter-body">
-        <p>Yesterday was one of those days where I just needed quiet — and without me having to explain much, you understood. You gave me space without making me feel guilty for needing it, and I don't think I say this enough: that means everything to me.</p>
-        <p>I'm feeling better now (I think 😌). And the first thing I wanted to do was make sure you knew — I noticed. I always notice the little things you do.</p>
-        <p>You could've been upset. You could've made it about you. You didn't. And somehow that made me want to come back even more.</p>
-        <p>So thank you. For the patience, for the softness, for just… being you about it.</p>
-        <p>I made you something small — it's not much, but it's made with a lot. And I meant every second of it. 💜</p>
-      </div>
-    </div>
-
-  </div><!-- end stage-4 -->
-
-</div><!-- end main-content -->
+</div><!-- end main -->
 
 <script>
-  // ========== LOCK ==========
-  function pad(n) { return String(n).padStart(2, '0'); }
+  // ====== LOCK ======
+  function pad(n) { return String(n).padStart(2,'0'); }
 
   function getUnlockTime() {
     const now = new Date();
@@ -606,13 +416,11 @@
   function doUnlock() {
     clearInterval(window._cdInterval);
     const lock = document.getElementById('lock-screen');
-    const main = document.getElementById('main-content');
-    lock.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+    lock.style.transition = 'opacity 0.8s ease';
     lock.style.opacity = '0';
-    lock.style.transform = 'scale(1.04)';
     setTimeout(() => {
       lock.style.display = 'none';
-      main.classList.add('visible');
+      startTypewriter();
     }, 800);
   }
 
@@ -625,38 +433,123 @@
     document.getElementById('cd-s').textContent = pad(s % 60);
   }
 
-  // ========== STAGE FLOW ==========
-  function showStage(id) {
-    document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
-    const el = document.getElementById(id);
-    el.classList.add('active');
-    setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  // ====== TYPEWRITER ======
+  const lines = [
+    { id: 'tw-line-1', text: "hey.", delay: 600 },
+    { id: 'tw-line-2', text: "I didn't make anything today.", delay: 2000 },
+    { id: 'tw-line-3', text: "I wasn't feeling well.", delay: 3800 },
+    { id: 'tw-line-4', text: "I just wanted to say sorry.", delay: 5600 },
+  ];
+
+  function typeText(el, text, cb) {
+    el.classList.add('visible');
+    let i = 0;
+    el.innerHTML = '';
+    const interval = setInterval(() => {
+      el.innerHTML = text.slice(0, ++i) + '<span class="cursor"></span>';
+      if (i >= text.length) {
+        clearInterval(interval);
+        el.innerHTML = text; // remove cursor at end
+        if (cb) cb();
+      }
+    }, 45);
   }
 
-  function chooseOkay() {
-    // Tapped "it's okay" — show "are you sure?"
-    showStage('stage-2');
+  function startTypewriter() {
+    const tw = document.getElementById('typewriter-screen');
+    tw.classList.add('active');
+
+    lines.forEach((line, idx) => {
+      setTimeout(() => {
+        const el = document.getElementById(line.id);
+        typeText(el, line.text, null);
+      }, line.delay);
+    });
+
+    // After last line, wait then fade to heart screen
+    setTimeout(() => {
+      tw.style.transition = 'opacity 1s ease';
+      tw.style.opacity = '0';
+      setTimeout(() => {
+        tw.classList.remove('active');
+        tw.style.opacity = '';
+        showHeartScreen();
+      }, 1000);
+    }, 9500);
   }
 
-  function chooseTrust() {
-    // Tapped "I know you would" — skip straight to yes
-    showStage('stage-3');
+  // ====== HEART HOLD ======
+  function showHeartScreen() {
+    const hs = document.getElementById('heart-screen');
+    hs.classList.add('active');
   }
 
-  function showYes() {
-    showStage('stage-3');
+  let holdTimer = null;
+  let holdStart = null;
+  let holdInterval = null;
+  const HOLD_DURATION = 3000;
+  const circumference = 339;
+
+  function startHold(e) {
+    if (e) e.preventDefault();
+    holdStart = Date.now();
+    const circle = document.getElementById('progress-circle');
+    const heart = document.querySelector('.heart-svg');
+
+    holdInterval = setInterval(() => {
+      const elapsed = Date.now() - holdStart;
+      const progress = Math.min(elapsed / HOLD_DURATION, 1);
+      circle.style.strokeDashoffset = circumference * (1 - progress);
+      heart.style.transform = `scale(${1 + progress * 0.3})`;
+      heart.style.filter = `drop-shadow(0 0 ${18 + progress * 24}px rgba(220,50,80,${0.6 + progress * 0.4}))`;
+
+      if (progress >= 1) {
+        clearInterval(holdInterval);
+        completeHold();
+      }
+    }, 30);
   }
 
-  function showVideo() {
-    showStage('stage-4');
+  function cancelHold() {
+    if (!holdInterval) return;
+    clearInterval(holdInterval);
+    holdInterval = null;
+    const circle = document.getElementById('progress-circle');
+    const heart = document.querySelector('.heart-svg');
+    // Reset smoothly
+    circle.style.transition = 'stroke-dashoffset 0.4s ease';
+    circle.style.strokeDashoffset = circumference;
+    heart.style.transform = '';
+    heart.style.filter = '';
+    setTimeout(() => { circle.style.transition = ''; }, 400);
   }
 
-  // ========== INIT ==========
+  function completeHold() {
+    const hs = document.getElementById('heart-screen');
+    hs.style.transition = 'opacity 0.9s ease';
+    hs.style.opacity = '0';
+    setTimeout(() => {
+      hs.classList.remove('active');
+      hs.style.opacity = '';
+      revealMain();
+    }, 900);
+  }
+
+  function revealMain() {
+    document.body.style.background = 'var(--cream)';
+    const main = document.getElementById('main-content');
+    main.classList.add('visible');
+    main.style.opacity = '0';
+    main.style.transition = 'opacity 0.9s ease';
+    setTimeout(() => { main.style.opacity = '1'; }, 50);
+  }
+
+  // ====== INIT ======
   document.addEventListener('DOMContentLoaded', function () {
     const params = new URLSearchParams(window.location.search);
     if (params.get('preview') === 'true') {
       document.getElementById('lock-screen').style.display = 'none';
-      document.getElementById('main-content').classList.add('visible');
+      startTypewriter();
     } else {
       updateCountdown();
       window._cdInterval = setInterval(updateCountdown, 1000);
