@@ -1,1 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>03 · 06 · 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf7f2;
+    --blush: #f5e6e0;
+    --rose: #e8c4b8;
+    --mauve: #c9a0a0;
+    --plum: #8b5e6e;
+    --deep: #4a3040;
+    --lavender: #d4c4d8;
+    --soft-purple: #9b7fb0;
+    --text-main: #3d2b35;
+    --text-soft: #7a5c68;
+    --text-muted: #b0909a;
+    --card-bg: rgba(255,255,255,0.72);
+    --border: rgba(200,160,170,0.3);
+    --shadow: 0 8px 40px rgba(139,94,110,0.12);
+    --radius: 20px;
+  }
 
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    min-height: 100%;
+    background: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-main);
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(232,196,184,0.35) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 90%, rgba(212,196,216,0.3) 0%, transparent 55%),
+      radial-gradient(ellipse 40% 40% at 60% 40%, rgba(245,230,224,0.2) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ========== LOCK SCREEN ========== */
+  #lock-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: linear-gradient(160deg, #faf0ec 0%, #f5e8e4 40%, #ede0f0 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    text-align: center;
+  }
+
+  .lock-emoji {
+    font-size: 52px;
+    margin-bottom: 20px;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .lock-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.3rem;
+    font-weight: 400;
+    color: var(--plum);
+    margin-bottom: 10px;
+  }
+
+  .lock-sub {
+    font-size: 0.92rem;
+    color: var(--text-soft);
+    max-width: 290px;
+    line-height: 1.7;
+    margin-bottom: 6px;
+  }
+
+  .lock-tiny {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 36px;
+  }
+
+  .countdown-box {
+    background: rgba(255,255,255,0.6);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 20px 32px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .countdown-unit { text-align: center; }
+  .countdown-unit .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: var(--plum);
+    line-height: 1;
+    display: block;
+  }
+  .countdown-unit .lbl {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .countdown-sep {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    color: var(--rose);
+    margin-top: -8px;
+  }
+
+  /* ========== MAIN ========== */
+  #main-content {
+    display: none;
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 0 80px;
+  }
+  #main-content.visible { display: block; }
+
+  /* HEADER */
+  .site-header {
+    padding: 52px 24px 28px;
+    text-align: center;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .date-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .site-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.3rem;
+    font-weight: 400;
+    color: var(--deep);
+    line-height: 1.25;
+    margin-bottom: 10px;
+  }
+
+  .site-header .sub {
+    font-size: 0.875rem;
+    color: var(--text-soft);
+    line-height: 1.6;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(16px);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin: 0 16px 20px;
+    box-shadow: var(--shadow);
+  }
+
+  /* ========== STAGE SYSTEM ========== */
+  .stage { display: none; }
+  .stage.active {
+    display: block;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  /* ========== STAGE 1: Sorry no gift ========== */
+  .sorry-card {
+    text-align: center;
+  }
+
+  .sorry-emoji {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 16px;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .sorry-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.9rem;
+    font-weight: 400;
+    color: var(--deep);
+    margin-bottom: 8px;
+  }
+
+  .sorry-body {
+    font-size: 0.9rem;
+    color: var(--text-soft);
+    line-height: 1.7;
+    margin-bottom: 28px;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .choices-row {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .choice-btn {
+    background: rgba(255,255,255,0.5);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    -webkit-tap-highlight-color: transparent;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .choice-btn:hover { background: rgba(255,255,255,0.85); border-color: var(--mauve); }
+  .choice-btn:active { transform: scale(0.97); }
+
+  .choice-btn.okay {
+    background: rgba(232,196,184,0.2);
+    border-color: var(--rose);
+    color: var(--text-soft);
+  }
+
+  .choice-btn.trust {
+    background: linear-gradient(135deg, rgba(155,127,176,0.15) 0%, rgba(139,94,110,0.1) 100%);
+    border-color: var(--soft-purple);
+    color: var(--plum);
+    font-weight: 500;
+  }
+
+  /* ========== STAGE 2: Are you sure? ========== */
+  .areyousure-card { text-align: center; }
+
+  .areyousure-emoji {
+    font-size: 2.8rem;
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .areyousure-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    color: var(--deep);
+    margin-bottom: 10px;
+  }
+
+  .areyousure-body {
+    font-size: 0.88rem;
+    color: var(--text-soft);
+    line-height: 1.7;
+    margin-bottom: 24px;
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ========== STAGE 3: Yes I would ========== */
+  .yes-card { text-align: center; }
+
+  .yes-emoji {
+    font-size: 2.8rem;
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .yes-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.9rem;
+    color: var(--deep);
+    margin-bottom: 10px;
+  }
+
+  .yes-body {
+    font-size: 0.9rem;
+    color: var(--text-soft);
+    line-height: 1.75;
+    margin-bottom: 24px;
+  }
+
+  /* CTA */
+  .cta-btn {
+    display: block;
+    width: 100%;
+    background: linear-gradient(135deg, var(--plum) 0%, var(--soft-purple) 100%);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 15px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    margin-top: 8px;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: 0.02em;
+  }
+  .cta-btn:active { transform: scale(0.97); }
+  .cta-btn:hover { opacity: 0.92; }
+
+  .cta-btn.secondary {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--text-soft);
+    margin-top: 10px;
+  }
+
+  /* ========== STAGE 4: VIDEO ========== */
+  .video-section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--text-soft);
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .video-wrap {
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--deep);
+    aspect-ratio: 9/16;
+    max-height: 520px;
+    position: relative;
+  }
+
+  .video-wrap iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  .video-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.7);
+    gap: 12px;
+    font-size: 0.85rem;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .video-fallback a {
+    color: white;
+    font-size: 0.9rem;
+    background: rgba(255,255,255,0.15);
+    padding: 10px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+  }
+
+  /* MUSIC CARD */
+  .music-card { text-align: center; }
+  .music-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--text-soft);
+    margin-bottom: 14px;
+  }
+
+  .spotify-wrap {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  /* LETTER */
+  .letter-card { position: relative; overflow: hidden; }
+  .letter-card::before {
+    content: '💌';
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    font-size: 1.3rem;
+    opacity: 0.5;
+  }
+
+  .letter-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.55rem;
+    font-weight: 400;
+    color: var(--deep);
+    margin-bottom: 18px;
+  }
+
+  .letter-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    color: var(--text-main);
+    line-height: 1.9;
+    font-weight: 300;
+  }
+
+  .letter-body p + p { margin-top: 14px; }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 16px 0;
+  }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    text-align: center;
+    padding: 8px 0 4px;
+  }
+
+  /* reveal text */
+  .reveal-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--deep);
+    line-height: 1.75;
+    margin: 6px 0;
+  }
+  .reveal-text.soft {
+    font-style: italic;
+    color: var(--text-soft);
+    font-size: 1rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== LOCK SCREEN ========== -->
+<div id="lock-screen">
+  <div class="lock-emoji">🌙</div>
+  <h1 class="lock-title">not yet, love 😌</h1>
+  <p class="lock-sub">I know you're excited. I know you want to open it right now. But this one comes at noon — no exceptions.</p>
+  <p class="lock-tiny">good things take a little patience. you know this. 😌</p>
+  <div class="countdown-box">
+    <div class="countdown-unit">
+      <span class="num" id="cd-h">00</span>
+      <span class="lbl">hours</span>
+    </div>
+    <div class="countdown-sep">:</div>
+    <div class="countdown-unit">
+      <span class="num" id="cd-m">00</span>
+      <span class="lbl">mins</span>
+    </div>
+    <div class="countdown-sep">:</div>
+    <div class="countdown-unit">
+      <span class="num" id="cd-s">00</span>
+      <span class="lbl">secs</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== MAIN ========== -->
+<div id="main-content">
+
+  <!-- HEADER -->
+  <div class="site-header">
+    <p class="date-label">03 · 06 · 2026</p>
+    <h1>sorry, no gift today 🙈</h1>
+    <p class="sub">…or is there?</p>
+  </div>
+
+  <!-- STAGE 1: Sorry no gift -->
+  <div class="stage active" id="stage-1">
+    <div class="card sorry-card">
+      <span class="sorry-emoji">🤒</span>
+      <h2 class="sorry-title">yesterday was rough.</h2>
+      <p class="sorry-body">I wasn't feeling well and needed some space. You gave it without making it weird. Thank you for that, genuinely.<br><br>So… no gift today. I'm sorry.</p>
+      <div class="choices-row">
+        <button class="choice-btn okay" onclick="chooseOkay()">
+          it's okay 🤍<br>
+          <span style="font-size:0.78rem;opacity:0.7;">take all the time you need</span>
+        </button>
+        <button class="choice-btn trust" onclick="chooseTrust()">
+          no — I know you would do it 😌<br>
+          <span style="font-size:0.78rem;opacity:0.8;">you always do</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGE 2: Are you sure? (shown after "it's okay") -->
+  <div class="stage" id="stage-2">
+    <div class="card areyousure-card">
+      <span class="areyousure-emoji">🫣</span>
+      <h2 class="areyousure-title">are you sure? 😌</h2>
+      <p class="areyousure-body">because maybe… just maybe… there's something here. You'd really leave without checking?</p>
+      <button class="cta-btn" onclick="showYes()">okay fine, show me 😭</button>
+      <button class="cta-btn secondary" onclick="showYes()">…you're right, I knew it 😌</button>
+    </div>
+  </div>
+
+  <!-- STAGE 3: Yes I would -->
+  <div class="stage" id="stage-3">
+    <div class="card yes-card">
+      <span class="yes-emoji">💜</span>
+      <h2 class="yes-title">yes. of course I would.</h2>
+      <p class="yes-body">Even on the days I don't feel like myself — you're still the reason I try.<br><br>So here's a little something, even on a quiet day. 😌</p>
+      <button class="cta-btn" onclick="showVideo()">open it 💌</button>
+    </div>
+  </div>
+
+  <!-- STAGE 4: Video + Music + Letter -->
+  <div class="stage" id="stage-4">
+
+    <p class="section-label">made this for you</p>
+
+    <!-- Video -->
+    <div class="card">
+      <p class="video-section-title">🎬 a little something I made…</p>
+      <div class="video-wrap" id="video-wrap">
+        <iframe
+          src="https://collection.cloudinary.com/dckjjkd1z/1fb7d75645417af191742ba1b0e3fbd1"
+          allowfullscreen
+          allow="autoplay; fullscreen"
+          onerror="document.getElementById('vid-fallback').style.display='flex'; this.style.display='none'">
+        </iframe>
+        <div class="video-fallback" id="vid-fallback" style="display:none;">
+          <span>tap to watch the video 🎬</span>
+          <a href="https://collection.cloudinary.com/dckjjkd1z/1fb7d75645417af191742ba1b0e3fbd1" target="_blank">open video ↗</a>
+        </div>
+      </div>
+      <div style="margin-top:12px; text-align:center;">
+        <a href="https://collection.cloudinary.com/dckjjkd1z/1fb7d75645417af191742ba1b0e3fbd1" target="_blank" style="font-size:0.8rem; color:var(--text-muted); text-decoration:none;">open in full screen ↗</a>
+      </div>
+    </div>
+
+    <!-- Music -->
+    <div class="card music-card">
+      <p class="music-label">🎵 and this song felt right today</p>
+      <div class="spotify-wrap">
+        <iframe
+          style="border-radius:12px"
+          src="https://open.spotify.com/embed/track/1pNTwQvMOD7NRJtRwHlRRf?utm_source=generator&theme=0"
+          width="100%"
+          height="152"
+          frameBorder="0"
+          allowfullscreen=""
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- Letter -->
+    <div class="card letter-card">
+      <h2 class="letter-heading">a small note 💜</h2>
+      <div class="letter-body">
+        <p>Yesterday was one of those days where I just needed quiet — and without me having to explain much, you understood. You gave me space without making me feel guilty for needing it, and I don't think I say this enough: that means everything to me.</p>
+        <p>I'm feeling better now (I think 😌). And the first thing I wanted to do was make sure you knew — I noticed. I always notice the little things you do.</p>
+        <p>You could've been upset. You could've made it about you. You didn't. And somehow that made me want to come back even more.</p>
+        <p>So thank you. For the patience, for the softness, for just… being you about it.</p>
+        <p>I made you something small — it's not much, but it's made with a lot. And I meant every second of it. 💜</p>
+      </div>
+    </div>
+
+  </div><!-- end stage-4 -->
+
+</div><!-- end main-content -->
+
+<script>
+  // ========== LOCK ==========
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function getUnlockTime() {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0, 0);
+  }
+
+  function doUnlock() {
+    clearInterval(window._cdInterval);
+    const lock = document.getElementById('lock-screen');
+    const main = document.getElementById('main-content');
+    lock.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+    lock.style.opacity = '0';
+    lock.style.transform = 'scale(1.04)';
+    setTimeout(() => {
+      lock.style.display = 'none';
+      main.classList.add('visible');
+    }, 800);
+  }
+
+  function updateCountdown() {
+    const diff = getUnlockTime() - new Date();
+    if (diff <= 0) { doUnlock(); return; }
+    const s = Math.floor(diff / 1000);
+    document.getElementById('cd-h').textContent = pad(Math.floor(s / 3600));
+    document.getElementById('cd-m').textContent = pad(Math.floor((s % 3600) / 60));
+    document.getElementById('cd-s').textContent = pad(s % 60);
+  }
+
+  // ========== STAGE FLOW ==========
+  function showStage(id) {
+    document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
+    const el = document.getElementById(id);
+    el.classList.add('active');
+    setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  }
+
+  function chooseOkay() {
+    // Tapped "it's okay" — show "are you sure?"
+    showStage('stage-2');
+  }
+
+  function chooseTrust() {
+    // Tapped "I know you would" — skip straight to yes
+    showStage('stage-3');
+  }
+
+  function showYes() {
+    showStage('stage-3');
+  }
+
+  function showVideo() {
+    showStage('stage-4');
+  }
+
+  // ========== INIT ==========
+  document.addEventListener('DOMContentLoaded', function () {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('preview') === 'true') {
+      document.getElementById('lock-screen').style.display = 'none';
+      document.getElementById('main-content').classList.add('visible');
+    } else {
+      updateCountdown();
+      window._cdInterval = setInterval(updateCountdown, 1000);
+    }
+  });
+</script>
+</body>
+</html>
