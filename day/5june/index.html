@@ -230,7 +230,7 @@
   <div class="site-header">
     <p class="date-label">05 · 06 · 2026</p>
     <h1>3 more days, Tingu ji 🥹</h1>
-    <p class="sub">aaj ka din teri taraf se — little tasks, little surprises.</p>
+    <p class="sub">aaj ka din aapki taraf se — little tasks, little surprises.</p>
   </div>
 
   <!-- ===== MORNING TASKS (8 AM) ===== -->
@@ -313,8 +313,8 @@
       <h2 class="card-title">yeh wala time… 😭</h2>
       <div class="card-body">
         <p>office ka sabse boring hour. neend aa rahi hogi. screen blur lag rahi hogi.</p>
-        <p>par sun — <em style="color:var(--plum);">sirf thodi der aur.</em></p>
-        <p>Monday subah, breakfast saath, forehead kisses, aur tu, main, aur bahut saara time. 🥹</p>
+        <p>par sunoo — <em style="color:var(--plum);">sirf thodi der aur.</em></p>
+        <p>Monday subah, breakfast saath, forehead kisses, aur aap, main, aur bahut saara time. 🥹</p>
         <p style="margin-top:8px;">abhi ke liye — ek deep breath. aur ek task:</p>
       </div>
     </div>
@@ -353,7 +353,7 @@
         </div>
         <div class="plan-item">
           <span class="plan-emoji">🍜</span>
-          <p class="plan-text"><strong>lunch saath.</strong> whatever you pick — Pizza, Chinese, North Indian — teri marzi. 😌</p>
+          <p class="plan-text"><strong>lunch saath.</strong> whatever you pick — Pizza, Chinese, North Indian — aapki marzi. 😌</p>
         </div>
         <div class="plan-item">
           <span class="plan-emoji">🎀</span>
@@ -385,8 +385,8 @@
       <h2 class="letter-heading">ek chhoti si baat 💜</h2>
       <div class="letter-body">
         <p>aaj pura din kaam kiya, phir bhi yahan aayi — that means something.</p>
-        <p>Monday pe milenge. finally. sirf teen din. aur phir — breakfast, forehead kisses, food, aur tujhe properly dekhunga. bahut din ho gaye hain.</p>
-        <p>I don't say it enough but — I really like us. The way we talk, the way you make even a normal day feel like something. Yeh jo bana raha hoon tere liye — it's because you deserve to feel remembered. Every day.</p>
+        <p>Monday pe milenge. finally. sirf teen din. aur phir — breakfast, forehead kisses, food, aur aapko properly dekhunga. bahut din ho gaye hain.</p>
+        <p>I don't say it enough but — I really like us. The way we talk, the way you make even a normal day feel like something. Yeh jo bana raha hoon aapke liye — it's because you deserve to feel remembered. Every day.</p>
         <p style="font-style:italic; color:var(--text-soft);">see you Monday, Tingu ji. 🥹💜</p>
       </div>
     </div>
@@ -500,12 +500,13 @@
   }
 
   // ===== TIME DROPS =====
- const drops=[
-    { id:'drop-10',   lockId:'drop-10-lock',   hour:0, min:0  },
-    { id:'drop-13',   lockId:'drop-13-lock',   hour:0, min:0  },
-    { id:'drop-1530', lockId:'drop-1530-lock', hour:0, min:0  },
-    { id:'drop-19',   lockId:'drop-19-lock',   hour:0, min:0  },
-];
+  const drops=[
+    { id:'drop-10',   lockId:'drop-10-lock',   hour:10, min:0  },
+    { id:'drop-13',   lockId:'drop-13-lock',   hour:13, min:0  },
+    { id:'drop-1530', lockId:'drop-1530-lock', hour:15, min:30 },
+    { id:'drop-19',   lockId:'drop-19-lock',   hour:19, min:0  },
+  ];
+
   function checkDrops(){
     const now=new Date();
     drops.forEach(d=>{
