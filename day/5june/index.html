@@ -500,13 +500,12 @@
   }
 
   // ===== TIME DROPS =====
-  const drops=[
-    { id:'drop-10',   lockId:'drop-10-lock',   hour:10, min:0  },
-    { id:'drop-13',   lockId:'drop-13-lock',   hour:13, min:0  },
-    { id:'drop-1530', lockId:'drop-1530-lock', hour:15, min:30 },
-    { id:'drop-19',   lockId:'drop-19-lock',   hour:19, min:0  },
-  ];
-
+ const drops=[
+    { id:'drop-10',   lockId:'drop-10-lock',   hour:0, min:0  },
+    { id:'drop-13',   lockId:'drop-13-lock',   hour:0, min:0  },
+    { id:'drop-1530', lockId:'drop-1530-lock', hour:0, min:0  },
+    { id:'drop-19',   lockId:'drop-19-lock',   hour:0, min:0  },
+];
   function checkDrops(){
     const now=new Date();
     drops.forEach(d=>{
