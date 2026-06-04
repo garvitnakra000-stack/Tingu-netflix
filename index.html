@@ -11,331 +11,281 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body {
-      background: #1a0a0e;
+      background: #120608;
       min-height: 100vh;
       font-family: 'Inter', sans-serif;
       color: #fff5f0;
       overflow-x: hidden;
     }
 
-    .page {
-      position: relative;
-      min-height: 100vh;
-      padding: 0 0 60px;
-      overflow: hidden;
+    /* ===== BACKGROUND ===== */
+    .bg-layer {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 15% 20%, rgba(180,40,70,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 85% 80%, rgba(120,30,80,0.2) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 50% 50%, rgba(90,10,30,0.15) 0%, transparent 60%);
     }
 
-    .petals-bg {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 0;
+    /* ===== TEDDY BACKGROUND ===== */
+    .teddy-bg {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0.04;
+      font-size: min(70vw, 70vh);
+      user-select: none;
     }
 
-    .petal {
-      position: absolute;
-      pointer-events: none;
-      opacity: 0.06;
+    /* ===== PETALS ===== */
+    .petals-bg { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+    .petal { position: absolute; pointer-events: none; animation: petalFloat linear infinite; }
+    @keyframes petalFloat {
+      0%   { transform: translateY(-10px) rotate(0deg); opacity: 0; }
+      10%  { opacity: 0.07; }
+      90%  { opacity: 0.05; }
+      100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
     }
 
-    /* HERO */
+    .page { position: relative; min-height: 100vh; padding: 0 0 60px; }
+
+    /* ===== HERO ===== */
     .hero {
-      text-align: center;
-      padding: 56px 24px 36px;
-      position: relative;
-      z-index: 2;
+      text-align: center; padding: 60px 24px 32px;
+      position: relative; z-index: 2;
     }
-
     .greeting {
-      font-size: 11px;
-      letter-spacing: 4px;
-      color: #d4956a;
-      text-transform: uppercase;
-      margin-bottom: 18px;
-      font-weight: 300;
+      font-size: 10px; letter-spacing: 4px; color: #d4956a;
+      text-transform: uppercase; margin-bottom: 18px; font-weight: 300;
     }
-
     .hero-title {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(38px, 8vw, 56px);
-      color: #fff5f0;
-      line-height: 1.15;
-      margin-bottom: 10px;
+      font-size: clamp(36px, 8vw, 58px);
+      color: #fff5f0; line-height: 1.15; margin-bottom: 12px;
     }
+    .hero-title em { color: #f0a0be; font-style: italic; }
+    .hero-sub { font-size: 10px; color: #9e7a84; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 300; }
 
-    .hero-title em {
-      color: #e8a0b4;
-      font-style: italic;
-    }
-
-    .hero-sub {
-      font-size: 11px;
-      color: #9e7a84;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      font-weight: 300;
-    }
-
-    /* DIVIDER */
+    /* ===== DIVIDER ===== */
     .divider {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      margin: 10px auto 40px;
-      max-width: 340px;
-      padding: 0 24px;
+      display: flex; align-items: center; justify-content: center;
+      gap: 14px; margin: 10px auto 40px; max-width: 340px; padding: 0 24px;
     }
+    .divider-line { flex:1; height:1px; background:linear-gradient(to right,transparent,#8b3a52,transparent); }
+    .divider-icon { font-size: 18px; }
 
-    .divider-line {
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(to right, transparent, #8b3a52, transparent);
-    }
-
-    .divider-icon {
-      font-size: 18px;
-    }
-
-    /* SECTION LABEL */
+    /* ===== SECTION LABEL ===== */
     .section-label {
-      text-align: center;
-      font-size: 10px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: #7a5a66;
-      margin-bottom: 22px;
-      font-weight: 400;
+      text-align: center; font-size: 10px; letter-spacing: 4px;
+      text-transform: uppercase; color: #7a5a66; margin-bottom: 22px; font-weight: 400;
     }
 
-    /* COUNTDOWN */
-    .countdown-wrap {
-      padding: 0 20px;
-      margin-bottom: 52px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .countdown-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      max-width: 620px;
-      margin: 0 auto;
-    }
-
-    @media (max-width: 480px) {
-      .countdown-grid { grid-template-columns: 1fr; }
-    }
+    /* ===== COUNTDOWN ===== */
+    .countdown-wrap { padding: 0 20px; margin-bottom: 52px; position: relative; z-index: 2; }
+    .countdown-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 620px; margin: 0 auto; }
+    @media(max-width:480px){ .countdown-grid { grid-template-columns: 1fr; } }
 
     .countdown-card {
-      background: rgba(139, 58, 82, 0.10);
-      border: 1px solid rgba(228, 160, 180, 0.16);
-      border-radius: 18px;
-      padding: 22px 16px 18px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.3s, background 0.3s;
+      background: rgba(139,58,82,0.10);
+      border: 1px solid rgba(228,160,180,0.16);
+      border-radius: 18px; padding: 22px 16px 18px;
+      text-align: center; position: relative; overflow: hidden;
+      transition: border-color 0.3s, background 0.3s, transform 0.3s;
     }
-
     .countdown-card:hover {
-      border-color: rgba(228, 160, 180, 0.32);
-      background: rgba(139, 58, 82, 0.16);
+      border-color: rgba(228,160,180,0.35);
+      background: rgba(139,58,82,0.18);
+      transform: translateY(-2px);
     }
-
     .countdown-card.future {
-      background: rgba(212, 149, 106, 0.08);
-      border-color: rgba(212, 149, 106, 0.22);
+      background: linear-gradient(135deg, rgba(180,60,90,0.15) 0%, rgba(212,100,140,0.1) 100%);
+      border-color: rgba(240,160,190,0.35);
+      box-shadow: 0 0 30px rgba(200,60,100,0.12), inset 0 1px 0 rgba(255,255,255,0.05);
     }
-
     .countdown-card.future:hover {
-      background: rgba(212, 149, 106, 0.14);
-      border-color: rgba(212, 149, 106, 0.38);
+      border-color: rgba(240,160,190,0.6);
+      transform: translateY(-3px);
+      box-shadow: 0 0 40px rgba(200,60,100,0.22);
     }
 
-    .card-icon {
-      font-size: 24px;
-      margin-bottom: 10px;
-      display: block;
+    /* glowing ring on future card */
+    .countdown-card.future::before {
+      content: '';
+      position: absolute; inset: -1px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(240,140,180,0.3), transparent, rgba(200,80,120,0.2));
+      z-index: -1;
+      animation: ringPulse 3s ease-in-out infinite;
     }
+    @keyframes ringPulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
 
-    .card-label {
-      font-size: 10px;
+    .card-icon { font-size: 24px; margin-bottom: 10px; display: block; }
+    .card-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #9e7a84; margin-bottom: 6px; font-weight: 400; }
+    .card-date { font-size: 11px; color: #d4956a; margin-bottom: 14px; font-weight: 300; letter-spacing: 0.5px; }
+
+    .timer-row { display: flex; justify-content: center; align-items: flex-end; gap: 6px; }
+    .timer-unit { text-align: center; }
+    .timer-num { font-family: 'Playfair Display', serif; font-size: 26px; color: #fff5f0; line-height: 1; display: block; min-width: 34px; }
+    .timer-unit-label { font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase; color: #7a5a66; margin-top: 4px; display: block; }
+    .timer-dot { font-family: 'Playfair Display', serif; font-size: 22px; color: #6b2e42; padding-bottom: 12px; line-height: 1; }
+
+    /* future card countdown styling */
+    .future .timer-num { color: #f5c0d4; font-size: 28px; }
+    .future .timer-unit-label { color: #c07090; }
+    .future .timer-dot { color: #c07090; }
+    .future-badge {
+      display: inline-block;
+      background: rgba(240,100,140,0.18);
+      border: 1px solid rgba(240,140,180,0.3);
+      border-radius: 50px;
+      padding: 3px 12px;
+      font-size: 9px;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: #9e7a84;
-      margin-bottom: 6px;
-      font-weight: 400;
+      color: #f0a0be;
+      margin-bottom: 12px;
     }
 
-    .card-date {
-      font-size: 11px;
-      color: #d4956a;
-      margin-bottom: 14px;
-      font-weight: 300;
-      letter-spacing: 0.5px;
-    }
-
-    .timer-row {
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      gap: 6px;
-    }
-
-    .timer-unit {
-      text-align: center;
-    }
-
-    .timer-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 26px;
-      color: #fff5f0;
-      line-height: 1;
-      display: block;
-      min-width: 34px;
-    }
-
-    .timer-unit-label {
-      font-size: 8px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: #7a5a66;
-      margin-top: 4px;
-      display: block;
-    }
-
-    .timer-dot {
-      font-family: 'Playfair Display', serif;
-      font-size: 22px;
-      color: #6b2e42;
-      padding-bottom: 12px;
-      line-height: 1;
-    }
-
-    .tbd-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 15px;
-      color: #d4956a;
-      font-style: italic;
-      padding: 8px 0 4px;
-      line-height: 1.5;
-    }
-
-    /* NAV CARDS */
-    .nav-wrap {
-      padding: 0 20px;
-      margin-bottom: 48px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .nav-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      max-width: 620px;
-      margin: 0 auto;
-    }
-
-    @media (max-width: 420px) {
-      .nav-grid { grid-template-columns: 1fr; }
-    }
+    /* ===== NAV CARDS ===== */
+    .nav-wrap { padding: 0 20px; margin-bottom: 48px; position: relative; z-index: 2; }
+    .nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 620px; margin: 0 auto; }
+    @media(max-width:420px){ .nav-grid { grid-template-columns: 1fr; } }
 
     .nav-card {
-      background: rgba(255, 245, 240, 0.03);
-      border: 1px solid rgba(228, 160, 180, 0.13);
-      border-radius: 20px;
-      padding: 30px 20px 26px;
-      text-align: center;
-      cursor: pointer;
+      background: rgba(255,245,240,0.03);
+      border: 1px solid rgba(228,160,180,0.13);
+      border-radius: 20px; padding: 30px 20px 26px;
+      text-align: center; cursor: pointer;
       transition: transform 0.28s cubic-bezier(.34,1.56,.64,1), border-color 0.28s, background 0.28s;
-      text-decoration: none;
+      text-decoration: none; display: block;
+    }
+    .nav-card:hover { transform: translateY(-5px); border-color: rgba(228,160,180,0.38); background: rgba(139,58,82,0.14); }
+    .nav-card-icon { width:54px; height:54px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; font-size:26px; }
+    .icon-memories { background:rgba(139,58,82,0.28); border:1px solid rgba(228,160,180,0.2); }
+    .icon-gifts { background:rgba(212,149,106,0.22); border:1px solid rgba(212,149,106,0.28); }
+    .nav-card-title { font-family:'Playfair Display',serif; font-size:19px; color:#fff5f0; margin-bottom:6px; line-height:1.3; }
+    .nav-card-sub { font-size:10px; color:#7a5a66; letter-spacing:2px; text-transform:uppercase; font-weight:400; }
+    .nav-card-desc { font-size:12px; color:#b8909a; margin-top:10px; line-height:1.6; font-weight:300; }
+
+    /* ===== FOOTER ===== */
+    .footer { text-align:center; padding:8px 20px 0; position:relative; z-index:2; }
+    .footer-text { font-size:10px; color:#4a2a36; letter-spacing:2px; text-transform:uppercase; }
+
+    /* ===== EXCITED POPUP ===== */
+    #excited-btn {
       display: block;
-    }
-
-    .nav-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(228, 160, 180, 0.38);
-      background: rgba(139, 58, 82, 0.12);
-    }
-
-    .nav-card-icon {
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 16px;
-      font-size: 26px;
-    }
-
-    .icon-memories {
-      background: rgba(139, 58, 82, 0.28);
-      border: 1px solid rgba(228, 160, 180, 0.2);
-    }
-
-    .icon-gifts {
-      background: rgba(212, 149, 106, 0.22);
-      border: 1px solid rgba(212, 149, 106, 0.28);
-    }
-
-    .nav-card-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 19px;
-      color: #fff5f0;
-      margin-bottom: 6px;
-      line-height: 1.3;
-    }
-
-    .nav-card-sub {
-      font-size: 10px;
-      color: #7a5a66;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      font-weight: 400;
-    }
-
-    .nav-card-desc {
-      font-size: 12px;
-      color: #b8909a;
-      margin-top: 10px;
-      line-height: 1.6;
-      font-weight: 300;
-    }
-
-    /* FOOTER */
-    .footer {
-      text-align: center;
-      padding: 8px 20px 0;
+      margin: 0 auto 40px;
       position: relative;
       z-index: 2;
+      background: linear-gradient(135deg, #c0395a 0%, #8b2a4a 100%);
+      border: none;
+      border-radius: 50px;
+      padding: 14px 32px;
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-style: italic;
+      color: #fff5f0;
+      cursor: pointer;
+      box-shadow: 0 4px 24px rgba(180,40,80,0.35);
+      transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s;
+      animation: btnPulse 2.5s ease-in-out infinite;
+    }
+    @keyframes btnPulse { 0%,100%{box-shadow:0 4px 24px rgba(180,40,80,0.35)} 50%{box-shadow:0 4px 40px rgba(180,40,80,0.65)} }
+    #excited-btn:hover { transform: scale(1.06); }
+    #excited-btn:active { transform: scale(0.97); }
+
+    /* ===== KISSES OVERLAY ===== */
+    #kisses-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(10,2,6,0.92);
+      backdrop-filter: blur(4px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 28px;
+    }
+    #kisses-overlay.active { display: flex; }
+
+    .kisses-emoji-shower {
+      position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+    }
+    .kiss-fly {
+      position: absolute;
+      font-size: 28px;
+      animation: kissFly linear both;
+      opacity: 0;
+    }
+    @keyframes kissFly {
+      0%   { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 0; }
+      15%  { opacity: 1; }
+      80%  { opacity: 0.8; }
+      100% { transform: translateY(-100vh) scale(1.2) rotate(360deg); opacity: 0; }
     }
 
-    .footer-text {
-      font-size: 10px;
-      color: #4a2a36;
+    .kisses-content { position: relative; z-index: 2; }
+    .kisses-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 8vw, 3rem);
+      color: #f5c0d4;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      animation: fadeUp 0.6s ease both;
+    }
+    .kisses-sub {
+      font-size: 0.9rem;
+      color: #c07090;
+      line-height: 1.7;
+      max-width: 280px;
+      margin: 0 auto 28px;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+    .kisses-big {
+      font-size: clamp(3rem, 12vw, 5rem);
+      display: block;
+      margin-bottom: 24px;
+      animation: heartPop 0.5s 0.2s cubic-bezier(.34,1.56,.64,1) both;
+    }
+    @keyframes heartPop { from{transform:scale(0)} to{transform:scale(1)} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+    .kisses-close {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(228,160,180,0.25);
+      border-radius: 50px;
+      padding: 10px 28px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
       letter-spacing: 2px;
       text-transform: uppercase;
+      color: #c09090;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      animation: fadeUp 0.6s 0.3s ease both;
     }
+    .kisses-close:hover { background: rgba(255,255,255,0.14); color: #fff5f0; }
   </style>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-R7HVEC5HC5"></script>
-<script src="/analytics.js"></script>
-  <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "x0p6ub2n2r");
-</script>
+  <script src="/analytics.js"></script>
+  <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","x0p6ub2n2r");</script>
 </head>
 <body>
-  <div class="page">
+  <div class="bg-layer"></div>
+  <div class="teddy-bg">🧸</div>
+  <div class="petals-bg" id="petals"></div>
 
-    <div class="petals-bg" id="petals"></div>
+  <!-- KISSES OVERLAY -->
+  <div id="kisses-overlay">
+    <div class="kisses-emoji-shower" id="kiss-shower"></div>
+    <div class="kisses-content">
+      <span class="kisses-big">😘💋🥰</span>
+      <h2 class="kisses-title">obviously yes,<br>sending all the kisses 💋</h2>
+      <p class="kisses-sub">itne saare kisses collect karo, Monday tak use karna 😌<br>I'm SO excited to see you 🧸💜</p>
+      <button class="kisses-close" onclick="closeKisses()">okay okay 🙈 close</button>
+    </div>
+  </div>
+
+  <div class="page">
 
     <div class="hero">
       <p class="greeting">a little corner of the internet</p>
@@ -348,6 +298,11 @@
       <span class="divider-icon">🌹</span>
       <div class="divider-line"></div>
     </div>
+
+    <!-- EXCITED BUTTON -->
+    <button id="excited-btn" onclick="openKisses()">
+      are you excited to meet? 🥹
+    </button>
 
     <div class="countdown-wrap">
       <p class="section-label">our little forever</p>
@@ -375,10 +330,11 @@
         </div>
 
         <div class="countdown-card future">
-          <span class="card-icon">✨</span>
+          <div class="future-badge">✨ coming up</div>
+          <span class="card-icon">🧸</span>
           <div class="card-label">next time we meet</div>
-          <div class="card-date">coming soon...</div>
-          <p class="tbd-text">we'll get there soon 🌻</p>
+          <div class="card-date">June 8, 2026 · 10 AM</div>
+          <div class="timer-row" id="t4"></div>
         </div>
 
       </div>
@@ -387,21 +343,18 @@
     <div class="nav-wrap">
       <p class="section-label">your little universe</p>
       <div class="nav-grid">
-
         <a href="/memories" class="nav-card">
           <div class="nav-card-icon icon-memories">🎬</div>
           <div class="nav-card-title">Our Memories</div>
           <div class="nav-card-sub">memory log</div>
           <p class="nav-card-desc">every moment we've collected, always here</p>
         </a>
-
         <a href="/day" class="nav-card">
           <div class="nav-card-icon icon-gifts">💝</div>
           <div class="nav-card-title">With Love,<br>For You</div>
           <div class="nav-card-sub">little gifts</div>
           <p class="nav-card-desc">things i made, just because</p>
         </a>
-
       </div>
     </div>
 
@@ -412,37 +365,75 @@
   </div>
 
   <script>
-    // floating petals
+    // ===== PETALS =====
     const petalsEl = document.getElementById('petals');
-    const symbols = ['🌹', '🌻', '🌸', '✿', '❀'];
-    for (let i = 0; i < 22; i++) {
+    const symbols = ['🌹','🌸','💗','✿','❀','💕'];
+    for (let i = 0; i < 18; i++) {
       const p = document.createElement('div');
       p.className = 'petal';
       p.textContent = symbols[i % symbols.length];
-      p.style.left = Math.random() * 96 + '%';
-      p.style.top = Math.random() * 96 + '%';
-      p.style.fontSize = (12 + Math.random() * 20) + 'px';
-      p.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
+      p.style.left = (Math.random() * 96) + '%';
+      p.style.top = '-40px';
+      p.style.fontSize = (11 + Math.random() * 16) + 'px';
+      const dur = (18 + Math.random() * 20) + 's';
+      const delay = (Math.random() * 20) + 's';
+      p.style.animation = `petalFloat ${dur} ${delay} linear infinite`;
       petalsEl.appendChild(p);
     }
 
-    // IST-aware date (midnight IST = UTC - 5h30m)
-    function istMidnight(year, month, day) {
-      return new Date(Date.UTC(year, month - 1, day, 0, 0, 0) - (5.5 * 3600000));
+    // ===== KISSES =====
+    function openKisses() {
+      const overlay = document.getElementById('kisses-overlay');
+      overlay.classList.add('active');
+      spawnKisses();
+    }
+    function closeKisses() {
+      document.getElementById('kisses-overlay').classList.remove('active');
+      document.getElementById('kiss-shower').innerHTML = '';
+    }
+    function spawnKisses() {
+      const shower = document.getElementById('kiss-shower');
+      shower.innerHTML = '';
+      const emojis = ['💋','😘','🥰','💗','💕','❤️','🌹','💝'];
+      for (let i = 0; i < 40; i++) {
+        setTimeout(() => {
+          const el = document.createElement('div');
+          el.className = 'kiss-fly';
+          el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+          el.style.left = (Math.random() * 95) + '%';
+          el.style.bottom = '-20px';
+          el.style.fontSize = (18 + Math.random() * 22) + 'px';
+          const dur = (2 + Math.random() * 3) + 's';
+          el.style.animation = `kissFly ${dur} ease both`;
+          shower.appendChild(el);
+          setTimeout(() => el.remove(), parseFloat(dur) * 1000 + 100);
+        }, i * 80);
+      }
+      // keep spawning while overlay is open
+      setTimeout(() => {
+        if (document.getElementById('kisses-overlay').classList.contains('active')) spawnKisses();
+      }, 4000);
     }
 
-    function renderTimer(elId, sinceDate) {
+    // ===== TIMERS =====
+    function istTime(year, month, day, hour = 0, min = 0) {
+      // IST = UTC+5:30
+      return new Date(Date.UTC(year, month - 1, day, hour - 5, min - 30, 0));
+    }
+
+    function renderTimer(elId, targetDate, isFuture) {
       const el = document.getElementById(elId);
       function tick() {
-        const diff = Date.now() - sinceDate.getTime();
-        if (diff < 0) {
-          el.innerHTML = '<span style="color:#d4956a;font-size:12px;font-style:italic;font-family:\'Playfair Display\',serif;">coming soon</span>';
+        const now = Date.now();
+        const diff = isFuture ? (targetDate.getTime() - now) : (now - targetDate.getTime());
+        if (diff < 0 && isFuture) {
+          el.innerHTML = '<span style="color:#f0a0be;font-size:13px;font-family:\'Playfair Display\',serif;font-style:italic;">it\'s time!! 🎉</span>';
           return;
         }
-        const days = Math.floor(diff / 86400000);
-        const hrs  = Math.floor((diff % 86400000) / 3600000);
-        const mins = Math.floor((diff % 3600000) / 60000);
-        const secs = Math.floor((diff % 60000) / 1000);
+        const days = Math.floor(Math.abs(diff) / 86400000);
+        const hrs  = Math.floor((Math.abs(diff) % 86400000) / 3600000);
+        const mins = Math.floor((Math.abs(diff) % 3600000) / 60000);
+        const secs = Math.floor((Math.abs(diff) % 60000) / 1000);
         el.innerHTML =
           '<div class="timer-unit"><span class="timer-num">' + days + '</span><span class="timer-unit-label">days</span></div>' +
           '<span class="timer-dot">·</span>' +
@@ -456,9 +447,12 @@
       setInterval(tick, 1000);
     }
 
-    renderTimer('t1', istMidnight(2026, 4, 3));
-    renderTimer('t2', istMidnight(2026, 4, 25));
-    renderTimer('t3', istMidnight(2026, 4, 29));
+    // past events (count up)
+    renderTimer('t1', istTime(2026, 4, 3),  false);
+    renderTimer('t2', istTime(2026, 4, 25), false);
+    renderTimer('t3', istTime(2026, 4, 29), false);
+    // next meeting (count down) — June 8, 10 AM IST
+    renderTimer('t4', istTime(2026, 6, 8, 10, 0), true);
   </script>
 </body>
 </html>
