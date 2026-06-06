@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>06 · 06 · 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf7f2;
+    --parchment: #f2e8d5;
+    --dark-parchment: #e8d9b8;
+    --blush: #f5e6e0;
+    --rose: #e8c4b8;
+    --mauve: #c9a0a0;
+    --plum: #8b5e6e;
+    --deep: #4a3040;
+    --deep2: #2a1520;
+    --soft-purple: #9b7fb0;
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --text-main: #3d2b35;
+    --text-soft: #7a5c68;
+    --text-muted: #b0909a;
+    --card-bg: rgba(255,255,255,0.75);
+    --border: rgba(200,160,170,0.3);
+    --shadow: 0 8px 40px rgba(139,94,110,0.13);
+    --radius: 20px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { min-height: 100%; font-family: 'DM Sans', sans-serif; color: var(--text-main); overflow-x: hidden; background: #120608; }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+  /* ===== ENVELOPE SCREEN ===== */
+  #envelope-screen {
+    position: fixed; inset: 0; z-index: 900;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, #2a1020 0%, #120608 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 24px; padding: 40px 24px; text-align: center;
+  }
+
+  .env-label {
+    font-size: 0.72rem; letter-spacing: 0.25em; color: rgba(201,168,76,0.6);
+    text-transform: uppercase; font-family: 'DM Sans', sans-serif;
+    animation: fadeIn 1.5s ease both;
+  }
+
+  .env-title {
+    font-family: 'IM Fell English', serif;
+    font-size: 1.1rem; color: rgba(255,245,240,0.5);
+    font-style: italic; animation: fadeIn 2s ease both;
+    max-width: 260px; line-height: 1.6;
+  }
+
+  /* Envelope */
+  .envelope-wrap {
+    position: relative; width: 280px; height: 190px;
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+    animation: float 4s ease-in-out infinite;
+    transition: transform 0.3s ease;
+  }
+  .envelope-wrap:active { transform: scale(0.96); }
+
+  .envelope-body {
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, #3a1a28 0%, #2a1020 100%);
+    border-radius: 4px 4px 12px 12px;
+    border: 1px solid rgba(201,168,76,0.3);
+    box-shadow: 0 12px 50px rgba(0,0,0,0.5), inset 0 1px 0 rgba(201,168,76,0.15);
+  }
+
+  /* envelope flap top */
+  .envelope-flap {
+    position: absolute; top: 0; left: 0; right: 0; height: 110px;
+    overflow: hidden; transform-origin: top center;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 2;
+  }
+  .envelope-flap svg { width: 280px; height: 110px; display: block; }
+  .envelope-flap.open { transform: rotateX(180deg); }
+
+  /* envelope lines */
+  .envelope-lines {
+    position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; gap: 6px; width: 160px; opacity: 0.3;
+  }
+  .env-line { height: 1px; background: rgba(201,168,76,0.5); border-radius: 1px; }
+
+  /* wax seal */
+  .wax-seal {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 64px; height: 64px; z-index: 3;
+    cursor: pointer;
+  }
+  .seal-circle {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #c0395a, #7a1530);
+    box-shadow: 0 4px 20px rgba(192,57,90,0.5), inset 0 1px 0 rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .seal-circle:active { transform: scale(0.92); }
+  .seal-crack {
+    position: absolute; inset: 0; border-radius: 50%;
+    background: transparent;
+    transition: all 0.3s ease;
+  }
+  .wax-seal.cracked .seal-circle {
+    animation: sealCrack 0.4s ease both;
+  }
+  @keyframes sealCrack {
+    0%{transform:scale(1)} 30%{transform:scale(1.15) rotate(5deg)} 60%{transform:scale(0.9) rotate(-3deg)} 100%{transform:scale(0) rotate(10deg); opacity:0;}
+  }
+
+  .env-hint {
+    font-size: 0.75rem; color: rgba(201,168,76,0.5);
+    font-style: italic; font-family: 'IM Fell English', serif;
+    animation: fadeIn 3s ease both;
+  }
+
+  /* ===== MAIN ===== */
+  #main-content {
+    display: none; position: relative; z-index: 1;
+    max-width: 500px; margin: 0 auto; padding: 0 0 80px;
+    background: var(--cream); min-height: 100vh;
+  }
+  #main-content.visible { display: block; }
+  body.unlocked { background: var(--cream); }
+  body.unlocked::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%,rgba(232,196,184,0.35) 0%,transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 90%,rgba(212,196,216,0.3) 0%,transparent 55%);
+  }
+
+  .site-header { padding: 48px 24px 20px; text-align: center; position: relative; z-index: 1; animation: fadeUp 0.9s ease both; }
+  .date-label { font-size: 0.72rem; letter-spacing: 0.25em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 14px; }
+  .site-header h1 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 400; color: var(--deep); line-height: 1.25; margin-bottom: 8px; }
+  .site-header .sub { font-size: 0.875rem; color: var(--text-soft); line-height: 1.6; }
+
+  .section-label { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--text-muted); text-transform: uppercase; text-align: center; padding: 8px 0 4px; position: relative; z-index: 1; }
+
+  .card { background: var(--card-bg); border: 1px solid var(--border); backdrop-filter: blur(16px); border-radius: var(--radius); padding: 24px; margin: 0 16px 20px; box-shadow: var(--shadow); position: relative; z-index: 1; animation: fadeUp 0.7s ease both; overflow: hidden; }
+
+  /* ===== LEGAL NOTICE ===== */
+  .legal-card {
+    background: var(--parchment);
+    border: 2px solid rgba(201,168,76,0.4);
+    border-radius: 4px;
+    padding: 0;
+    margin: 0 16px 20px;
+    box-shadow: 0 8px 40px rgba(139,94,110,0.2), inset 0 0 60px rgba(201,168,76,0.05);
+    position: relative; z-index: 1;
+    animation: fadeUp 0.7s ease both;
+    overflow: hidden;
+  }
+
+  .legal-header {
+    background: var(--deep2);
+    padding: 20px 24px 16px;
+    text-align: center;
+    border-bottom: 2px solid rgba(201,168,76,0.3);
+  }
+
+  .legal-stamp-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; }
+  .legal-stamp-line { flex: 1; height: 1px; background: rgba(201,168,76,0.4); }
+  .legal-stamp-icon { font-size: 1rem; }
+
+  .legal-title-top {
+    font-family: 'IM Fell English', serif;
+    font-size: 0.7rem; letter-spacing: 0.3em; color: rgba(201,168,76,0.7);
+    text-transform: uppercase; margin-bottom: 6px;
+  }
+  .legal-title-main {
+    font-family: 'IM Fell English', serif;
+    font-size: 1.4rem; color: #e8c96a; line-height: 1.3;
+  }
+  .legal-title-sub { font-size: 0.72rem; color: rgba(255,245,240,0.4); margin-top: 6px; letter-spacing: 0.1em; }
+
+  .legal-body { padding: 20px 22px; }
+
+  .legal-meta { display: flex; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 6px; }
+  .legal-meta-item { font-size: 0.72rem; color: var(--text-soft); }
+  .legal-meta-item strong { color: var(--text-main); font-size: 0.78rem; }
+
+  .legal-divider { height: 1px; background: rgba(201,168,76,0.3); margin: 14px 0; }
+
+  .legal-section-title {
+    font-family: 'IM Fell English', serif;
+    font-size: 0.85rem; color: var(--plum); text-transform: uppercase;
+    letter-spacing: 0.15em; margin-bottom: 10px;
+  }
+
+  .legal-text {
+    font-family: 'IM Fell English', serif;
+    font-size: 0.95rem; color: var(--text-main); line-height: 1.8;
+  }
+
+  .charge-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin: 10px 0; }
+  .charge-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    background: rgba(139,94,110,0.06); border-left: 3px solid var(--mauve);
+    border-radius: 0 8px 8px 0; padding: 10px 12px;
+  }
+  .charge-num { font-family: 'IM Fell English', serif; font-size: 0.85rem; color: var(--plum); font-weight: 600; flex-shrink: 0; margin-top: 1px; }
+  .charge-text { font-family: 'IM Fell English', serif; font-size: 0.88rem; color: var(--text-main); line-height: 1.6; }
+  .charge-text em { color: var(--plum); }
+
+  .verdict-box {
+    background: linear-gradient(135deg, rgba(139,94,110,0.12) 0%, rgba(155,127,176,0.08) 100%);
+    border: 1.5px solid rgba(139,94,110,0.3);
+    border-radius: 12px; padding: 16px; margin-top: 14px;
+  }
+  .verdict-title { font-family: 'IM Fell English', serif; font-size: 1rem; color: var(--plum); margin-bottom: 8px; }
+  .verdict-text { font-family: 'IM Fell English', serif; font-size: 0.9rem; color: var(--text-main); line-height: 1.75; }
+  .verdict-text strong { color: var(--deep); }
+
+  .legal-seal-row { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 14px; border-top: 1px dashed rgba(201,168,76,0.3); }
+  .legal-sig { font-family: 'IM Fell English', serif; font-size: 0.8rem; color: var(--text-muted); font-style: italic; }
+  .legal-wax { font-size: 1.8rem; }
+
+  /* ===== SCRATCH COUPONS ===== */
+  .coupons-intro { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--text-soft); text-align: center; margin-bottom: 4px; font-style: italic; }
+
+  .coupon-grid { display: flex; flex-direction: column; gap: 14px; margin: 0 16px 20px; position: relative; z-index: 1; }
+
+  .coupon-wrap { position: relative; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); }
+
+  .coupon-reveal {
+    background: linear-gradient(135deg, #4a3040 0%, #8b5e6e 50%, #9b7fb0 100%);
+    padding: 20px; display: flex; gap: 16px; align-items: center; min-height: 90px;
+  }
+  .coupon-emoji-box {
+    width: 52px; height: 52px; border-radius: 12px; flex-shrink: 0;
+    background: rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; font-size: 1.6rem;
+  }
+  .coupon-text-box { flex: 1; }
+  .coupon-title { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: #fff5f0; margin-bottom: 4px; }
+  .coupon-sub { font-size: 0.78rem; color: rgba(255,245,240,0.6); line-height: 1.5; }
+  .coupon-badge { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,245,240,0.4); margin-top: 6px; }
+
+  .coupon-canvas-wrap { position: absolute; inset: 0; border-radius: 16px; overflow: hidden; }
+  canvas.coupon-canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: crosshair; border-radius: 16px; }
+
+  /* ===== SPOTIFY ===== */
+  .spotify-wrap { border-radius: 12px; overflow: hidden; }
+  .song-caption { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; font-style: italic; color: var(--text-soft); text-align: center; margin-top: 12px; line-height: 1.6; }
+
+  /* ===== MONDAY POPUP ===== */
+  #monday-popup {
+    display: none; position: fixed; inset: 0; z-index: 800;
+    background: rgba(10,2,6,0.85); backdrop-filter: blur(8px);
+    flex-direction: column; align-items: center; justify-content: center;
+    padding: 32px 24px; text-align: center;
+  }
+  #monday-popup.active { display: flex; }
+
+  .popup-card {
+    background: linear-gradient(160deg, #faf0ec 0%, #f5e8e4 100%);
+    border: 1px solid rgba(200,160,170,0.4);
+    border-radius: 24px; padding: 32px 28px; max-width: 340px; width: 100%;
+    box-shadow: 0 20px 80px rgba(139,94,110,0.3);
+    animation: popIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  @keyframes popIn { from{transform:scale(0.8);opacity:0} to{transform:scale(1);opacity:1} }
+
+  .popup-emoji { font-size: 3rem; display: block; margin-bottom: 12px; animation: float 3s ease-in-out infinite; }
+  .popup-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--deep); margin-bottom: 6px; }
+  .popup-sub { font-size: 0.82rem; color: var(--text-soft); margin-bottom: 24px; line-height: 1.6; }
+
+  .popup-timer-row { display: flex; justify-content: center; align-items: flex-end; gap: 6px; margin-bottom: 24px; }
+  .popup-unit { text-align: center; }
+  .popup-num { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 300; color: var(--plum); line-height: 1; display: block; min-width: 44px; }
+  .popup-lbl { font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); display: block; margin-top: 3px; }
+  .popup-sep { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--rose); padding-bottom: 16px; }
+
+  .popup-tags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 20px; }
+  .popup-tag {
+    background: rgba(139,94,110,0.1); border: 1px solid rgba(200,160,170,0.3);
+    border-radius: 50px; padding: 5px 14px; font-size: 0.78rem; color: var(--text-soft);
+  }
+
+  .popup-close {
+    background: linear-gradient(135deg, var(--plum) 0%, var(--soft-purple) 100%);
+    color: white; border: none; border-radius: 50px; padding: 12px 28px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.85rem; cursor: pointer;
+    -webkit-tap-highlight-color: transparent; transition: opacity 0.2s;
+  }
+  .popup-close:active { opacity: 0.85; }
+</style>
+</head>
+<body>
+
+<!-- ===== ENVELOPE SCREEN ===== -->
+<div id="envelope-screen">
+  <p class="env-label">06 · 06 · 2026 · confidential</p>
+  <p class="env-title">something official has arrived for you, Tingu ji 🔏</p>
+
+  <div class="envelope-wrap" onclick="crackSeal()">
+    <div class="envelope-body">
+      <div class="envelope-lines">
+        <div class="env-line"></div>
+        <div class="env-line" style="width:80%"></div>
+        <div class="env-line" style="width:60%"></div>
+      </div>
+    </div>
+    <div class="envelope-flap" id="env-flap">
+      <svg viewBox="0 0 280 110" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="0,0 280,0 280,110 140,55 0,110" fill="#3a1a28" stroke="rgba(201,168,76,0.3)" stroke-width="1"/>
+        <polygon points="0,0 140,70 280,0" fill="#2a1020" stroke="rgba(201,168,76,0.2)" stroke-width="1"/>
+      </svg>
+    </div>
+    <div class="wax-seal" id="wax-seal">
+      <div class="seal-circle">⚖️</div>
+    </div>
+  </div>
+
+  <p class="env-hint">tap the seal to open 🔏</p>
+</div>
+
+<!-- ===== MAIN ===== -->
+<div id="main-content">
+
+  <div class="site-header">
+    <p class="date-label">06 · 06 · 2026</p>
+    <h1>official notice 📜</h1>
+    <p class="sub">please read carefully. this is serious. 😌</p>
+  </div>
+
+  <!-- LEGAL NOTICE -->
+  <div class="legal-card">
+    <div class="legal-header">
+      <p class="legal-title-top">in the court of romance & alleged jealousy</p>
+      <div class="legal-stamp-row">
+        <div class="legal-stamp-line"></div>
+        <span class="legal-stamp-icon">⚖️</span>
+        <div class="legal-stamp-line"></div>
+      </div>
+      <h2 class="legal-title-main">Legal Notice</h2>
+      <p class="legal-title-sub">Case No. 06/06/2026 · Strictly Confidential</p>
+    </div>
+
+    <div class="legal-body">
+      <div class="legal-meta">
+        <div class="legal-meta-item">From: <strong>Garvit (Complainant)</strong></div>
+        <div class="legal-meta-item">To: <strong>Tingu ji (Defendant)</strong></div>
+        <div class="legal-meta-item">Date: <strong>June 6, 2026</strong></div>
+        <div class="legal-meta-item">Status: <strong>Urgent 😤</strong></div>
+      </div>
+
+      <div class="legal-divider"></div>
+
+      <p class="legal-section-title">I. Background</p>
+      <p class="legal-text">This notice is being issued following a series of highly provocative events that took place on the 5th of June, 2026, wherein the Defendant engaged in wilful, deliberate, and frankly very unfair pampering activities - without the Complainant's presence or prior consent.</p>
+
+      <div class="legal-divider"></div>
+
+      <p class="legal-section-title">II. Charges Filed</p>
+      <ul class="charge-list">
+        <li class="charge-item">
+          <span class="charge-num">I.</span>
+          <span class="charge-text">Wilful enjoyment of a <em>foot massage</em> at the office, in the full knowledge that the Complainant was sitting elsewhere, very much wishing he was there.</span>
+        </li>
+        <li class="charge-item">
+          <span class="charge-num">II.</span>
+          <span class="charge-text">Getting <em>nail extensions</em> done and sending photographic evidence with the sole and deliberate intent of inducing jealousy in the Complainant.</span>
+        </li>
+        <li class="charge-item">
+          <span class="charge-num">III.</span>
+          <span class="charge-text">Providing <em>real-time updates</em> of said pamper session, knowing fully well that each update would cause increasing levels of FOMO in the Complainant.</span>
+        </li>
+        <li class="charge-item">
+          <span class="charge-num">IV.</span>
+          <span class="charge-text">Most seriously - claiming the office foot massage was <em>"better."</em> This statement has been deemed legally provocative, factually incorrect, and deeply offensive to the Complainant's massaging abilities. 😤</span>
+        </li>
+        <li class="charge-item">
+          <span class="charge-num">V.</span>
+          <span class="charge-text">Transmission of video evidence to the Complainant, followed by wilful and immediate deletion of said evidence - an act so provocative and legally indefensible that the Complainant hereby reserves the right to collect full compensation in person, next week, at a time and duration entirely of his choosing. 😤</span>
+        </li>
+      </ul>
+
+      <div class="legal-divider"></div>
+
+      <p class="legal-section-title">III. Verdict</p>
+      <div class="verdict-box">
+        <p class="verdict-title">🔨 The Court hereby orders:</p>
+        <p class="verdict-text">The Defendant shall receive one (1) in-person pamper experience, <strong>date: Tuesday, June 10, 2026</strong>, which shall be objectively, factually, scientifically, and legally <strong>superior</strong> to any office pamper day.<br><br>The experience shall include, but not be limited to: forehead kisses, a proper foot massage (complainant guarantees 10x better quality 😌), full pampering, and zero interruptions.<br><br><strong>No appeals accepted. The court has spoken. 😤⚖️</strong></p>
+      </div>
+
+      <div class="legal-seal-row">
+        <div class="legal-sig">Signed,<br>Garvit<br><em>Chief Justice of Aapki Care</em></div>
+        <span class="legal-wax">🔏</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- COUPONS -->
+  <p class="section-label">🎟️ court-issued coupons</p>
+  <p class="coupons-intro" style="margin:0 16px 16px; position:relative; z-index:1;">scratch to reveal. redeemable Tuesday. 😌</p>
+
+  <div class="coupon-grid">
+
+    <!-- Coupon 1 -->
+    <div class="coupon-wrap">
+      <div class="coupon-reveal">
+        <div class="coupon-emoji-box">🦶</div>
+        <div class="coupon-text-box">
+          <p class="coupon-title">One (1) Foot Massage</p>
+          <p class="coupon-sub">duration: as long as aap chahein. guaranteed better than the office one. 😌</p>
+          <p class="coupon-badge">redeemable · tuesday · no expiry</p>
+        </div>
+      </div>
+      <div class="coupon-canvas-wrap"><canvas class="coupon-canvas" id="c1" height="90"></canvas></div>
+    </div>
+
+    <!-- Coupon 2 -->
+    <div class="coupon-wrap">
+      <div class="coupon-reveal">
+        <div class="coupon-emoji-box">💆‍♀️</div>
+        <div class="coupon-text-box">
+          <p class="coupon-title">One (1) Head Massage</p>
+          <p class="coupon-sub">full service. aap bas lait jaao. baaki main dekh lunga. 😏</p>
+          <p class="coupon-badge">redeemable · tuesday · comes with forehead kisses</p>
+        </div>
+      </div>
+      <div class="coupon-canvas-wrap"><canvas class="coupon-canvas" id="c2" height="90"></canvas></div>
+    </div>
+
+    <!-- Coupon 3 -->
+    <div class="coupon-wrap">
+      <div class="coupon-reveal" style="background: linear-gradient(135deg, #5a2040 0%, #9b3060 50%, #c07090 100%);">
+        <div class="coupon-emoji-box">😘</div>
+        <div class="coupon-text-box">
+          <p class="coupon-title">Unlimited Forehead Kisses</p>
+          <p class="coupon-sub">on demand. no limit. no questions. redeemable anytime aap maango. 🥹</p>
+          <p class="coupon-badge">redeemable · always · never expires 💜</p>
+        </div>
+      </div>
+      <div class="coupon-canvas-wrap"><canvas class="coupon-canvas" id="c3" height="90"></canvas></div>
+    </div>
+
+    <!-- Coupon 4 -->
+    <div class="coupon-wrap">
+      <div class="coupon-reveal" style="background: linear-gradient(135deg, #3a2050 0%, #7b5fb0 50%, #9b7fb0 100%);">
+        <div class="coupon-emoji-box">🌙</div>
+        <div class="coupon-text-box">
+          <p class="coupon-title">One (1) Full Pamper Evening</p>
+          <p class="coupon-sub">aap queen ho. aaj bhi, Tuesday bhi, aur hamesha. full service, zero effort from aapki side. 😌</p>
+          <p class="coupon-badge">redeemable · tuesday · strictly no office allowed</p>
+        </div>
+      </div>
+      <div class="coupon-canvas-wrap"><canvas class="coupon-canvas" id="c4" height="90"></canvas></div>
+    </div>
+
+    
+      <div class="coupon-canvas-wrap"><canvas class="coupon-canvas" id="c5" height="90"></canvas></div>
+    </div>
+
+
+    <!-- Coupon 5 - Video -->
+    <div class="coupon-wrap">
+      <div class="coupon-reveal" style="background: linear-gradient(135deg, #2a1a30 0%, #8b4060 50%, #c07080 100%);">
+        <div class="coupon-emoji-box">🎥</div>
+        <div class="coupon-text-box">
+          <p class="coupon-title">Unlimited Video Collection</p>
+          <p class="coupon-sub">Complainant reserves the right to take as many as he wants. No deletions permitted. Court order. 😏💜</p>
+          <p class="coupon-badge">redeemable - next week - non negotiable</p>
+        </div>
+      </div>
+      <div class="coupon-canvas-wrap"><canvas class="coupon-canvas" id="c5" height="90"></canvas></div>
+    </div>
+
+  </div>
+
+  <!-- SONG -->
+  <p class="section-label">🎵 aaj ka song</p>
+  <div class="card">
+    <div class="spotify-wrap">
+      <iframe style="border-radius:12px"
+        src="https://open.spotify.com/embed/track/0rSU2KwpOCqLVDCPwd4WbE?utm_source=generator&theme=0"
+        width="100%" height="152" frameBorder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy">
+      </iframe>
+    </div>
+    <p class="song-caption">Perfect - Ed Sheeran. because aap ho hi aisi. 😌💜</p>
+  </div>
+
+  <!-- MONDAY POPUP TRIGGER -->
+  <div class="card" style="text-align:center; cursor:pointer;" onclick="openPopup()">
+    <p style="font-family:'Cormorant Garamond',serif; font-size:1.3rem; color:var(--deep); margin-bottom:6px;">Monday kitna door hai? 🧸</p>
+    <p style="font-size:0.82rem; color:var(--text-muted); font-style:italic;">tap to find out 😌</p>
+  </div>
+
+</div><!-- end main -->
+
+<!-- ===== MONDAY POPUP ===== -->
+<div id="monday-popup">
+  <div class="popup-card">
+    <span class="popup-emoji">🧸</span>
+    <h2 class="popup-title">Monday tak… 🥹</h2>
+    <p class="popup-sub">June 8, 2026 · 9:00 AM · finally.</p>
+    <div class="popup-timer-row" id="popup-timer"></div>
+    <div class="popup-tags">
+      <span class="popup-tag">🤗 hug</span>
+      <span class="popup-tag">😙 forehead kisses</span>
+      <span class="popup-tag">🍳 breakfast saath</span>
+      <span class="popup-tag">🎀 pamper</span>
+      <span class="popup-tag">🙈 "no no no" finally</span>
+      <span class="popup-tag">💜 us</span>
+    </div>
+    <button class="popup-close" onclick="closePopup()">can't wait 💜</button>
+  </div>
+</div>
+
+<script>
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function istTime(y,mo,d,h=0,mi=0){ return new Date(Date.UTC(y,mo-1,d,h-5,mi-30,0)); }
+
+  // ===== ENVELOPE / SEAL =====
+  function crackSeal(){
+    const seal = document.getElementById('wax-seal');
+    const flap = document.getElementById('env-flap');
+    seal.classList.add('cracked');
+    setTimeout(()=>{
+      flap.classList.add('open');
+    }, 300);
+    setTimeout(()=>{
+      const env = document.getElementById('envelope-screen');
+      env.style.transition = 'opacity 1s ease';
+      env.style.opacity = '0';
+      setTimeout(()=>{
+        env.style.display = 'none';
+        document.body.classList.add('unlocked');
+        const main = document.getElementById('main-content');
+        main.classList.add('visible');
+        main.style.opacity = '0'; main.style.transition = 'opacity 0.9s ease';
+        setTimeout(()=>{ main.style.opacity='1'; initCoupons(); }, 50);
+      }, 1000);
+    }, 1200);
+  }
+
+  // ===== SCRATCH COUPONS =====
+  function initCoupons(){
+    ['c1','c2','c3','c4','c5'].forEach(id => initCoupon(id));
+  }
+
+  function initCoupon(id){
+    const canvas = document.getElementById(id);
+    if(!canvas) return;
+    const wrap = canvas.closest('.coupon-wrap');
+    const reveal = wrap.querySelector('.coupon-reveal');
+    // set canvas size to match reveal
+    const rect = reveal.getBoundingClientRect();
+    canvas.width = rect.width || 400;
+    canvas.height = rect.height || 90;
+
+    const ctx = canvas.getContext('2d');
+    // scratch layer
+    const colors = ['#c9a0a0','#d4b8c0','#b8a0b8','#c8b0d0','#d0a0b0'];
+    const idx = ['c1','c2','c3','c4','c5'].indexOf(id);
+    ctx.fillStyle = colors[idx] || '#c9a0a0';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = 'rgba(74,48,64,0.35)';
+    ctx.font = '500 12px DM Sans';
+    ctx.textAlign = 'center';
+    ctx.fillText('scratch to reveal your coupon 🎟️', canvas.width/2, canvas.height/2 + 4);
+
+    let isDrawing = false;
+    let revealed = false;
+
+    function getPos(e){
+      const r = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / r.width;
+      const scaleY = canvas.height / r.height;
+      if(e.touches) return { x:(e.touches[0].clientX-r.left)*scaleX, y:(e.touches[0].clientY-r.top)*scaleY };
+      return { x:(e.clientX-r.left)*scaleX, y:(e.clientY-r.top)*scaleY };
+    }
+
+    function scratch(x,y){
+      if(revealed) return;
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      ctx.arc(x,y,24,0,Math.PI*2);
+      ctx.fill();
+      checkReveal();
+    }
+
+    function checkReveal(){
+      if(revealed) return;
+      const data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
+      let cleared=0;
+      for(let i=3;i<data.length;i+=4){ if(data[i]===0) cleared++; }
+      if(cleared/(canvas.width*canvas.height) > 0.6){
+        revealed = true;
+        canvas.style.transition='opacity 0.5s ease';
+        canvas.style.opacity='0';
+        setTimeout(()=>{ canvas.style.display='none'; }, 500);
+      }
+    }
+
+    canvas.addEventListener('mousedown', e=>{ isDrawing=true; scratch(...Object.values(getPos(e))); });
+    canvas.addEventListener('mousemove', e=>{ if(!isDrawing) return; scratch(...Object.values(getPos(e))); });
+    canvas.addEventListener('mouseup', ()=>isDrawing=false);
+    canvas.addEventListener('touchstart', e=>{ e.preventDefault(); isDrawing=true; const p=getPos(e); scratch(p.x,p.y); },{passive:false});
+    canvas.addEventListener('touchmove', e=>{ e.preventDefault(); if(!isDrawing) return; const p=getPos(e); scratch(p.x,p.y); },{passive:false});
+    canvas.addEventListener('touchend', ()=>isDrawing=false);
+  }
+
+  // ===== MONDAY POPUP =====
+  function openPopup(){ document.getElementById('monday-popup').classList.add('active'); }
+  function closePopup(){ document.getElementById('monday-popup').classList.remove('active'); }
+
+  function updatePopupTimer(){
+    const target = istTime(2026,6,8,9,0);
+    const diff = target - new Date();
+    const el = document.getElementById('popup-timer');
+    if(!el) return;
+    if(diff<=0){ el.innerHTML='<span style="font-family:\'Cormorant Garamond\',serif;color:var(--plum);font-size:1.3rem;font-style:italic;">it\'s time!! 🥹🎉</span>'; return; }
+    const s=Math.floor(diff/1000);
+    const days=Math.floor(s/86400);
+    const hrs=Math.floor((s%86400)/3600);
+    const mins=Math.floor((s%3600)/60);
+    const secs=s%60;
+    el.innerHTML=
+      '<div class="popup-unit"><span class="popup-num">'+days+'</span><span class="popup-lbl">days</span></div>'+
+      '<span class="popup-sep">·</span>'+
+      '<div class="popup-unit"><span class="popup-num">'+pad(hrs)+'</span><span class="popup-lbl">hrs</span></div>'+
+      '<span class="popup-sep">·</span>'+
+      '<div class="popup-unit"><span class="popup-num">'+pad(mins)+'</span><span class="popup-lbl">min</span></div>'+
+      '<span class="popup-sep">·</span>'+
+      '<div class="popup-unit"><span class="popup-num">'+pad(secs)+'</span><span class="popup-lbl">sec</span></div>';
+  }
+  setInterval(updatePopupTimer, 1000);
+
+  // ===== INIT =====
+  document.addEventListener('DOMContentLoaded', function(){
+    updatePopupTimer();
+    const params = new URLSearchParams(window.location.search);
+    if(params.get('preview')==='true'){
+      crackSeal();
+    }
+  });
+</script>
+</body>
+</html>
