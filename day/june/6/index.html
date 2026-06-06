@@ -554,61 +554,69 @@
     if(!canvas) return;
     const wrap = canvas.closest('.coupon-wrap');
     const reveal = wrap.querySelector('.coupon-reveal');
-    // set canvas size to match reveal
-    const rect = reveal.getBoundingClientRect();
-    canvas.width = rect.width || 400;
-    canvas.height = rect.height || 90;
 
-    const ctx = canvas.getContext('2d');
-    // scratch layer
-    const colors = ['#c9a0a0','#d4b8c0','#b8a0b8','#c8b0d0','#d0a0b0'];
-    const idx = ['c1','c2','c3','c4','c5'].indexOf(id);
-    ctx.fillStyle = colors[idx] || '#c9a0a0';
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle = 'rgba(74,48,64,0.35)';
-    ctx.font = '500 12px DM Sans';
-    ctx.textAlign = 'center';
-    ctx.fillText('scratch to reveal your coupon 🎟️', canvas.width/2, canvas.height/2 + 4);
+    // Wait for layout then size canvas
+    function setup(){
+      const w = reveal.offsetWidth || 400;
+      const h = reveal.offsetHeight || 100;
+      canvas.width = w;
+      canvas.height = h;
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
 
-    let isDrawing = false;
-    let revealed = false;
+      const ctx = canvas.getContext('2d');
+      const colors = ['#c9a0a0','#d4b8c0','#b8a0b8','#c8b0d0','#d0a0b0'];
+      const idx = ['c1','c2','c3','c4','c5'].indexOf(id);
+      ctx.fillStyle = colors[idx] || '#c9a0a0';
+      ctx.fillRect(0,0,w,h);
+      ctx.fillStyle = 'rgba(74,48,64,0.45)';
+      ctx.font = '13px DM Sans';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('scratch to reveal 🎟️', w/2, h/2);
 
-    function getPos(e){
-      const r = canvas.getBoundingClientRect();
-      const scaleX = canvas.width / r.width;
-      const scaleY = canvas.height / r.height;
-      if(e.touches) return { x:(e.touches[0].clientX-r.left)*scaleX, y:(e.touches[0].clientY-r.top)*scaleY };
-      return { x:(e.clientX-r.left)*scaleX, y:(e.clientY-r.top)*scaleY };
-    }
+      let isDrawing = false;
+      let revealed = false;
 
-    function scratch(x,y){
-      if(revealed) return;
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.beginPath();
-      ctx.arc(x,y,24,0,Math.PI*2);
-      ctx.fill();
-      checkReveal();
-    }
-
-    function checkReveal(){
-      if(revealed) return;
-      const data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
-      let cleared=0;
-      for(let i=3;i<data.length;i+=4){ if(data[i]===0) cleared++; }
-      if(cleared/(canvas.width*canvas.height) > 0.6){
-        revealed = true;
-        canvas.style.transition='opacity 0.5s ease';
-        canvas.style.opacity='0';
-        setTimeout(()=>{ canvas.style.display='none'; }, 500);
+      function getPos(e){
+        const r = canvas.getBoundingClientRect();
+        if(e.touches) return { x:(e.touches[0].clientX-r.left)*(w/r.width), y:(e.touches[0].clientY-r.top)*(h/r.height) };
+        return { x:(e.clientX-r.left)*(w/r.width), y:(e.clientY-r.top)*(h/r.height) };
       }
+
+      function scratch(x,y){
+        if(revealed) return;
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(x,y,28,0,Math.PI*2);
+        ctx.fill();
+        checkReveal();
+      }
+
+      function checkReveal(){
+        if(revealed) return;
+        const data = ctx.getImageData(0,0,w,h).data;
+        let cleared=0;
+        for(let i=3;i<data.length;i+=4){ if(data[i]===0) cleared++; }
+        if(cleared/(w*h) > 0.55){
+          revealed = true;
+          canvas.style.transition='opacity 0.6s ease';
+          canvas.style.opacity='0';
+          setTimeout(()=>{ canvas.style.display='none'; }, 600);
+        }
+      }
+
+      canvas.addEventListener('mousedown', e=>{ isDrawing=true; const p=getPos(e); scratch(p.x,p.y); });
+      canvas.addEventListener('mousemove', e=>{ if(!isDrawing) return; const p=getPos(e); scratch(p.x,p.y); });
+      canvas.addEventListener('mouseup', ()=>isDrawing=false);
+      canvas.addEventListener('mouseleave', ()=>isDrawing=false);
+      canvas.addEventListener('touchstart', e=>{ e.preventDefault(); isDrawing=true; const p=getPos(e); scratch(p.x,p.y); },{passive:false});
+      canvas.addEventListener('touchmove', e=>{ e.preventDefault(); if(!isDrawing) return; const p=getPos(e); scratch(p.x,p.y); },{passive:false});
+      canvas.addEventListener('touchend', ()=>isDrawing=false);
     }
 
-    canvas.addEventListener('mousedown', e=>{ isDrawing=true; scratch(...Object.values(getPos(e))); });
-    canvas.addEventListener('mousemove', e=>{ if(!isDrawing) return; scratch(...Object.values(getPos(e))); });
-    canvas.addEventListener('mouseup', ()=>isDrawing=false);
-    canvas.addEventListener('touchstart', e=>{ e.preventDefault(); isDrawing=true; const p=getPos(e); scratch(p.x,p.y); },{passive:false});
-    canvas.addEventListener('touchmove', e=>{ e.preventDefault(); if(!isDrawing) return; const p=getPos(e); scratch(p.x,p.y); },{passive:false});
-    canvas.addEventListener('touchend', ()=>isDrawing=false);
+    // Use requestAnimationFrame to ensure layout is complete
+    requestAnimationFrame(()=> requestAnimationFrame(setup));
   }
 
   // ===== MONDAY POPUP =====
