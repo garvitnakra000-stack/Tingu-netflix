@@ -55,7 +55,6 @@
     max-width: 260px; line-height: 1.6;
   }
 
-  /* Envelope */
   .envelope-wrap {
     position: relative; width: 280px; height: 190px;
     cursor: pointer; -webkit-tap-highlight-color: transparent;
@@ -72,7 +71,6 @@
     box-shadow: 0 12px 50px rgba(0,0,0,0.5), inset 0 1px 0 rgba(201,168,76,0.15);
   }
 
-  /* envelope flap top */
   .envelope-flap {
     position: absolute; top: 0; left: 0; right: 0; height: 110px;
     overflow: hidden; transform-origin: top center;
@@ -82,14 +80,12 @@
   .envelope-flap svg { width: 280px; height: 110px; display: block; }
   .envelope-flap.open { transform: rotateX(180deg); }
 
-  /* envelope lines */
   .envelope-lines {
     position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
     display: flex; flex-direction: column; gap: 6px; width: 160px; opacity: 0.3;
   }
   .env-line { height: 1px; background: rgba(201,168,76,0.5); border-radius: 1px; }
 
-  /* wax seal */
   .wax-seal {
     position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
     width: 64px; height: 64px; z-index: 3;
@@ -104,11 +100,6 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
   .seal-circle:active { transform: scale(0.92); }
-  .seal-crack {
-    position: absolute; inset: 0; border-radius: 50%;
-    background: transparent;
-    transition: all 0.3s ease;
-  }
   .wax-seal.cracked .seal-circle {
     animation: sealCrack 0.4s ease both;
   }
@@ -228,23 +219,80 @@
 
   .coupon-grid { display: flex; flex-direction: column; gap: 14px; margin: 0 16px 20px; position: relative; z-index: 1; }
 
-  .coupon-wrap { position: relative; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); }
-
-  .coupon-reveal {
-    background: linear-gradient(135deg, #4a3040 0%, #8b5e6e 50%, #9b7fb0 100%);
-    padding: 20px; display: flex; gap: 16px; align-items: center; min-height: 90px;
+  /* ===== COUPON: simple tap-to-reveal, no 3D ===== */
+  .coupon-wrap {
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    height: 100px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
   }
+
+  .coupon-front, .coupon-back {
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    will-change: opacity, transform;
+  }
+
+  /* front sits on top */
+  .coupon-front {
+    background: linear-gradient(135deg, #3a1a28 0%, #6a3050 100%);
+    border: 1px solid rgba(201,168,76,0.25);
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+    z-index: 2;
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* back hidden underneath */
+  .coupon-back {
+    z-index: 1;
+    gap: 14px;
+    align-items: center;
+    opacity: 0;
+    transform: scale(0.94);
+  }
+
+  /* revealed: front fades out, back fades in */
+  .coupon-wrap.revealed .coupon-front {
+    opacity: 0;
+    transform: scale(1.05);
+    pointer-events: none;
+  }
+  .coupon-wrap.revealed .coupon-back {
+    opacity: 1;
+    transform: scale(1);
+    z-index: 3;
+  }
+
+  .coupon-front-icon { font-size: 1.8rem; }
+  .coupon-front-label {
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(201,168,76,0.7); font-family: 'DM Sans', sans-serif;
+  }
+  .coupon-front-hint {
+    font-size: 0.68rem; color: rgba(255,245,240,0.3);
+    font-style: italic; font-family: 'IM Fell English', serif;
+  }
+
   .coupon-emoji-box {
     width: 52px; height: 52px; border-radius: 12px; flex-shrink: 0;
     background: rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; font-size: 1.6rem;
   }
   .coupon-text-box { flex: 1; }
-  .coupon-title { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: #fff5f0; margin-bottom: 4px; }
-  .coupon-sub { font-size: 0.78rem; color: rgba(255,245,240,0.6); line-height: 1.5; }
-  .coupon-badge { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,245,240,0.4); margin-top: 6px; }
-
-  .coupon-canvas-wrap { position: absolute; inset: 0; border-radius: 16px; overflow: hidden; pointer-events: auto; }
-  canvas.coupon-canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; touch-action: none; cursor: crosshair; border-radius: 16px; display: block; }
+  .coupon-title { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #fff5f0; margin-bottom: 4px; }
+  .coupon-sub { font-size: 0.76rem; color: rgba(255,245,240,0.65); line-height: 1.5; }
+  .coupon-badge { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,245,240,0.35); margin-top: 5px; }
 
   /* ===== SPOTIFY ===== */
   .spotify-wrap { border-radius: 12px; overflow: hidden; }
@@ -400,70 +448,86 @@
 
   <!-- COUPONS -->
   <p class="section-label">🎟️ court-issued coupons</p>
-  <p class="coupons-intro" style="margin:0 16px 16px; position:relative; z-index:1;">scratch to reveal. redeemable Tuesday. 😌</p>
+  <p class="coupons-intro" style="margin:0 16px 16px; position:relative; z-index:1;">tap to reveal. redeemable Tuesday. 😌</p>
 
   <div class="coupon-grid">
 
-    <!-- Coupon 1 -->
-    <div class="coupon-wrap">
-      <div class="coupon-reveal">
+    <!-- c1 -->
+    <div class="coupon-wrap" id="cw-c1" onclick="flipCoupon('c1')">
+      <div class="coupon-front">
+        <span class="coupon-front-icon">🎟️</span>
+        <span class="coupon-front-label">court issued coupon</span>
+        <span class="coupon-front-hint">tap to reveal 🔏</span>
+      </div>
+      <div class="coupon-back" style="background:linear-gradient(135deg,#4a3040 0%,#8b5e6e 50%,#9b7fb0 100%);">
         <div class="coupon-emoji-box">🦶</div>
         <div class="coupon-text-box">
           <p class="coupon-title">One (1) Foot Massage</p>
           <p class="coupon-sub">duration: as long as aap chahein. guaranteed better than the office one. 😌</p>
-          <p class="coupon-badge">redeemable · tuesday · no expiry</p>
+          <p class="coupon-badge">redeemable - tuesday - no expiry</p>
         </div>
       </div>
-      <div class="coupon-canvas-wrap"><canvas class="coupon-canvas" id="c1" height="90"></canvas></div>
     </div>
 
-    <!-- Coupon 2 -->
-    <div class="coupon-wrap">
-      <div class="coupon-reveal">
+    <!-- c2 -->
+    <div class="coupon-wrap" id="cw-c2" onclick="flipCoupon('c2')">
+      <div class="coupon-front">
+        <span class="coupon-front-icon">🎟️</span>
+        <span class="coupon-front-label">court issued coupon</span>
+        <span class="coupon-front-hint">tap to reveal 🔏</span>
+      </div>
+      <div class="coupon-back" style="background:linear-gradient(135deg,#4a3040 0%,#7b6ea0 50%,#9b7fb0 100%);">
         <div class="coupon-emoji-box">💆‍♀️</div>
         <div class="coupon-text-box">
           <p class="coupon-title">One (1) Head Massage</p>
           <p class="coupon-sub">full service. aap bas lait jaao. baaki main dekh lunga. 😏</p>
-          <p class="coupon-badge">redeemable · tuesday · comes with forehead kisses</p>
+          <p class="coupon-badge">redeemable - tuesday - comes with forehead kisses</p>
         </div>
       </div>
-      <div class="coupon-canvas-wrap"><canvas class="coupon-canvas" id="c2" height="90"></canvas></div>
     </div>
 
-    <!-- Coupon 3 -->
-    <div class="coupon-wrap">
-      <div class="coupon-reveal" style="background: linear-gradient(135deg, #5a2040 0%, #9b3060 50%, #c07090 100%);">
+    <!-- c3 -->
+    <div class="coupon-wrap" id="cw-c3" onclick="flipCoupon('c3')">
+      <div class="coupon-front">
+        <span class="coupon-front-icon">🎟️</span>
+        <span class="coupon-front-label">court issued coupon</span>
+        <span class="coupon-front-hint">tap to reveal 🔏</span>
+      </div>
+      <div class="coupon-back" style="background:linear-gradient(135deg,#5a2040 0%,#9b3060 50%,#c07090 100%);">
         <div class="coupon-emoji-box">😘</div>
         <div class="coupon-text-box">
           <p class="coupon-title">Unlimited Forehead Kisses</p>
           <p class="coupon-sub">on demand. no limit. no questions. redeemable anytime aap maango. 🥹</p>
-          <p class="coupon-badge">redeemable · always · never expires 💜</p>
+          <p class="coupon-badge">redeemable - always - never expires 💜</p>
         </div>
       </div>
-      <div class="coupon-canvas-wrap"><canvas class="coupon-canvas" id="c3" height="90"></canvas></div>
     </div>
 
-    <!-- Coupon 4 -->
-    <div class="coupon-wrap">
-      <div class="coupon-reveal" style="background: linear-gradient(135deg, #3a2050 0%, #7b5fb0 50%, #9b7fb0 100%);">
+    <!-- c4 -->
+    <div class="coupon-wrap" id="cw-c4" onclick="flipCoupon('c4')">
+      <div class="coupon-front">
+        <span class="coupon-front-icon">🎟️</span>
+        <span class="coupon-front-label">court issued coupon</span>
+        <span class="coupon-front-hint">tap to reveal 🔏</span>
+      </div>
+      <div class="coupon-back" style="background:linear-gradient(135deg,#3a2050 0%,#7b5fb0 50%,#9b7fb0 100%);">
         <div class="coupon-emoji-box">🌙</div>
         <div class="coupon-text-box">
           <p class="coupon-title">One (1) Full Pamper Evening</p>
           <p class="coupon-sub">aap queen ho. aaj bhi, Tuesday bhi, aur hamesha. full service, zero effort from aapki side. 😌</p>
-          <p class="coupon-badge">redeemable · tuesday · strictly no office allowed</p>
+          <p class="coupon-badge">redeemable - tuesday - strictly no office allowed</p>
         </div>
       </div>
-      <div class="coupon-canvas-wrap"><canvas class="coupon-canvas" id="c4" height="90"></canvas></div>
     </div>
 
-    
-      <div class="coupon-canvas-wrap"><canvas class="coupon-canvas" id="c5" height="90"></canvas></div>
-    </div>
-
-
-    <!-- Coupon 5 - Video -->
-    <div class="coupon-wrap">
-      <div class="coupon-reveal" style="background: linear-gradient(135deg, #2a1a30 0%, #8b4060 50%, #c07080 100%);">
+    <!-- c5 -->
+    <div class="coupon-wrap" id="cw-c5" onclick="flipCoupon('c5')">
+      <div class="coupon-front">
+        <span class="coupon-front-icon">🎟️</span>
+        <span class="coupon-front-label">court issued coupon</span>
+        <span class="coupon-front-hint">tap to reveal 🔏</span>
+      </div>
+      <div class="coupon-back" style="background:linear-gradient(135deg,#2a1a30 0%,#8b4060 50%,#c07080 100%);">
         <div class="coupon-emoji-box">🎥</div>
         <div class="coupon-text-box">
           <p class="coupon-title">Unlimited Video Collection</p>
@@ -471,7 +535,6 @@
           <p class="coupon-badge">redeemable - next week - non negotiable</p>
         </div>
       </div>
-      <div class="coupon-canvas-wrap"><canvas class="coupon-canvas" id="c5" height="90"></canvas></div>
     </div>
 
   </div>
@@ -519,128 +582,34 @@
 
 <script>
   function pad(n){ return String(n).padStart(2,'0'); }
-  function istTime(y,mo,d,h=0,mi=0){ return new Date(Date.UTC(y,mo-1,d,h-5,mi-30,0)); }
+  function istTime(y,mo,d,h,mi){ return new Date(Date.UTC(y,mo-1,d,h-5,mi-30,0)); }
 
   // ===== ENVELOPE / SEAL =====
   function crackSeal(){
     const seal = document.getElementById('wax-seal');
     const flap = document.getElementById('env-flap');
     seal.classList.add('cracked');
-    setTimeout(()=>{
-      flap.classList.add('open');
-    }, 300);
-    setTimeout(()=>{
-      const env = document.getElementById('envelope-screen');
+    setTimeout(function(){ flap.classList.add('open'); }, 300);
+    setTimeout(function(){
+      var env = document.getElementById('envelope-screen');
       env.style.transition = 'opacity 1s ease';
       env.style.opacity = '0';
-      setTimeout(()=>{
+      setTimeout(function(){
         env.style.display = 'none';
         document.body.classList.add('unlocked');
-        const main = document.getElementById('main-content');
+        var main = document.getElementById('main-content');
         main.classList.add('visible');
-        main.style.opacity = '0'; main.style.transition = 'opacity 0.9s ease';
-        setTimeout(()=>{ main.style.opacity='1'; initCoupons(); }, 50);
+        main.style.opacity = '0';
+        main.style.transition = 'opacity 0.9s ease';
+        setTimeout(function(){ main.style.opacity = '1'; }, 50);
       }, 1000);
     }, 1200);
   }
 
-  // ===== SCRATCH COUPONS =====
-  function initCoupons(){
-    setTimeout(()=>{
-      ['c1','c2','c3','c4','c5'].forEach(id => initCoupon(id));
-    }, 400);
-  }
-
-  function initCoupon(id){
-    const canvas = document.getElementById(id);
-    if(!canvas) return;
-    const wrap = canvas.closest('.coupon-wrap');
-    if(!wrap) return;
-    const reveal = wrap.querySelector('.coupon-reveal');
-    if(!reveal) return;
-    const colors = ['#c9a0a0','#d4b8c0','#b8a0b8','#c8b0d0','#d0a0b0','#c8a8b8'];
-    const idx = ['c1','c2','c3','c4','c5','c6'].indexOf(id);
-    let isDrawing = false;
-    let revealed = false;
-    let ctx;
-
-    function setup(){
-      const w = reveal.offsetWidth;
-      const h = reveal.offsetHeight;
-      if(!w || !h){ setTimeout(setup, 100); return; }
-
-      canvas.width = w;
-      canvas.height = h;
-      ctx = canvas.getContext('2d');
-
-      // Draw scratch layer
-      ctx.fillStyle = colors[idx] || '#c9a0a0';
-      ctx.fillRect(0,0,w,h);
-
-      // Pattern overlay
-      ctx.fillStyle = 'rgba(255,255,255,0.08)';
-      for(let x=0;x<w;x+=20){ for(let y=0;y<h;y+=20){ ctx.fillRect(x,y,10,10); } }
-
-      // Label
-      ctx.fillStyle = 'rgba(74,48,64,0.5)';
-      ctx.font = '600 13px DM Sans';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('scratch to reveal 🎟️', w/2, h/2);
-    }
-
-    function getPos(e){
-      const r = canvas.getBoundingClientRect();
-      const w = canvas.width, h = canvas.height;
-      if(e.touches){
-        return {
-          x: (e.touches[0].clientX - r.left) * (w / r.width),
-          y: (e.touches[0].clientY - r.top) * (h / r.height)
-        };
-      }
-      return {
-        x: (e.clientX - r.left) * (w / r.width),
-        y: (e.clientY - r.top) * (h / r.height)
-      };
-    }
-
-    function scratch(x,y){
-      if(revealed || !ctx) return;
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.beginPath();
-      ctx.arc(x, y, 32, 0, Math.PI*2);
-      ctx.fill();
-      checkReveal();
-    }
-
-    function checkReveal(){
-      if(revealed || !ctx) return;
-      const w = canvas.width, h = canvas.height;
-      const data = ctx.getImageData(0,0,w,h).data;
-      let cleared = 0;
-      for(let i=3; i<data.length; i+=4){ if(data[i] < 128) cleared++; }
-      if(cleared / (w * h) > 0.5){
-        revealed = true;
-        canvas.style.transition = 'opacity 0.6s ease';
-        canvas.style.opacity = '0';
-        setTimeout(()=>{ canvas.style.display='none'; }, 600);
-      }
-    }
-
-    canvas.addEventListener('mousedown',  e=>{ isDrawing=true; const p=getPos(e); scratch(p.x,p.y); });
-    canvas.addEventListener('mousemove',  e=>{ if(!isDrawing) return; const p=getPos(e); scratch(p.x,p.y); });
-    canvas.addEventListener('mouseup',    ()=>{ isDrawing=false; });
-    canvas.addEventListener('mouseleave', ()=>{ isDrawing=false; });
-    canvas.addEventListener('touchstart', e=>{ e.preventDefault(); isDrawing=true; const p=getPos(e); scratch(p.x,p.y); }, {passive:false});
-    canvas.addEventListener('touchmove',  e=>{ e.preventDefault(); if(!isDrawing) return; const p=getPos(e); scratch(p.x,p.y); }, {passive:false});
-    canvas.addEventListener('touchend',   ()=>{ isDrawing=false; });
-
-    // Setup after fonts + layout fully ready
-    if(document.readyState === 'complete'){
-      setTimeout(setup, 200);
-    } else {
-      window.addEventListener('load', ()=> setTimeout(setup, 200));
-    }
+  // ===== COUPON REVEAL (tap to open) =====
+  function flipCoupon(id){
+    var wrap = document.getElementById('cw-' + id);
+    if(wrap) wrap.classList.toggle('revealed');
   }
 
   // ===== MONDAY POPUP =====
@@ -648,34 +617,34 @@
   function closePopup(){ document.getElementById('monday-popup').classList.remove('active'); }
 
   function updatePopupTimer(){
-    const target = istTime(2026,6,8,9,0);
-    const diff = target - new Date();
-    const el = document.getElementById('popup-timer');
+    var target = istTime(2026,6,8,9,0);
+    var diff = target - new Date();
+    var el = document.getElementById('popup-timer');
     if(!el) return;
-    if(diff<=0){ el.innerHTML='<span style="font-family:\'Cormorant Garamond\',serif;color:var(--plum);font-size:1.3rem;font-style:italic;">it\'s time!! 🥹🎉</span>'; return; }
-    const s=Math.floor(diff/1000);
-    const days=Math.floor(s/86400);
-    const hrs=Math.floor((s%86400)/3600);
-    const mins=Math.floor((s%3600)/60);
-    const secs=s%60;
-    el.innerHTML=
-      '<div class="popup-unit"><span class="popup-num">'+days+'</span><span class="popup-lbl">days</span></div>'+
-      '<span class="popup-sep">·</span>'+
-      '<div class="popup-unit"><span class="popup-num">'+pad(hrs)+'</span><span class="popup-lbl">hrs</span></div>'+
-      '<span class="popup-sep">·</span>'+
-      '<div class="popup-unit"><span class="popup-num">'+pad(mins)+'</span><span class="popup-lbl">min</span></div>'+
-      '<span class="popup-sep">·</span>'+
-      '<div class="popup-unit"><span class="popup-num">'+pad(secs)+'</span><span class="popup-lbl">sec</span></div>';
+    if(diff <= 0){
+      el.innerHTML = '<span style="font-family:\'Cormorant Garamond\',serif;color:var(--plum);font-size:1.3rem;font-style:italic;">it\'s time!! 🥹🎉</span>';
+      return;
+    }
+    var s = Math.floor(diff / 1000);
+    var days = Math.floor(s / 86400);
+    var hrs = Math.floor((s % 86400) / 3600);
+    var mins = Math.floor((s % 3600) / 60);
+    var secs = s % 60;
+    el.innerHTML =
+      '<div class="popup-unit"><span class="popup-num">' + days + '</span><span class="popup-lbl">days</span></div>' +
+      '<span class="popup-sep">·</span>' +
+      '<div class="popup-unit"><span class="popup-num">' + pad(hrs) + '</span><span class="popup-lbl">hrs</span></div>' +
+      '<span class="popup-sep">·</span>' +
+      '<div class="popup-unit"><span class="popup-num">' + pad(mins) + '</span><span class="popup-lbl">min</span></div>' +
+      '<span class="popup-sep">·</span>' +
+      '<div class="popup-unit"><span class="popup-num">' + pad(secs) + '</span><span class="popup-lbl">sec</span></div>';
   }
   setInterval(updatePopupTimer, 1000);
 
-  // ===== INIT =====
   document.addEventListener('DOMContentLoaded', function(){
     updatePopupTimer();
-    const params = new URLSearchParams(window.location.search);
-    if(params.get('preview')==='true'){
-      crackSeal();
-    }
+    var params = new URLSearchParams(window.location.search);
+    if(params.get('preview') === 'true'){ crackSeal(); }
   });
 </script>
 </body>
