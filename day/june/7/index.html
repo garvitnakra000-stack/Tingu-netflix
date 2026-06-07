@@ -1,1 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>07 · 06 · 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf7f2;
+    --blush: #f5e6e0;
+    --rose: #e8c4b8;
+    --mauve: #c9a0a0;
+    --plum: #8b5e6e;
+    --deep: #4a3040;
+    --soft-purple: #9b7fb0;
+    --text-main: #3d2b35;
+    --text-soft: #7a5c68;
+    --text-muted: #b0909a;
+    --card-bg: rgba(255,255,255,0.75);
+    --border: rgba(200,160,170,0.3);
+    --shadow: 0 8px 40px rgba(139,94,110,0.13);
+    --radius: 20px;
+    --wa-green: #075e54;
+    --wa-bubble-out: #dcf8c6;
+    --wa-bubble-in: #ffffff;
+    --wa-bg: #ece5dd;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { min-height: 100%; font-family: 'DM Sans', sans-serif; color: var(--text-main); overflow-x: hidden; background: #0d0608; }
 
+  @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  @keyframes popIn { from{transform:scale(0.85);opacity:0} to{transform:scale(1);opacity:1} }
+  @keyframes typing { from{width:0} to{width:100%} }
+
+  /* ===== TYPEWRITER SCREEN ===== */
+  #tw-screen {
+    position: fixed; inset: 0; z-index: 900;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, #2a1020 0%, #0d0608 100%);
+    display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+    padding: 48px 32px; gap: 6px;
+  }
+
+  .tw-line {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 300;
+    color: rgba(255,255,255,0.85); line-height: 1.8;
+    opacity: 0; transition: opacity 0.4s ease; min-height: 1.8em;
+  }
+  .tw-line.soft { color: rgba(255,255,255,0.4); font-style: italic; font-size: 1.1rem; }
+  .tw-line.visible { opacity: 1; }
+  .cursor { display:inline-block; width:2px; height:1em; background:rgba(255,255,255,0.6); margin-left:2px; vertical-align:middle; animation:blink 1s step-end infinite; }
+
+  .tw-btn {
+    margin-top: 32px; opacity: 0; transition: opacity 0.6s ease;
+    background: linear-gradient(135deg, var(--plum) 0%, var(--soft-purple) 100%);
+    color: white; border: none; border-radius: 50px; padding: 13px 28px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tw-btn.visible { opacity: 1; }
+  .tw-btn:active { transform: scale(0.97); }
+
+  /* ===== MAIN ===== */
+  #main-content {
+    display: none; position: relative; z-index: 1;
+    max-width: 480px; margin: 0 auto; padding: 0 0 80px;
+    background: var(--cream); min-height: 100vh;
+  }
+  #main-content.visible { display: block; }
+  body.unlocked { background: var(--cream); }
+  body.unlocked::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%,rgba(232,196,184,0.35) 0%,transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 90%,rgba(212,196,216,0.3) 0%,transparent 55%);
+  }
+
+  .site-header { padding: 52px 24px 24px; text-align: center; position: relative; z-index: 1; animation: fadeUp 0.9s ease both; }
+  .date-label { font-size: 0.72rem; letter-spacing: 0.25em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 14px; }
+  .site-header h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 400; color: var(--deep); line-height: 1.25; margin-bottom: 10px; }
+  .site-header .sub { font-size: 0.875rem; color: var(--text-soft); line-height: 1.6; }
+
+  .card { background: var(--card-bg); border: 1px solid var(--border); backdrop-filter: blur(16px); border-radius: var(--radius); padding: 24px; margin: 0 16px 20px; box-shadow: var(--shadow); position: relative; z-index: 1; animation: fadeUp 0.7s ease both; overflow: hidden; }
+  .section-label { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--text-muted); text-transform: uppercase; text-align: center; padding: 8px 0 4px; position: relative; z-index: 1; }
+
+  /* ===== DOCUMENTARY LABEL ===== */
+  .doc-label {
+    text-align: center; margin: 0 16px 16px;
+    position: relative; z-index: 1; animation: fadeUp 0.7s ease both;
+  }
+  .doc-badge {
+    display: inline-block;
+    background: var(--deep); color: rgba(255,255,255,0.7);
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 5px 16px; border-radius: 4px;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .doc-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; color: var(--deep); margin-top: 6px; font-style: italic;
+  }
+
+  /* ===== CHAPTER CARDS ===== */
+  .chapter-card {
+    margin: 0 16px 20px; position: relative; z-index: 1;
+    animation: fadeUp 0.7s ease both;
+  }
+  .chapter-label {
+    font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 8px; padding-left: 4px;
+  }
+  .chapter-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem; color: var(--plum); font-style: italic; margin-bottom: 4px; padding-left: 4px;
+  }
+  .chapter-vibe {
+    font-size: 0.8rem; color: var(--text-soft); font-style: italic; margin-bottom: 10px; padding-left: 4px;
+  }
+
+  /* ===== SCREENSHOT ===== */
+  .ss-wrap {
+    border-radius: 16px; overflow: hidden; position: relative;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+  }
+  .ss-img { width: 100%; display: block; border-radius: 16px; }
+  .ss-overlay {
+    position: absolute; inset: 0; border-radius: 16px;
+    background: rgba(74,48,64,0.85);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 10px; transition: opacity 0.5s ease;
+  }
+  .ss-overlay.hidden { opacity: 0; pointer-events: none; }
+  .ss-overlay-emoji { font-size: 2rem; }
+  .ss-overlay-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem; color: rgba(255,245,240,0.8); font-style: italic; text-align: center; padding: 0 20px;
+  }
+  .ss-overlay-hint { font-size: 0.72rem; color: rgba(255,245,240,0.4); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* ===== REDACTED REVEAL ===== */
+  .redacted-wrap {
+    background: var(--deep); border-radius: 16px; padding: 28px 24px; text-align: center;
+    position: relative; overflow: hidden;
+    box-shadow: 0 8px 40px rgba(74,48,64,0.3);
+  }
+  .redacted-top {
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255,245,240,0.3); margin-bottom: 16px;
+  }
+  .redacted-box {
+    background: #1a0a0e; border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px; padding: 20px; margin: 0 auto 16px; max-width: 280px;
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+    transition: all 0.3s ease;
+  }
+  .redacted-box:active { transform: scale(0.97); }
+  .redacted-text {
+    font-size: 1.8rem; letter-spacing: 0.3em;
+    background: #1a0a0e; color: #1a0a0e;
+    text-shadow: none; font-family: 'Cormorant Garamond', serif;
+    transition: all 0.6s ease; user-select: none;
+    filter: blur(8px);
+  }
+  .redacted-text.revealed {
+    color: #f0a0be; text-shadow: 0 0 30px rgba(240,160,190,0.6);
+    filter: blur(0); font-style: italic; font-size: 2.2rem;
+  }
+  .redacted-hint { font-size: 0.72rem; color: rgba(255,245,240,0.25); font-style: italic; transition: opacity 0.3s ease; }
+  .redacted-hint.hidden { opacity: 0; }
+  .redacted-reaction {
+    opacity: 0; transition: opacity 0.6s ease;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem; color: rgba(255,245,240,0.7); font-style: italic;
+    margin-top: 12px; line-height: 1.7;
+  }
+  .redacted-reaction.visible { opacity: 1; }
+
+  /* confetti */
+  .confetti-piece {
+    position: absolute; width: 8px; height: 8px; border-radius: 50%;
+    animation: confettiFall linear both;
+    pointer-events: none;
+  }
+  @keyframes confettiFall {
+    0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(200px) rotate(720deg); opacity: 0; }
+  }
+
+  /* ===== GROWTH BAR ===== */
+  .growth-card { text-align: center; }
+  .growth-label { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--deep); margin-bottom: 16px; }
+  .growth-bar-wrap { background: rgba(200,160,170,0.15); border-radius: 50px; height: 14px; overflow: hidden; margin-bottom: 8px; }
+  .growth-bar {
+    height: 100%; border-radius: 50px;
+    background: linear-gradient(90deg, var(--rose) 0%, var(--plum) 50%, var(--soft-purple) 100%);
+    width: 0; transition: width 1.5s cubic-bezier(0.4,0,0.2,1);
+  }
+  .growth-labels { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); }
+
+  /* ===== TOMORROW SECTION ===== */
+  .tomorrow-list { display: flex; flex-direction: column; gap: 0; }
+  .tmr-item {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 14px 0; border-bottom: 1px solid var(--border);
+    opacity: 0; transform: translateX(-10px);
+    transition: all 0.4s ease;
+  }
+  .tmr-item:last-child { border-bottom: none; }
+  .tmr-item.visible { opacity: 1; transform: translateX(0); }
+  .tmr-emoji { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+  .tmr-text { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--text-main); line-height: 1.7; font-weight: 300; }
+  .tmr-text em { color: var(--plum); font-style: italic; }
+
+  /* ===== COUNTDOWN ===== */
+  .meet-countdown {
+    background: linear-gradient(135deg, rgba(139,94,110,0.15) 0%, rgba(155,127,176,0.1) 100%);
+    border: 1px solid rgba(200,160,170,0.4); border-radius: var(--radius); padding: 28px 24px;
+    margin: 0 16px 20px; text-align: center; position: relative; z-index: 1;
+    box-shadow: 0 0 40px rgba(139,94,110,0.1); animation: fadeUp 0.7s ease both;
+  }
+  .meet-countdown-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--deep); margin-bottom: 4px; }
+  .meet-countdown-sub { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 20px; font-style: italic; }
+  .meet-timer-row { display: flex; justify-content: center; align-items: flex-end; gap: 8px; }
+  .meet-unit { text-align: center; }
+  .meet-num { font-family: 'Cormorant Garamond', serif; font-size: 2.6rem; font-weight: 300; color: var(--plum); line-height: 1; display: block; min-width: 48px; }
+  .meet-lbl { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); display: block; margin-top: 4px; }
+  .meet-sep { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--rose); padding-bottom: 18px; }
+
+  /* ===== LETTER ===== */
+  .letter-card::before { content:'💌'; position:absolute; top:18px; right:20px; font-size:1.3rem; opacity:0.45; }
+  .letter-heading { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:400; color:var(--deep); margin-bottom:18px; }
+  .letter-body { font-family:'Cormorant Garamond',serif; font-size:1.05rem; color:var(--text-main); line-height:1.9; font-weight:300; }
+  .letter-body p+p { margin-top:14px; }
+
+  /* ===== SPOTIFY ===== */
+  .spotify-wrap { border-radius:12px; overflow:hidden; }
+  .song-caption { font-family:'Cormorant Garamond',serif; font-size:0.95rem; font-style:italic; color:var(--text-soft); text-align:center; margin-top:12px; line-height:1.6; }
+</style>
+</head>
+<body>
+
+<!-- ===== TYPEWRITER SCREEN ===== -->
+<div id="tw-screen">
+  <div class="tw-line" id="tl1"></div>
+  <div class="tw-line" id="tl2"></div>
+  <div class="tw-line soft" id="tl3"></div>
+  <div class="tw-line soft" id="tl4"></div>
+  <button class="tw-btn" id="tw-btn" onclick="revealMain()">kal milenge 🥹</button>
+</div>
+
+<!-- ===== MAIN ===== -->
+<div id="main-content">
+
+  <div class="site-header">
+    <p class="date-label">07 · 06 · 2026</p>
+    <h1>almost perfect, Tingu ji 😌</h1>
+    <p class="sub">aapne bahut sahi cheezein boli. almost sab. 😏</p>
+  </div>
+
+  <!-- Documentary label -->
+  <div class="doc-label">
+    <span class="doc-badge">a documentary</span>
+    <p class="doc-title">"The Journey of Tingu ji" 😭📈</p>
+  </div>
+
+  <!-- Chapter 1 -->
+  <div class="chapter-card">
+    <p class="chapter-label">Chapter 01</p>
+    <p class="chapter-num">The Resistance 😤</p>
+    <p class="chapter-vibe">"absolutely not. never. no way."</p>
+    <div class="ss-wrap" onclick="revealSS(this)">
+      <img src="/day/june/7/ss1.jpg" class="ss-img" alt="screenshot 1" onerror="this.style.minHeight='200px';this.style.background='var(--blush)'">
+      <div class="ss-overlay">
+        <span class="ss-overlay-emoji">🔒</span>
+        <p class="ss-overlay-text">tap to reveal Chapter 1</p>
+        <span class="ss-overlay-hint">tap anywhere</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chapter 2 -->
+  <div class="chapter-card">
+    <p class="chapter-label">Chapter 02</p>
+    <p class="chapter-num">Warming Up 👀</p>
+    <p class="chapter-vibe">"hmm... okay maybe."</p>
+    <div class="ss-wrap" onclick="revealSS(this)">
+      <img src="/day/june/7/ss2.jpg" class="ss-img" alt="screenshot 2" onerror="this.style.minHeight='200px';this.style.background='var(--blush)'">
+      <div class="ss-overlay">
+        <span class="ss-overlay-emoji">🔒</span>
+        <p class="ss-overlay-text">tap to reveal Chapter 2</p>
+        <span class="ss-overlay-hint">tap anywhere</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chapter 3 -->
+  <div class="chapter-card">
+    <p class="chapter-label">Chapter 03</p>
+    <p class="chapter-num">Character Development 📈</p>
+    <p class="chapter-vibe">"growth. beautiful growth." 😌</p>
+    <div class="ss-wrap" onclick="revealSS(this)">
+      <img src="/day/june/7/ss3.jpg" class="ss-img" alt="screenshot 3" onerror="this.style.minHeight='200px';this.style.background='var(--blush)'">
+      <div class="ss-overlay">
+        <span class="ss-overlay-emoji">🔒</span>
+        <p class="ss-overlay-text">tap to reveal Chapter 3</p>
+        <span class="ss-overlay-hint">tap anywhere</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Growth bar -->
+  <div class="card growth-card">
+    <p class="growth-label">Tingu ji's character development 📊</p>
+    <div class="growth-bar-wrap">
+      <div class="growth-bar" id="growth-bar"></div>
+    </div>
+    <div class="growth-labels">
+      <span>"NEVER 😤"</span>
+      <span>daddy 😌</span>
+    </div>
+  </div>
+
+  <!-- Redacted reveal -->
+  <p class="section-label">but wait. ek cheez missing thi. 👀</p>
+  <div class="card" style="padding:0; overflow:hidden;">
+    <div class="redacted-wrap">
+      <p class="redacted-top">classified information - tap to declassify</p>
+      <div class="redacted-box" onclick="revealRedacted(this)">
+        <p class="redacted-text" id="redacted-word">daddy 😌</p>
+      </div>
+      <p class="redacted-hint" id="redacted-hint">tap the box above 👆</p>
+      <p class="redacted-reaction" id="redacted-reaction">
+        aap bhool gayi Tingu ji. 😌<br>
+        par koi baat nahi - kal in person yaad dila dunga. 😏
+      </p>
+    </div>
+  </div>
+
+  <!-- Tomorrow section -->
+  <p class="section-label">aur kal kya hoga 🥹</p>
+  <div class="card">
+    <div class="tomorrow-list" id="tmr-list">
+      <div class="tmr-item">
+        <span class="tmr-emoji">🤗</span>
+        <p class="tmr-text"><em>finally hug.</em> properly. pehli cheez.</p>
+      </div>
+      <div class="tmr-item">
+        <span class="tmr-emoji">😙</span>
+        <p class="tmr-text"><em>forehead kisses.</em> bahut saare. zero negotiations.</p>
+      </div>
+      <div class="tmr-item">
+        <span class="tmr-emoji">🍳</span>
+        <p class="tmr-text"><em>breakfast saath.</em> properly. no rushing. just us.</p>
+      </div>
+      <div class="tmr-item">
+        <span class="tmr-emoji">🎀</span>
+        <p class="tmr-text"><em>full pampering.</em> aap queen ho. aaj bhi, kal bhi.</p>
+      </div>
+      <div class="tmr-item">
+        <span class="tmr-emoji">🙈</span>
+        <p class="tmr-text"><em>"no no no"</em> ko real mein recreate karte hain. finally. 😭🥹</p>
+      </div>
+      <div class="tmr-item">
+        <span class="tmr-emoji">😌</span>
+        <p class="tmr-text">aur woh word bhi bolna padega. in person. no escaping. 😏</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Song -->
+  <p class="section-label">🎵 tonight's song</p>
+  <div class="card">
+    <div class="spotify-wrap">
+      <iframe style="border-radius:12px"
+        src="https://open.spotify.com/embed/track/44AyOl4qVkzS48vBsbNXaC?utm_source=generator&theme=0"
+        width="100%" height="152" frameBorder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy">
+      </iframe>
+    </div>
+    <p class="song-caption">can't help falling in love. 😌<br>literally aapke baare mein hi hai yeh song.</p>
+  </div>
+
+  <!-- Letter -->
+  <div class="card letter-card">
+    <h2 class="letter-heading">ek chhoti si baat 💜</h2>
+    <div class="letter-body">
+      <p>aapne kal bahut sahi cheezein kahi. baby, bf, husband, best friend - sab sahi. aap genuinely bahut achhi ho. 😌</p>
+      <p>bas ek chhoti si cheez bhool gayi. par koi baat nahi - kal main khud yaad dila dunga. 😏</p>
+      <p>seriously though - kal milna hai. finally. pehli baar properly time hoga. breakfast, pamper, forehead kisses, aur bas aap aur main.</p>
+      <p style="font-style:italic; color:var(--text-soft);">kal milenge, Tingu ji. can't wait. 🥹💜</p>
+    </div>
+  </div>
+
+  <!-- Countdown -->
+  <div class="meet-countdown">
+    <p class="meet-countdown-title">kal tak sirf... 🧸</p>
+    <p class="meet-countdown-sub">June 8, 2026 - 9:00 AM - finally.</p>
+    <div class="meet-timer-row" id="meet-timer"></div>
+  </div>
+
+</div><!-- end main -->
+
+<script>
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function istTime(y,mo,d,h=0,mi=0){ return new Date(Date.UTC(y,mo-1,d,h-5,mi-30,0)); }
+
+  // ===== TYPEWRITER =====
+  const twLines = [
+    { id:'tl1', text:'Tingu ji ne kal bahut sahi cheezein boli... 😌', delay:400 },
+    { id:'tl2', text:'almost sab sahi tha.', delay:2200 },
+    { id:'tl3', text:'almost. 😏', delay:3800 },
+    { id:'tl4', text:'ek chhoti si cheez reh gayi.', delay:5200 },
+  ];
+
+  function typeText(el, text, cb){
+    el.classList.add('visible');
+    let i = 0; el.innerHTML = '';
+    const iv = setInterval(()=>{
+      el.innerHTML = text.slice(0,++i) + '<span class="cursor"></span>';
+      if(i >= text.length){
+        clearInterval(iv);
+        el.innerHTML = text;
+        if(cb) cb();
+      }
+    }, 42);
+  }
+
+  function startTypewriter(){
+    twLines.forEach(l=>{
+      setTimeout(()=>{ typeText(document.getElementById(l.id), l.text); }, l.delay);
+    });
+    setTimeout(()=>{
+      document.getElementById('tw-btn').classList.add('visible');
+    }, 7000);
+  }
+
+  function revealMain(){
+    const tw = document.getElementById('tw-screen');
+    tw.style.transition = 'opacity 0.8s ease';
+    tw.style.opacity = '0';
+    setTimeout(()=>{
+      tw.style.display = 'none';
+      document.body.classList.add('unlocked');
+      const main = document.getElementById('main-content');
+      main.classList.add('visible');
+      main.style.opacity='0'; main.style.transition='opacity 0.9s ease';
+      setTimeout(()=>{
+        main.style.opacity='1';
+        setTimeout(animateGrowthBar, 800);
+        setTimeout(animateTomorrowList, 1200);
+      }, 50);
+    }, 800);
+  }
+
+  // ===== SCREENSHOT REVEAL =====
+  function revealSS(wrap){
+    const overlay = wrap.querySelector('.ss-overlay');
+    overlay.classList.add('hidden');
+  }
+
+  // ===== REDACTED =====
+  function revealRedacted(box){
+    const word = document.getElementById('redacted-word');
+    const hint = document.getElementById('redacted-hint');
+    const reaction = document.getElementById('redacted-reaction');
+    word.classList.add('revealed');
+    hint.classList.add('hidden');
+    setTimeout(()=>{ reaction.classList.add('visible'); spawnConfetti(box.closest('.redacted-wrap')); }, 400);
+  }
+
+  function spawnConfetti(parent){
+    const colors = ['#f0a0be','#c9a0a0','#9b7fb0','#e8c4b8','#8b5e6e','#d4c4d8'];
+    for(let i=0;i<30;i++){
+      setTimeout(()=>{
+        const el = document.createElement('div');
+        el.className = 'confetti-piece';
+        el.style.left = (Math.random()*100)+'%';
+        el.style.top = '0';
+        el.style.background = colors[Math.floor(Math.random()*colors.length)];
+        el.style.animation = `confettiFall ${1+Math.random()*1.5}s ease both`;
+        parent.appendChild(el);
+        setTimeout(()=>el.remove(), 2500);
+      }, i*60);
+    }
+  }
+
+  // ===== GROWTH BAR =====
+  function animateGrowthBar(){
+    const bar = document.getElementById('growth-bar');
+    if(bar) bar.style.width = '100%';
+  }
+
+  // ===== TOMORROW LIST =====
+  function animateTomorrowList(){
+    const items = document.querySelectorAll('.tmr-item');
+    items.forEach((item, i)=>{
+      setTimeout(()=>{ item.classList.add('visible'); }, i*180);
+    });
+  }
+
+  // ===== COUNTDOWN =====
+  function updateMeetTimer(){
+    const target = istTime(2026,6,8,9,0);
+    const diff = target - new Date();
+    const el = document.getElementById('meet-timer');
+    if(!el) return;
+    if(diff<=0){ el.innerHTML='<span style="font-family:\'Cormorant Garamond\',serif;color:var(--plum);font-size:1.4rem;font-style:italic;">it\'s time!! 🥹🎉</span>'; return; }
+    const s=Math.floor(diff/1000);
+    const days=Math.floor(s/86400);
+    const hrs=Math.floor((s%86400)/3600);
+    const mins=Math.floor((s%3600)/60);
+    const secs=s%60;
+    el.innerHTML=
+      '<div class="meet-unit"><span class="meet-num">'+days+'</span><span class="meet-lbl">days</span></div>'+
+      '<span class="meet-sep">·</span>'+
+      '<div class="meet-unit"><span class="meet-num">'+pad(hrs)+'</span><span class="meet-lbl">hrs</span></div>'+
+      '<span class="meet-sep">·</span>'+
+      '<div class="meet-unit"><span class="meet-num">'+pad(mins)+'</span><span class="meet-lbl">min</span></div>'+
+      '<span class="meet-sep">·</span>'+
+      '<div class="meet-unit"><span class="meet-num">'+pad(secs)+'</span><span class="meet-lbl">sec</span></div>';
+  }
+  setInterval(updateMeetTimer, 1000);
+
+  // ===== INIT =====
+  document.addEventListener('DOMContentLoaded', function(){
+    updateMeetTimer();
+    const params = new URLSearchParams(window.location.search);
+    if(params.get('preview')==='true'){
+      startTypewriter();
+    } else {
+      startTypewriter();
+    }
+  });
+</script>
+</body>
+</html>
