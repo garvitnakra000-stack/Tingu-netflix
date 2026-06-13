@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>14 June — Case #0613 & Vizag Wali Baatein</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500&family=Special+Elite&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --cream: #F5F0E8;
+    --rose: #C9847A;
+    --plum: #6B3A4A;
+    --gold: #C4963A;
+    --ink: #1A1208;
+    --red-tape: #B03030;
+    --stamp-green: #2A5C3A;
+    --fog: #E8E0D0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── LOCK SCREEN ── */
+  #lock-screen {
+    position: fixed;
+    inset: 0;
+    background: var(--ink);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    gap: 20px;
+  }
+
+  .lock-icon {
+    font-size: 3rem;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+  }
+
+  .lock-text {
+    font-family: 'Special Elite', cursive;
+    color: var(--fog);
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    text-align: center;
+    padding: 0 2rem;
+  }
+
+  .lock-time {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--rose);
+    font-size: 2.5rem;
+    font-style: italic;
+  }
+
+  .lock-subtext {
+    font-family: 'DM Sans', sans-serif;
+    color: #888;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── MAIN CONTENT ── */
+  #main-content {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+
+  #main-content.visible {
+    display: block;
+    opacity: 1;
+  }
+
+  /* ── CHAPTER 1: CRIME DOSSIER ── */
+  .chapter-one {
+    background: var(--cream);
+    padding-bottom: 4rem;
+  }
+
+  /* Red tape header */
+  .red-tape-header {
+    background: var(--red-tape);
+    padding: 0.6rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .tape-label {
+    font-family: 'Special Elite', cursive;
+    color: white;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+  }
+
+  .case-number {
+    font-family: 'Special Elite', cursive;
+    color: rgba(255,255,255,0.7);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* Hero image */
+  .hero-container {
+    position: relative;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 1rem;
+  }
+
+  .exhibit-tag {
+    position: absolute;
+    top: 2.8rem;
+    left: 2rem;
+    background: var(--gold);
+    color: white;
+    font-family: 'Special Elite', cursive;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    padding: 0.25rem 0.6rem;
+    z-index: 2;
+    transform: rotate(-2deg);
+  }
+
+  .hero-photo {
+    width: 100%;
+    border: 3px solid var(--fog);
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.15);
+    display: block;
+    filter: sepia(8%);
+  }
+
+  .photo-caption {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.65rem;
+    color: #888;
+    text-align: center;
+    margin-top: 0.5rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* Case file */
+  .case-file {
+    max-width: 480px;
+    margin: 1.5rem auto;
+    padding: 0 1.5rem;
+  }
+
+  .case-file-header {
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding: 0.6rem 0;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  .case-file-title {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--red-tape);
+  }
+
+  .case-date {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem;
+    color: #888;
+  }
+
+  .incident-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+  }
+
+  .incident-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--plum);
+    margin-bottom: 1.5rem;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 0.3rem 0.8rem;
+    margin-bottom: 0.5rem;
+    align-items: start;
+  }
+
+  .field-label {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    color: #888;
+    padding-top: 0.15rem;
+    text-transform: uppercase;
+  }
+
+  .field-value {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+
+  .field-value.highlight {
+    color: var(--red-tape);
+    font-weight: 500;
+  }
+
+  .divider-line {
+    border: none;
+    border-top: 1px dashed #C0B8A8;
+    margin: 1.2rem 0;
+  }
+
+  /* Evidence section */
+  .evidence-label {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    color: var(--red-tape);
+    margin-bottom: 0.8rem;
+  }
+
+  .evidence-photo {
+    width: 100%;
+    border: 2px solid var(--fog);
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.08);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  .evidence-caption {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.6rem;
+    color: #888;
+    letter-spacing: 0.08em;
+  }
+
+  /* Verdict stamp */
+  .verdict-container {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 1.5rem 1rem;
+  }
+
+  .verdict-stamp {
+    border: 3px solid var(--red-tape);
+    border-radius: 8px;
+    padding: 1rem 2rem;
+    text-align: center;
+    transform: rotate(-3deg);
+    max-width: 280px;
+    position: relative;
+  }
+
+  .verdict-stamp::before {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border: 1px solid var(--red-tape);
+    border-radius: 5px;
+    opacity: 0.4;
+  }
+
+  .verdict-top {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    color: var(--red-tape);
+    margin-bottom: 0.4rem;
+  }
+
+  .verdict-main {
+    font-family: 'Special Elite', cursive;
+    font-size: 1.6rem;
+    color: var(--red-tape);
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+
+  .verdict-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem;
+    color: var(--red-tape);
+    margin-top: 0.3rem;
+    opacity: 0.8;
+  }
+
+  /* Roast note */
+  .roast-note {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .handwritten-note {
+    background: #FFFFF0;
+    border-left: 3px solid var(--gold);
+    padding: 1rem 1.2rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-style: italic;
+    line-height: 1.7;
+    color: var(--ink);
+    margin-bottom: 1rem;
+    position: relative;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.06);
+  }
+
+  .note-attribution {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem;
+    color: #888;
+    text-align: right;
+    padding: 0 1.5rem;
+    margin-top: -0.5rem;
+    margin-bottom: 2rem;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Ankit card */
+  .ankit-card {
+    max-width: 480px;
+    margin: 0 auto 2rem;
+    padding: 0 1.5rem;
+  }
+
+  .ankit-inner {
+    background: var(--fog);
+    border: 1px solid #C0B8A8;
+    padding: 1rem 1.2rem;
+    position: relative;
+  }
+
+  .ankit-badge {
+    position: absolute;
+    top: -10px;
+    left: 1rem;
+    background: var(--stamp-green);
+    color: white;
+    font-family: 'Special Elite', cursive;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .ankit-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--stamp-green);
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .ankit-body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+
+  /* ── CHAPTER DIVIDER ── */
+  .chapter-divider {
+    background: var(--plum);
+    padding: 3rem 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chapter-divider::before,
+  .chapter-divider::after {
+    content: '✦';
+    position: absolute;
+    color: rgba(255,255,255,0.08);
+    font-size: 8rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .chapter-divider::before { left: -2rem; }
+  .chapter-divider::after { right: -2rem; }
+
+  .divider-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .divider-main {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-style: italic;
+    color: white;
+    line-height: 1.3;
+  }
+
+  .divider-ornament {
+    color: rgba(255,255,255,0.3);
+    font-size: 1rem;
+    margin-top: 1rem;
+    letter-spacing: 0.5em;
+  }
+
+  /* ── CHAPTER 2: VIZAG ── */
+  .chapter-two {
+    background: linear-gradient(180deg, #1A1A2E 0%, #16213E 50%, #0F3460 100%);
+    padding: 4rem 1.5rem;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Stars */
+  .stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--d) ease-in-out infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 0.9; transform: scale(1.3); }
+  }
+
+  .ch2-inner {
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .vizag-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .vizag-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    font-style: italic;
+    color: white;
+    text-align: center;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .vizag-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.45);
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .vizag-prose {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    line-height: 1.9;
+    color: rgba(255,255,255,0.82);
+    margin-bottom: 2rem;
+  }
+
+  .vizag-prose em {
+    color: #A8C8E8;
+    font-style: italic;
+  }
+
+  /* Spotify */
+  .spotify-container {
+    margin: 2rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  /* WhatsApp section */
+  .wa-section {
+    margin-top: 2.5rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    backdrop-filter: blur(8px);
+  }
+
+  .wa-prompt-label {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .wa-prompt-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .wa-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: #25D366;
+    color: white;
+    text-decoration: none;
+    padding: 0.8rem 1.8rem;
+    border-radius: 50px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 16px rgba(37,211,102,0.3);
+  }
+
+  .wa-button:active {
+    transform: scale(0.97);
+  }
+
+  .wa-icon {
+    font-size: 1.1rem;
+  }
+
+  /* Footer */
+  .page-footer {
+    background: var(--ink);
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .footer-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: rgba(255,255,255,0.35);
+  }
+
+  /* Fade-in animation */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-in.appeared {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- LOCK SCREEN -->
+<div id="lock-screen">
+  <div class="lock-icon">🔒</div>
+  <div class="lock-time">10:00 AM</div>
+  <div class="lock-text">Classified documents.<br>Aapke liye hi hain — thoda wait karo.</div>
+  <div class="lock-subtext">OPENS AT 10:00 AM</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main-content">
+
+  <!-- ══ CHAPTER 1 ══ -->
+  <div class="chapter-one">
+
+    <div class="red-tape-header">
+      <span class="tape-label">⚠ CLASSIFIED — INCIDENT REPORT</span>
+      <span class="case-number">CASE #0613-FH</span>
+    </div>
+
+    <!-- Hero image -->
+    <div class="hero-container fade-in">
+      <div class="exhibit-tag">EXHIBIT A</div>
+      <img src="/day/june/14/bodyguard.jpg" alt="The VIP and her security detail" class="hero-photo">
+      <p class="photo-caption">SUBJECT PHOTOGRAPHED WITH SECURITY PERSONNEL — DATE: 13 JUNE 2025</p>
+    </div>
+
+    <!-- Case file -->
+    <div class="case-file fade-in">
+      <div class="case-file-header">
+        <span class="case-file-title">OFFICIAL INCIDENT REPORT</span>
+        <span class="case-date">13 JUN 2025</span>
+      </div>
+
+      <h1 class="incident-title">The Great<br>Food Heist</h1>
+      <p class="incident-sub">A tragedy in Chinese Wok, Peach Ice Tea, and absolute lies.</p>
+
+      <div class="field-row">
+        <span class="field-label">Victim</span>
+        <span class="field-value">Tingu ji — VIP of highest order, holder of forehead kisses</span>
+      </div>
+      <div class="field-row">
+        <span class="field-label">Items Stolen</span>
+        <span class="field-value">Chinese Wok (her beloved), chocolate dessert, Osher Peach Ice Tea</span>
+      </div>
+      <div class="field-row">
+        <span class="field-label">Gift From</span>
+        <span class="field-value">Ankit (colleague, certified good person)</span>
+      </div>
+      <div class="field-row">
+        <span class="field-label">Suspect</span>
+        <span class="field-value highlight">Unnamed Delivery Rider — whereabouts unknown</span>
+      </div>
+      <div class="field-row">
+        <span class="field-label">Excuse Given</span>
+        <span class="field-value highlight">"Food delivered to bodyguard." 😐</span>
+      </div>
+      <div class="field-row">
+        <span class="field-label">Plausibility</span>
+        <span class="field-value">0.0 out of 10. We have PHOTO EVIDENCE of the bodyguards. They were clearly on duty. They would never accept unauthorized Chinese Wok deliveries. This is a lie.</span>
+      </div>
+
+      <hr class="divider-line">
+
+      <div class="evidence-label">EVIDENCE — EXHIBIT B</div>
+      <img src="/day/june/14/food.jpg" alt="The recovered items" class="evidence-photo">
+      <p class="evidence-caption">EXHIBIT B — ITEMS EVENTUALLY RECOVERED AFTER INVESTIGATION</p>
+    </div>
+
+    <!-- Verdict stamp -->
+    <div class="verdict-container fade-in">
+      <div class="verdict-stamp">
+        <div class="verdict-top">OFFICIAL VERDICT</div>
+        <div class="verdict-main">Blatant<br>Lie.</div>
+        <div class="verdict-sub">No bodyguard would do this to her.</div>
+      </div>
+    </div>
+
+    <!-- Roast note -->
+    <div class="roast-note fade-in">
+      <div class="handwritten-note">
+        Rider bhai, ek second. Aapne dekha nahi kya — <em>yeh VIP hain.</em> Sunflowers leke ghoomti hain. Do bodyguards hamesha saath hain. Unhe Chinese Wok bina nahi rehna chahiye tha. Tumhari koi excuse nahi chalegi yahan.
+        <br><br>
+        Next time, seedha deliver karo. Unke bodyguards busy hain — aur main hun unka sabse bada fan, main complaint karunga. 📋
+      </div>
+      <p class="note-attribution">— Filed by: Garvit, Self-Appointed Head of Tingu ji's Food Security Division</p>
+    </div>
+
+    <!-- Ankit card -->
+    <div class="ankit-card fade-in">
+      <div class="ankit-inner">
+        <div class="ankit-badge">INTELLIGENCE NOTE</div>
+        <div class="ankit-title">Regarding: Ankit</div>
+        <div class="ankit-body">
+          Ankit — the colleague who gifted this entire spread — knows aapka ghar ka address. Yeh woh cheez hai jo main nahi jaanta. Technically, yeh mujhse zyada useful hai. I am choosing to be happy for aap, not bitter about this. 🙂<br><br>
+          (Main bitter nahi hun. Bilkul nahi. 🙂🙂🙂)
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ CHAPTER DIVIDER ══ -->
+  <div class="chapter-divider">
+    <div class="divider-eyebrow">Case closed. Ab kuch aur baat karte hain.</div>
+    <div class="divider-main">Raat ko jo baatein<br>hoti hain na —</div>
+    <div class="divider-ornament">✦ ✦ ✦</div>
+  </div>
+
+  <!-- ══ CHAPTER 2: VIZAG ══ -->
+  <div class="chapter-two">
+
+    <!-- Stars -->
+    <div class="stars" id="stars-container"></div>
+
+    <div class="ch2-inner">
+      <div class="vizag-eyebrow">Chapter Two</div>
+      <h2 class="vizag-title">Vizag Wali<br>Baatein</h2>
+      <p class="vizag-sub">Kuch yaadein, kuch dost, kuch woh waqt jo kabhi nahi bhulta.</p>
+
+      <p class="vizag-prose">
+        Kal raat maine aapko thodi baatein sunai apne doston ki — college ke woh din, Vizag ke woh galiyan, woh log jo zindagi ke ek khaas hisse mein the.<br><br>
+        Aisi baatein hain jo sirf tab share hoti hain jab koi <em>apna</em> lage. Toh aap ko bata diya. 🌊<br><br>
+        Yeh song sunao — "The End of Beginning" by Djo. Ek aise waqt ke liye hai jab sab kuch change ho raha hota hai, aur aap jaante ho ki yeh moment phir nahi aayega. Vizag mein bhi kuch aisa hi tha.
+      </p>
+
+      <!-- Spotify embed -->
+      <div class="spotify-container">
+        <iframe
+          data-testid="embed-iframe"
+          style="border-radius:12px"
+          src="https://open.spotify.com/embed/track/1OwPxTeIwz4wxdvDSnysgm?utm_source=generator"
+          width="100%"
+          height="352"
+          frameBorder="0"
+          allowfullscreen=""
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy">
+        </iframe>
+      </div>
+
+      <!-- WhatsApp section -->
+      <div class="wa-section fade-in">
+        <div class="wa-prompt-label">Your turn now</div>
+        <p class="wa-prompt-text">
+          Aapke paas bhi koi aisi song hogi — jo kisi memory se bandhi ho. Koi moment, koi jagah, koi feeling.<br><br>
+          Mujhe bhejo. Song bhi, story bhi. 🎵
+        </p>
+        <a href="https://wa.me/918770703110?text=Meri%20song%20aur%20memory%20yeh%20hai%20%F0%9F%8E%B5%20-%20" class="wa-button" target="_blank">
+          <span class="wa-icon">💬</span>
+          Send on WhatsApp
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="page-footer">
+    <p class="footer-text">Made with love, daily — sirf aapke liye. ✦</p>
+  </div>
+
+</div>
+
+<script>
+  // ── TIME LOCK ──
+  function checkTime() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('preview') === 'true') return unlock();
+
+    const now = new Date();
+    const unlock_hour = 10;
+    if (now.getHours() >= unlock_hour) {
+      unlock();
+    } else {
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    }
+  }
+
+  function updateCountdown() {
+    const now = new Date();
+    const target = new Date();
+    target.setHours(10, 0, 0, 0);
+    if (now >= target) { unlock(); return; }
+
+    const diff = target - now;
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    const timeEl = document.querySelector('.lock-time');
+    if (timeEl) timeEl.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+
+  function unlock() {
+    const lock = document.getElementById('lock-screen');
+    const main = document.getElementById('main-content');
+    lock.style.opacity = '0';
+    lock.style.transition = 'opacity 0.8s ease';
+    setTimeout(() => {
+      lock.style.display = 'none';
+      main.style.display = 'block';
+      requestAnimationFrame(() => {
+        main.classList.add('visible');
+        initStars();
+        initScrollObserver();
+      });
+    }, 800);
+  }
+
+  // ── STARS ──
+  function initStars() {
+    const container = document.getElementById('stars-container');
+    if (!container) return;
+    for (let i = 0; i < 60; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      const size = Math.random() * 2.5 + 0.5;
+      star.style.cssText = `
+        width: ${size}px;
+        height: ${size}px;
+        top: ${Math.random() * 100}%;
+        left: ${Math.random() * 100}%;
+        --d: ${2 + Math.random() * 4}s;
+        animation-delay: ${Math.random() * 4}s;
+      `;
+      container.appendChild(star);
+    }
+  }
+
+  // ── SCROLL OBSERVER ──
+  function initScrollObserver() {
+    const els = document.querySelectorAll('.fade-in');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('appeared');
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    els.forEach(el => obs.observe(el));
+  }
+
+  checkTime();
+</script>
+
+</body>
+</html>
