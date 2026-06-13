@@ -1,729 +1,460 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>She Said Yes — meripyaritingu.xyz</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
-
-  <style>
-    :root {
-      --cream: #FFF5F0;
-      --soft-pink: #FDEDF0;
-      --rose: #C9A0A0;
-      --rose-light: #E8C5C5;
-      --brown: #6B4C4C;
-      --brown-light: #9B7272;
-      --gold: #C9A96E;
-      --text-dark: #3A2828;
-      --text-mid: #6B4C4C;
-      --text-soft: #A08080;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background-color: var(--cream);
-      color: var(--text-dark);
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 300;
-      overflow-x: hidden;
-    }
-
-    /* ===================== INTRO SCREEN ===================== */
-    #intro {
-      position: fixed;
-      inset: 0;
-      z-index: 100;
-      background: var(--cream);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      text-align: center;
-      transition: opacity 0.8s ease, visibility 0.8s ease;
-    }
-
-    #intro.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    .intro-petals {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
-
-    .petal {
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      border-radius: 50% 0;
-      background: var(--rose-light);
-      opacity: 0;
-      animation: fall linear infinite;
-    }
-
-    @keyframes fall {
-      0%   { transform: translateY(-20px) rotate(0deg); opacity: 0.6; }
-      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-    }
-
-    .typewriter-wrap {
-      max-width: 560px;
-    }
-
-    .typewriter-line {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-weight: 300;
-      color: var(--text-mid);
-      min-height: 1.4em;
-      margin-bottom: 0.5rem;
-    }
-
-    .typewriter-line.lg {
-      font-size: clamp(1.6rem, 5vw, 2.8rem);
-      color: var(--text-dark);
-    }
-
-    .typewriter-line.sm {
-      font-size: clamp(1rem, 3vw, 1.4rem);
-    }
-
-    .cursor {
-      display: inline-block;
-      width: 2px;
-      height: 1em;
-      background: var(--rose);
-      vertical-align: middle;
-      margin-left: 2px;
-      animation: blink 0.8s step-end infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0; }
-    }
-
-    .enter-btn {
-      margin-top: 2.5rem;
-      padding: 0.75rem 2.5rem;
-      background: transparent;
-      border: 1px solid var(--rose);
-      border-radius: 40px;
-      color: var(--brown);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.85rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      cursor: pointer;
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 0.6s ease, transform 0.6s ease, background 0.3s;
-    }
-
-    .enter-btn.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .enter-btn:hover {
-      background: var(--rose-light);
-    }
-
-    /* ===================== MAIN CONTENT ===================== */
-    #main {
-      opacity: 0;
-      transition: opacity 1s ease;
-    }
-
-    #main.visible {
-      opacity: 1;
-    }
-
-    /* ===================== HERO SECTION ===================== */
-    #hero {
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 4rem 2rem;
-      text-align: center;
-      background: linear-gradient(180deg, var(--cream) 0%, var(--soft-pink) 100%);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-date {
-      font-size: 0.78rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--rose);
-      margin-bottom: 1.5rem;
-    }
-
-    .hero-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3rem, 10vw, 7rem);
-      font-weight: 300;
-      line-height: 1.1;
-      color: var(--text-dark);
-      margin-bottom: 1.5rem;
-    }
-
-    .hero-title em {
-      font-style: italic;
-      color: var(--rose);
-    }
-
-    .hero-sub {
-      font-size: clamp(0.95rem, 2.5vw, 1.15rem);
-      color: var(--text-soft);
-      max-width: 420px;
-      line-height: 1.8;
-    }
-
-    .scroll-hint {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      opacity: 0.5;
-    }
-
-    .scroll-hint span {
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-soft);
-    }
-
-    .scroll-line {
-      width: 1px;
-      height: 40px;
-      background: var(--rose);
-      animation: scrollpulse 1.8s ease-in-out infinite;
-    }
-
-    @keyframes scrollpulse {
-      0%, 100% { opacity: 0.3; transform: scaleY(1); }
-      50%       { opacity: 1; transform: scaleY(0.5); }
-    }
-
-    /* ===================== DIVIDER ===================== */
-    .divider {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      padding: 3rem 2rem;
-    }
-
-    .divider-line {
-      flex: 1;
-      max-width: 120px;
-      height: 1px;
-      background: var(--rose-light);
-    }
-
-    .divider-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--rose);
-    }
-
-    /* ===================== TIMELINE / CARDS ===================== */
-    #timeline {
-      padding: 2rem 1.5rem 4rem;
-      max-width: 700px;
-      margin: 0 auto;
-    }
-
-    .section-label {
-      text-align: center;
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--rose);
-      margin-bottom: 3rem;
-    }
-
-    .moment-card {
-      background: #fff;
-      border: 1px solid var(--rose-light);
-      border-radius: 16px;
-      padding: 2rem 2rem 2rem 2.5rem;
-      margin-bottom: 2rem;
-      position: relative;
-      overflow: hidden;
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-
-    .moment-card.revealed {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .moment-card::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: linear-gradient(180deg, var(--rose-light), var(--rose));
-      border-radius: 2px 0 0 2px;
-    }
-
-    .moment-num {
-      font-size: 0.68rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--text-soft);
-      margin-bottom: 0.6rem;
-    }
-
-    .moment-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.5rem, 4vw, 2rem);
-      font-weight: 400;
-      color: var(--text-dark);
-      margin-bottom: 0.75rem;
-      line-height: 1.2;
-    }
-
-    .moment-body {
-      font-size: 0.95rem;
-      color: var(--text-mid);
-      line-height: 1.85;
-    }
-
-    .moment-body em {
-      font-style: italic;
-      color: var(--rose);
-    }
-
-    /* ===================== THE PEAK — SHE SAID YES ===================== */
-    #peak {
-      min-height: 100svh;
-      background: var(--text-dark);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 4rem 2rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    #peak .shimmer-bg {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 50% 60%, rgba(201,160,160,0.12) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .peak-eyebrow {
-      font-size: 0.75rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--rose);
-      margin-bottom: 2.5rem;
-      opacity: 0;
-      animation: fadeup 1s ease 0.5s forwards;
-    }
-
-    .peak-words {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3.5rem, 14vw, 9rem);
-      font-weight: 300;
-      line-height: 1;
-      color: #fff;
-      opacity: 0;
-      animation: fadeup 1.2s ease 1s forwards;
-    }
-
-    .peak-words em {
-      font-style: italic;
-      color: var(--rose);
-    }
-
-    .peak-period {
-      color: var(--gold);
-    }
-
-    .peak-sub {
-      margin-top: 2.5rem;
-      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-      color: rgba(255,255,255,0.45);
-      font-style: italic;
-      font-family: 'Cormorant Garamond', serif;
-      opacity: 0;
-      animation: fadeup 1s ease 2s forwards;
-    }
-
-    @keyframes fadeup {
-      to { opacity: 1; transform: translateY(0); }
-      from { opacity: 0; transform: translateY(20px); }
-    }
-
-    /* ===================== LETTER SECTION ===================== */
-    #letter {
-      padding: 5rem 2rem;
-      background: var(--soft-pink);
-      text-align: center;
-    }
-
-    .letter-label {
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--rose);
-      margin-bottom: 1.5rem;
-    }
-
-    .letter-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.8rem, 5vw, 2.8rem);
-      font-weight: 300;
-      font-style: italic;
-      color: var(--text-dark);
-      margin-bottom: 2.5rem;
-    }
-
-    .letter-img-wrap {
-      max-width: 480px;
-      margin: 0 auto 2.5rem;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 12px 40px rgba(107,76,76,0.15);
-      border: 1px solid var(--rose-light);
-    }
-
-    .letter-img-wrap img {
-      width: 100%;
-      display: block;
-    }
-
-    .letter-caption {
-      font-size: 0.88rem;
-      color: var(--text-soft);
-      font-style: italic;
-      max-width: 380px;
-      margin: 0 auto;
-      line-height: 1.7;
-    }
-
-    /* ===================== SONG SECTION ===================== */
-    #song {
-      padding: 4rem 2rem 6rem;
-      background: var(--cream);
-      text-align: center;
-    }
-
-    .song-label {
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--rose);
-      margin-bottom: 1.2rem;
-    }
-
-    .song-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
-      font-weight: 300;
-      font-style: italic;
-      color: var(--text-dark);
-      margin-bottom: 2rem;
-    }
-
-    .spotify-wrap {
-      max-width: 480px;
-      margin: 0 auto 2.5rem;
-      border-radius: 12px;
-      overflow: hidden;
-    }
-
-    .spotify-wrap iframe {
-      width: 100%;
-      border-radius: 12px;
-      display: block;
-    }
-
-    .song-note {
-      font-size: 0.9rem;
-      color: var(--text-soft);
-      font-style: italic;
-      font-family: 'Cormorant Garamond', serif;
-      max-width: 380px;
-      margin: 0 auto;
-      line-height: 1.8;
-    }
-
-    /* ===================== FOOTER ===================== */
-    #footer {
-      padding: 3rem 2rem;
-      background: var(--text-dark);
-      text-align: center;
-    }
-
-    .footer-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.3rem, 4vw, 1.8rem);
-      font-style: italic;
-      color: rgba(255,255,255,0.6);
-      line-height: 1.6;
-    }
-
-    .footer-name {
-      color: var(--rose);
-    }
-
-    .footer-small {
-      margin-top: 1.5rem;
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.2);
-    }
-
-    /* ===================== RESPONSIVE ===================== */
-    @media (max-width: 480px) {
-      .moment-card { padding: 1.5rem 1.5rem 1.5rem 2rem; }
-      #timeline { padding: 1.5rem 1rem 3rem; }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>She said yes.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --powder:     #fce8ee;
+    --powder-2:   #f9d6e1;
+    --petal:      #f2b8c8;
+    --rose:       #e0869e;
+    --deep-rose:  #b85470;
+    --plum:       #7d3650;
+    --cream:      #fdf6f9;
+    --text-main:  #3d1e2c;
+    --text-soft:  #8a5068;
+    --text-muted: #c0899a;
+    --border:     rgba(224,134,158,0.22);
+    --shadow:     0 8px 40px rgba(125,54,80,0.10);
+    --radius:     20px;
+    --card-bg:    rgba(255,255,255,0.72);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-main);
+    overflow-x: hidden;
+    background: #2a0d18;
+  }
+
+  @keyframes fadeUp       { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes blink        { 0%,100%{opacity:1} 50%{opacity:0} }
+  @keyframes heartPulse   { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+  @keyframes shimmer      { 0%,100%{opacity:0.4} 50%{opacity:0.8} }
+
+  /* ── TYPEWRITER ── */
+  #tw-screen {
+    position: fixed; inset: 0; z-index: 900;
+    background: radial-gradient(ellipse 80% 60% at 50% 38%, #4a1228 0%, #2a0d18 100%);
+    display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+    padding: 56px 36px; gap: 2px;
+  }
+  .tw-line {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.25rem, 4.5vw, 1.6rem);
+    font-weight: 300; color: rgba(255,240,245,0.88);
+    line-height: 1.9; opacity: 0; transition: opacity 0.4s ease; min-height: 1.9em;
+  }
+  .tw-line.soft { color: rgba(255,210,225,0.45); font-style: italic; font-size: clamp(1rem, 3.5vw, 1.2rem); }
+  .tw-line.visible { opacity: 1; }
+  .cursor { display:inline-block; width:2px; height:0.88em; background:rgba(255,210,225,0.7); margin-left:2px; vertical-align:middle; animation:blink 1s step-end infinite; }
+  .tw-btn {
+    margin-top: 40px; opacity: 0; transition: opacity 0.7s ease;
+    background: linear-gradient(135deg, var(--deep-rose) 0%, var(--plum) 100%);
+    color: rgba(255,240,245,0.95); border: none; border-radius: 50px;
+    padding: 14px 32px; font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem; cursor: pointer; letter-spacing: 0.02em;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tw-btn.visible { opacity: 1; }
+  .tw-btn:active { transform: scale(0.97); }
+
+  /* ── MAIN ── */
+  #main-content {
+    display: none; position: relative; z-index: 1;
+    max-width: 480px; margin: 0 auto;
+    background: var(--powder); min-height: 100vh;
+    padding-bottom: 80px;
+  }
+  #main-content.visible { display: block; }
+  body.unlocked { background: var(--powder); }
+  body.unlocked::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background:
+      radial-gradient(ellipse 80% 55% at 15% 5%,  rgba(242,184,200,0.32) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 50% at 85% 95%, rgba(224,134,158,0.20) 0%, transparent 55%);
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    padding: 56px 24px 16px; text-align: center;
+    position: relative; z-index: 1; animation: fadeUp 0.9s ease both;
+  }
+  .date-chip {
+    display: inline-block; font-size: 0.7rem; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--deep-rose);
+    background: rgba(224,134,158,0.15); border: 1px solid rgba(224,134,158,0.28);
+    padding: 5px 14px; border-radius: 50px; margin-bottom: 20px;
+  }
+  .site-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.9rem, 6.5vw, 2.6rem); font-weight: 300;
+    color: var(--plum); line-height: 1.3; margin-bottom: 10px;
+    font-style: italic;
+  }
+  .site-header .sub {
+    font-size: 0.88rem; color: var(--text-soft); line-height: 1.65;
+  }
+
+  /* ── HEART ── */
+  .heart-hero {
+    text-align: center; padding: 20px 0 8px;
+    position: relative; z-index: 1;
+    animation: fadeUp 0.8s ease 0.3s both;
+  }
+  .heart-big { font-size: 2.8rem; animation: heartPulse 2.6s ease infinite; display: inline-block; }
+
+  /* ── MEMORY CARDS ── */
+  .memory {
+    margin: 0 16px 18px; position: relative; z-index: 1;
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 0.85s ease, transform 0.85s ease;
+  }
+  .memory.visible { opacity: 1; transform: translateY(0); }
+  .memory-inner {
+    background: var(--card-bg); border: 1px solid var(--border);
+    backdrop-filter: blur(18px); border-radius: var(--radius);
+    padding: 26px 22px; box-shadow: var(--shadow);
+  }
+  .memory-num {
+    font-size: 0.67rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--rose); margin-bottom: 8px;
+  }
+  .memory-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 5vw, 1.95rem); font-weight: 400;
+    color: var(--plum); line-height: 1.2; margin-bottom: 12px;
+  }
+  .memory-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem; line-height: 1.85;
+    color: var(--text-soft); font-weight: 300; font-style: italic;
+  }
+  .memory-rule {
+    width: 28px; height: 1.5px;
+    background: linear-gradient(90deg, var(--rose), var(--petal));
+    margin-top: 16px; border-radius: 2px;
+  }
+
+  /* ── PETAL DIVIDER ── */
+  .petal-divider {
+    text-align: center; padding: 14px 0; position: relative; z-index: 1;
+    font-size: 0.95rem; letter-spacing: 0.4em;
+    animation: shimmer 3.5s ease infinite;
+    color: var(--rose);
+  }
+
+  /* ── THE MOMENT ── */
+  #the-moment {
+    min-height: 90vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 4rem 2rem;
+    position: relative; z-index: 1;
+  }
+  #the-moment .pre {
+    font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--rose); margin-bottom: 2.2rem;
+    opacity: 0; transform: translateY(14px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  #the-moment.visible .pre { opacity: 1; transform: translateY(0); }
+
+  .big-words-row {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    align-items: flex-end; gap: 0.15em;
+  }
+  .bw {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.8rem, 14vw, 10rem);
+    font-weight: 600; line-height: 1;
+    letter-spacing: -0.02em; color: var(--plum);
+    overflow: hidden; display: inline-flex;
+  }
+  .bw span { display:inline-block; transform:translateY(110%); transition:transform 0.95s cubic-bezier(0.16,1,0.3,1); }
+  #the-moment.visible .bw:nth-child(1) span { transform:translateY(0); transition-delay:0.1s; }
+  #the-moment.visible .bw:nth-child(2) span { transform:translateY(0); transition-delay:0.38s; }
+  #the-moment.visible .bw:nth-child(3) span { transform:translateY(0); transition-delay:0.65s; }
+  .period-char {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.8rem, 14vw, 10rem);
+    font-weight: 600; color: var(--rose); line-height: 1;
+    opacity: 0; transition: opacity 1s ease 1.5s;
+  }
+  #the-moment.visible .period-char { opacity: 1; }
+  .moment-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: clamp(1rem, 3vw, 1.2rem);
+    color: var(--text-soft); margin-top: 2rem; max-width: 360px;
+    line-height: 1.75; opacity: 0; transition: opacity 1.2s ease 2.1s;
+  }
+  #the-moment.visible .moment-sub { opacity: 1; }
+
+  /* ── LETTER PHOTO ── */
+  #letter-section {
+    opacity: 0; transform: translateY(36px);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+  #letter-section.visible { opacity: 1; transform: translateY(0); }
+  .section-label {
+    font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--rose); text-align: center;
+    padding: 8px 0 14px; position: relative; z-index: 1;
+  }
+  .letter-photo-wrap {
+    margin: 0 16px; border-radius: 18px; overflow: hidden;
+    border: 1px solid rgba(224,134,158,0.28);
+    box-shadow: 0 12px 48px rgba(125,54,80,0.13);
+    position: relative; z-index: 1;
+  }
+  .letter-photo-wrap img { width:100%; display:block; filter:saturate(0.93) brightness(0.97); }
+  .letter-caption {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 1rem;
+    color: var(--text-soft); text-align: center;
+    margin: 14px 28px 0; line-height: 1.8;
+    position: relative; z-index: 1;
+  }
+
+  /* ── SONG ── */
+  #song-section {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  #song-section.visible { opacity: 1; transform: translateY(0); }
+  .song-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px;
+    margin: 0 16px; box-shadow: var(--shadow);
+    position: relative; z-index: 1;
+  }
+  .song-card iframe { border-radius: 10px; }
+  .song-note {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 0.97rem;
+    color: var(--text-soft); text-align: center;
+    margin-top: 12px; line-height: 1.75;
+  }
+
+  /* ── PERSONAL NOTE ── */
+  #note-section {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+  #note-section.visible { opacity: 1; transform: translateY(0); }
+  .note-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(252,232,238,0.6) 100%);
+    border: 1px solid rgba(224,134,158,0.3);
+    border-radius: var(--radius); padding: 28px 26px;
+    margin: 0 16px; box-shadow: var(--shadow);
+    position: relative; z-index: 1;
+  }
+  .note-card::before {
+    content: '💌'; position: absolute; top: 20px; right: 22px;
+    font-size: 1.2rem; opacity: 0.4;
+  }
+  .note-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 400;
+    color: var(--plum); margin-bottom: 18px;
+  }
+  .note-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem; color: var(--text-main);
+    line-height: 1.95; font-weight: 300;
+  }
+  .note-body p + p { margin-top: 14px; }
+  .note-sign {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 1rem;
+    color: var(--text-soft); margin-top: 20px;
+    line-height: 1.7;
+  }
+
+  footer {
+    text-align: center; padding: 2.5rem 1rem;
+    font-size: 0.72rem; letter-spacing: 0.14em;
+    color: var(--text-muted); position: relative; z-index: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+  }
+</style>
 </head>
 <body>
 
-<!-- ===== INTRO SCREEN ===== -->
-<div id="intro">
-  <div class="intro-petals" id="petals"></div>
-
-  <div class="typewriter-wrap">
-    <div class="typewriter-line sm" id="line1"></div>
-    <div class="typewriter-line lg" id="line2"></div>
-    <div class="typewriter-line sm" id="line3"></div>
-    <span class="cursor" id="cur" style="display:none;"></span>
-  </div>
-
-  <button class="enter-btn" id="enterBtn" onclick="enterSite()">
-    Enter ✦
-  </button>
+<!-- ── TYPEWRITER ── -->
+<div id="tw-screen">
+  <div class="tw-line" id="tl1"></div>
+  <div class="tw-line" id="tl2"></div>
+  <div class="tw-line soft" id="tl3"></div>
+  <div class="tw-line soft" id="tl4"></div>
+  <button class="tw-btn" id="tw-btn" onclick="revealMain()">open this 🌸</button>
 </div>
 
-<!-- ===== MAIN CONTENT ===== -->
-<div id="main">
+<!-- ── MAIN ── -->
+<div id="main-content">
 
-  <!-- HERO -->
-  <section id="hero">
-    <p class="hero-date">10 June 2026</p>
-    <h1 class="hero-title">
-      The day our<br /><em>forever</em><br />began.
-    </h1>
-    <p class="hero-sub">
-      Some days don't just pass — they stay with you, forever folded into who you are.
-      This was one of those days.
-    </p>
-    <div class="scroll-hint">
-      <span>Scroll</span>
-      <div class="scroll-line"></div>
-    </div>
-  </section>
-
-  <!-- TIMELINE -->
-  <section id="timeline">
-    <p class="section-label">How it happened</p>
-
-    <div class="moment-card" id="card1">
-      <p class="moment-num">Moment I</p>
-      <h2 class="moment-title">We danced to Kina Chir</h2>
-      <p class="moment-body">
-        Just us, and that song, and a moment that felt too soft and too real at the same time.
-        I don't think either of us wanted it to end. <em>Neither did I.</em>
-      </p>
-    </div>
-
-    <div class="moment-card" id="card2">
-      <p class="moment-num">Moment II</p>
-      <h2 class="moment-title">The Splitsvilla scene — recreated</h2>
-      <p class="moment-body">
-        I had it planned. That moment from the show you love — the one that means
-        something — I brought it to life. For you. Because <em>you</em> deserved to be in that scene.
-      </p>
-    </div>
-
-    <div class="moment-card" id="card3">
-      <p class="moment-num">Moment III</p>
-      <h2 class="moment-title">Down on one knee</h2>
-      <p class="moment-body">
-        A bracelet. A question that wasn't really a question because I already knew how I felt.
-        I just needed you to know it too.
-        <em>And then you said yes.</em>
-      </p>
-    </div>
-  </section>
-
-  <!-- THE PEAK -->
-  <section id="peak">
-    <div class="shimmer-bg"></div>
-    <p class="peak-eyebrow">And so it was</p>
-    <h2 class="peak-words">She said<br /><em>yes</em><span class="peak-period">.</span></h2>
-    <p class="peak-sub">
-      Three words. The most important three words on this entire website.<br />
-      Because they changed everything.
-    </p>
-  </section>
-
-  <div class="divider">
-    <div class="divider-line"></div>
-    <div class="divider-dot"></div>
-    <div class="divider-line"></div>
+  <div class="site-header">
+    <span class="date-chip">07 · 06 · 2026</span>
+    <h1>there's something I want<br>you to remember.</h1>
+    <p class="sub">every word on this page is for you. only you. 🌸</p>
   </div>
 
-  <!-- LETTER -->
-  <section id="letter">
-    <p class="letter-label">Before the moment</p>
-    <h2 class="letter-title">I wrote it all down first.</h2>
+  <div class="heart-hero"><span class="heart-big">🌸</span></div>
 
-    <div class="letter-img-wrap">
-      <img src="./letter2.jpeg" alt="A handwritten letter" />
+  <!-- Memory I -->
+  <div class="memory" data-delay="0">
+    <div class="memory-inner">
+      <p class="memory-num">I &nbsp;·&nbsp; the dance</p>
+      <h2 class="memory-title">Kina Chir</h2>
+      <p class="memory-body">We danced to this song and I forgot everything else existed. Just you, just me, just that one moment stretching out like it didn't want to end.</p>
+      <div class="memory-rule"></div>
     </div>
+  </div>
 
-    <p class="letter-caption">
-      Because some things are too important to say out loud<br />without writing them down first.
-    </p>
+  <!-- Memory II -->
+  <div class="memory" data-delay="160">
+    <div class="memory-inner">
+      <p class="memory-num">II &nbsp;·&nbsp; the scene</p>
+      <h2 class="memory-title">The Splitsvilla moment</h2>
+      <p class="memory-body">I recreated it for you — the ideal match scene you know by heart. I watched your face change as you started to understand what was happening.</p>
+      <div class="memory-rule"></div>
+    </div>
+  </div>
+
+  <!-- Memory III -->
+  <div class="memory" data-delay="320">
+    <div class="memory-inner">
+      <p class="memory-num">III &nbsp;·&nbsp; the ask</p>
+      <h2 class="memory-title">Down on one knee</h2>
+      <p class="memory-body">I went down on one knee and held out a bracelet. A promise, not just a gift. And then you said the word that made everything worth it.</p>
+      <div class="memory-rule"></div>
+    </div>
+  </div>
+
+  <div class="petal-divider">🌸 · 🌸 · 🌸</div>
+
+  <!-- THE MOMENT -->
+  <section id="the-moment">
+    <p class="pre">and then you spoke</p>
+    <div class="big-words-row">
+      <span class="bw"><span>She</span></span>
+      <span class="bw"><span>said</span></span>
+      <span class="bw"><span>yes</span></span>
+      <span class="period-char">.</span>
+    </div>
+    <p class="moment-sub">I will remember the way you looked when you said it for the rest of my life.</p>
   </section>
 
-  <!-- SONG -->
-  <section id="song">
-    <p class="song-label">Our song</p>
-    <h2 class="song-title">A Thousand Years</h2>
+  <div class="petal-divider">🌸 · 🌸 · 🌸</div>
 
-    <div class="spotify-wrap">
+  <!-- LETTER PHOTO -->
+  <section id="letter-section">
+    <p class="section-label">For you words, written by LOVE 💌</p>
+    <div class="letter-photo-wrap">
+      <img src="letter2.jpeg" alt="The handwritten letter" />
+    </div>
+    <p class="letter-caption">"something I wrote for you &amp; with my heart." 🌸</p>
+  </section>
+
+  <div style="height:28px;"></div>
+
+  <!-- SONG -->
+  <section id="song-section">
+    <p class="section-label">the song that knew before we did 🎵</p>
+    <div class="song-card">
       <iframe
         src="https://open.spotify.com/embed/track/23WxsmliKISYaCfam8iPPG?utm_source=generator&theme=0"
-        width="100%"
-        height="152"
-        frameBorder="0"
-        allowfullscreen=""
+        width="100%" height="152" frameborder="0"
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         loading="lazy">
       </iframe>
+      <p class="song-note">A Thousand Years — Christina Perri<br>
+        <span style="font-size:0.88rem;opacity:0.72;">I have loved you for a thousand years. I'll love you for a thousand more.</span>
+      </p>
     </div>
-
-    <p class="song-note">
-      I have loved you for a thousand years.<br />
-      I'll love you for a thousand more.
-    </p>
   </section>
 
-  <!-- FOOTER -->
-  <footer id="footer">
-    <p class="footer-text">
-      Always yours,<br />
-      always <span class="footer-name">Tingu ji</span>.
-    </p>
-    <p class="footer-small">meripyaritingu.xyz</p>
-  </footer>
+  <div style="height:28px;"></div>
 
-</div><!-- /main -->
+  <!-- PERSONAL NOTE -->
+  <section id="note-section">
+    <p class="section-label">a note from me to you 🌸</p>
+    <div class="note-card">
+      <h2 class="note-heading">for you, always.</h2>
+      <div class="note-body">
+        <p>Adding this page because I wanted you to have something to come back to, this one big highlight of the trip. A place that holds this day exactly as it happened the dance, the moment I went down on one knee, the look on your face, and the word you said.</p>
+        <p>Thank you for saying yes. Thank you for being the kind of person who dances with me, who lets me surprise her, who writes things down in her cute notes app because some things deserve to be kept.</p>
+        <p>You are my favourite thing. Today, and every day before and after it.</p>
+      </div>
+      <p class="note-sign">always yours Tingu Ji 🌸</p>
+    </div>
+  </section>
+
+  <footer>I am in love with &nbsp;·&nbsp; Tingu ji, now and forever</footer>
+
+</div>
 
 <script>
-  /* ---- PETALS ---- */
-  const petalContainer = document.getElementById('petals');
-  for (let i = 0; i < 18; i++) {
-    const p = document.createElement('div');
-    p.className = 'petal';
-    p.style.left = Math.random() * 100 + '%';
-    p.style.top = '-10px';
-    p.style.animationDuration = (6 + Math.random() * 8) + 's';
-    p.style.animationDelay = (Math.random() * 10) + 's';
-    p.style.width = p.style.height = (5 + Math.random() * 7) + 'px';
-    p.style.opacity = 0.3 + Math.random() * 0.5;
-    const hue = 340 + Math.random() * 20;
-    const sat = 40 + Math.random() * 30;
-    const lit = 75 + Math.random() * 15;
-    p.style.background = `hsl(${hue},${sat}%,${lit}%)`;
-    petalContainer.appendChild(p);
-  }
-
-  /* ---- TYPEWRITER ---- */
   const lines = [
-    { el: 'line1', text: 'Something happened today,', delay: 400 },
-    { el: 'line2', text: 'something that changes everything.', delay: 1800 },
-    { el: 'line3', text: 'This page is for you.', delay: 3400 },
+    { id:'tl1', text:'there\'s something I want you to remember…',  delay:400  },
+    { id:'tl2', text:'something that happened between you and me.',   delay:2500 },
+    { id:'tl3', text:'something I never want either of us to forget.', delay:4400 },
+    { id:'tl4', text:'this page is for you. 🌸',                      delay:6000 },
   ];
 
-  const curEl = document.getElementById('cur');
-
-  function typeText(elId, text, startDelay, onDone) {
-    const el = document.getElementById(elId);
-    let i = 0;
-    setTimeout(() => {
-      curEl.style.display = 'inline-block';
-      el.parentNode.insertBefore(curEl, el.nextSibling);
-      const timer = setInterval(() => {
-        el.textContent = text.slice(0, ++i);
-        if (i === text.length) {
-          clearInterval(timer);
-          if (onDone) onDone();
-        }
-      }, 45);
-    }, startDelay);
-  }
-
-  let linesDone = 0;
-  lines.forEach((l) => {
-    typeText(l.el, l.text, l.delay, () => {
-      linesDone++;
-      if (linesDone === lines.length) {
-        setTimeout(() => {
-          document.getElementById('enterBtn').classList.add('visible');
-        }, 400);
+  function typeText(el, text, cb) {
+    el.classList.add('visible');
+    let i = 0; el.innerHTML = '';
+    const iv = setInterval(() => {
+      el.innerHTML = text.slice(0, ++i) + '<span class="cursor"></span>';
+      if (i >= text.length) {
+        clearInterval(iv); el.innerHTML = text;
+        if (cb) cb();
       }
+    }, 44);
+  }
+
+  function startTypewriter() {
+    lines.forEach(l => setTimeout(() => typeText(document.getElementById(l.id), l.text), l.delay));
+    setTimeout(() => document.getElementById('tw-btn').classList.add('visible'), 7800);
+  }
+
+  function revealMain() {
+    const tw = document.getElementById('tw-screen');
+    tw.style.transition = 'opacity 0.85s ease';
+    tw.style.opacity = '0';
+    setTimeout(() => {
+      tw.style.display = 'none';
+      document.body.classList.add('unlocked');
+      const main = document.getElementById('main-content');
+      main.classList.add('visible');
+      main.style.cssText += ';opacity:0;transition:opacity 0.9s ease';
+      requestAnimationFrame(() => requestAnimationFrame(() => { main.style.opacity = '1'; }));
+    }, 850);
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const d = parseInt(e.target.dataset.delay || 0);
+      setTimeout(() => e.target.classList.add('visible'), d);
+      io.unobserve(e.target);
     });
+  }, { threshold: 0.15 });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    startTypewriter();
+    document.querySelectorAll('.memory, #the-moment, #letter-section, #song-section, #note-section')
+      .forEach(el => io.observe(el));
   });
-
-  /* ---- ENTER SITE ---- */
-  function enterSite() {
-    document.getElementById('intro').classList.add('hidden');
-    const main = document.getElementById('main');
-    main.classList.add('visible');
-    setTimeout(observeCards, 800);
-  }
-
-  /* ---- SCROLL REVEAL CARDS ---- */
-  function observeCards() {
-    const cards = document.querySelectorAll('.moment-card');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('revealed');
-          observer.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.15 });
-    cards.forEach(c => observer.observe(c));
-  }
 </script>
 </body>
 </html>
