@@ -91,7 +91,6 @@
     0%, 100% { opacity: 0.5; transform: scale(1); }
     50% { opacity: 1; transform: scale(1.04); }
   }
-
   .date-label {
     font-size: 0.68rem;
     letter-spacing: 0.25em;
@@ -141,7 +140,6 @@
     80% { opacity: 0.3; }
     100% { transform: translateY(-22px) translateX(6px); opacity: 0; }
   }
-
   .tap-hint {
     margin-top: 2rem;
     font-size: 0.65rem;
@@ -214,23 +212,17 @@
     50% { opacity: 0.8; }
   }
 
-  /* SCREEN 2: LETTER */
+  /* SCREEN 2: LETTER ONLY */
   #s2 {
     background: var(--deep);
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
+    justify-content: center;
     align-items: center;
-    justify-content: flex-start;
-   gap: 1rem;
-    padding: 3rem 1.5rem 5rem;
+    padding: 2.5rem 1.5rem;
+    cursor: pointer;
   }
-  #s2::-webkit-scrollbar { display: none; }
-  #s2 { scrollbar-width: none; }
-
   .letter-header {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     width: 100%;
   }
   .letter-eyebrow {
@@ -239,26 +231,25 @@
     color: var(--rose);
     text-transform: uppercase;
     opacity: 0.55;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
   }
   .letter-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.5rem, 5vw, 2.2rem);
+    font-size: clamp(1.4rem, 5vw, 2rem);
     font-style: italic;
     font-weight: 300;
     color: var(--cream);
     line-height: 1.25;
   }
-
   .letter-wrap {
     width: 100%;
-    max-width: 500px;
+    max-width: 480px;
     margin: 0 auto;
   }
   .letter-img {
-   max-height: 35vh;
-object-fit: contain;
     width: 100%;
+    max-height: 55vh;
+    object-fit: contain;
     border-radius: 3px;
     box-shadow:
       0 4px 20px rgba(0,0,0,0.5),
@@ -268,32 +259,75 @@ object-fit: contain;
     transform: translateY(20px) rotate(-1deg);
     transition: opacity 1.2s ease 0.3s, transform 1.2s ease 0.3s;
     filter: sepia(0.12) brightness(0.96);
+    display: block;
   }
   #s2.active .letter-img {
     opacity: 1;
     transform: translateY(0) rotate(-0.5deg);
   }
+  .letter-tap-hint {
+    margin-top: 1.5rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    color: var(--rose);
+    opacity: 0;
+    text-transform: uppercase;
+    text-align: center;
+    transition: opacity 1s ease 1.5s;
+  }
+  #s2.active .letter-tap-hint { opacity: 0.4; }
 
-  /* SPOTIFY */
+  /* SCREEN 3: SPOTIFY */
+  #s3 {
+    background: var(--deep);
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1.5rem;
+  }
+  .spotify-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    width: 100%;
+  }
+  .spotify-eyebrow {
+    font-size: 0.62rem;
+    letter-spacing: 0.25em;
+    color: var(--rose);
+    text-transform: uppercase;
+    opacity: 0.55;
+    margin-bottom: 0.5rem;
+  }
+  .spotify-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.3;
+  }
   .spotify-wrap {
     width: 100%;
-    max-width: 500px;
-    margin: 2rem auto 0;
+    max-width: 480px;
+    margin: 0 auto;
     border-radius: 12px;
     overflow: hidden;
-    opacity: 1;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease 0.4s, transform 1s ease 0.4s;
   }
-
-  .letter-footer {
+  #s3.active .spotify-wrap {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .spotify-footer {
     text-align: center;
     margin-top: 2rem;
     opacity: 0;
-    transition: opacity 1s ease 2s;
+    transition: opacity 1s ease 1.2s;
     width: 100%;
   }
-  #s2.active .letter-footer { opacity: 1; }
-
-  .letter-footer-text {
+  #s3.active .spotify-footer { opacity: 1; }
+  .spotify-footer-text {
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     font-size: 1rem;
@@ -326,11 +360,6 @@ object-fit: contain;
     90% { opacity: 0.15; }
     100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
   }
-
-  /* SNORE BTN - visible on s0 only */
-  #snore-btn {
-    display: none;
-  }
 </style>
 </head>
 <body>
@@ -339,37 +368,26 @@ object-fit: contain;
 <div id="particles"></div>
 <div id="dream-overlay"></div>
 
-<!-- Snoring sound (soft, looping) -->
-<audio id="snore-audio" loop>
-  <!-- Free snoring sound from freesound-compatible CDN -->
-  <source src="https://www.soundjay.com/human/snoring-01.mp3" type="audio/mpeg">
-</audio>
-
 <!-- SCREEN 0: SLEEPING -->
 <div class="screen active" id="s0">
   <div class="date-label">15 June, 2025</div>
-
   <div class="sleeping-img-wrap">
     <div class="glow-ring"></div>
     <img src="/day/june/15/dream1.png" alt="Tingu so rahi hai" />
   </div>
-
   <div class="zzz-wrap">
     <span class="zzz">z</span>
     <span class="zzz">z</span>
     <span class="zzz">z</span>
   </div>
-
   <div class="sleeping-title">Aapke Sapne Mein</div>
   <div class="sleeping-sub">aaj aap so rahi thi, par main wahan tha</div>
-
   <div class="tap-hint">tap to enter the dream</div>
 </div>
 
 <!-- SCREEN 1: VIDEO DREAM -->
 <div class="screen" id="s1">
   <video id="dream-video" playsinline muted loop>
-    <!-- Convert Tingudreamv.mpv to mp4 via cloudconvert.com then re-upload -->
     <source src="/day/june/15/Tingudreamv.mp4" type="video/mp4">
   </video>
   <div class="video-vignette"></div>
@@ -377,32 +395,38 @@ object-fit: contain;
   <div class="video-tap-hint">tap to wake up</div>
 </div>
 
-<!-- SCREEN 2: LETTER + SPOTIFY -->
+<!-- SCREEN 2: LETTER -->
 <div class="screen" id="s2">
   <div class="letter-header">
     <div class="letter-eyebrow">sirf aapke liye</div>
     <div class="letter-title">Ek Chitthi, Neend ke Baad</div>
   </div>
-
   <div class="letter-wrap">
     <img class="letter-img" src="/day/june/15/letter3.jpeg" alt="Letter for Tingu" />
   </div>
+  <div class="letter-tap-hint">tap to continue</div>
+</div>
 
+<!-- SCREEN 3: SPOTIFY -->
+<div class="screen" id="s3">
+  <div class="spotify-header">
+    <div class="spotify-eyebrow">aapke liye ek gaana</div>
+    <div class="spotify-title">Jo Sapne Mein Suna</div>
+  </div>
   <div class="spotify-wrap">
     <iframe
       style="border-radius:12px; display:block;"
       src="https://open.spotify.com/embed/track/7eQl3Yqv35ioqUfveKHitE?utm_source=generator"
       width="100%"
-      height="152"
+      height="352"
       frameBorder="0"
       allowfullscreen=""
       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
       loading="lazy">
     </iframe>
   </div>
-
-  <div class="letter-footer">
-    <div class="letter-footer-text">
+  <div class="spotify-footer">
+    <div class="spotify-footer-text">
       jaldi aaunga, Tingu ji.<br>
       tab tak -- sapno mein milte hain.
     </div>
@@ -444,24 +468,15 @@ object-fit: contain;
     particlesEl.appendChild(p);
   }
 
-  const s0 = document.getElementById('s0');
-  const s1 = document.getElementById('s1');
-  const s2 = document.getElementById('s2');
+  const screens = [
+    document.getElementById('s0'),
+    document.getElementById('s1'),
+    document.getElementById('s2'),
+    document.getElementById('s3'),
+  ];
   const overlay = document.getElementById('dream-overlay');
   const video = document.getElementById('dream-video');
-  const snore = document.getElementById('snore-audio');
-
   let currentScreen = 0;
-
-  // Start snoring softly on load
-  snore.volume = 0.3;
-  document.addEventListener('click', function startSnore() {
-    snore.play().catch(()=>{});
-    document.removeEventListener('click', startSnore);
-  }, { once: false });
-
-  // Actually try immediately too
-  setTimeout(() => { snore.play().catch(()=>{}); }, 500);
 
   function flashTransition(cb) {
     overlay.style.transition = 'opacity 0.4s ease';
@@ -478,27 +493,17 @@ object-fit: contain;
   function goToScreen(n) {
     if (n === currentScreen) return;
     flashTransition(() => {
-      [s0, s1, s2].forEach(s => s.classList.remove('active'));
-      const screens = [s0, s1, s2];
+      screens.forEach(s => s.classList.remove('active'));
       screens[n].classList.add('active');
       currentScreen = n;
-
-      if (n === 1) {
-        snore.pause();
-        snore.currentTime = 0;
-        video.play().catch(()=>{});
-      }
-      if (n === 0) {
-        snore.play().catch(()=>{});
-      }
-      if (n === 2) {
-        video.pause();
-      }
+      if (n === 1) video.play().catch(()=>{});
+      if (n === 2) video.pause();
     });
   }
 
-  s0.addEventListener('click', () => { if (currentScreen === 0) goToScreen(1); });
-  s1.addEventListener('click', () => { if (currentScreen === 1) goToScreen(2); });
+  screens[0].addEventListener('click', () => { if (currentScreen === 0) goToScreen(1); });
+  screens[1].addEventListener('click', () => { if (currentScreen === 1) goToScreen(2); });
+  screens[2].addEventListener('click', () => { if (currentScreen === 2) goToScreen(3); });
 </script>
 </body>
 </html>
