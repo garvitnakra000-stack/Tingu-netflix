@@ -14,7 +14,6 @@
     --deep: #1a0e14;
     --rose: #c9899a;
     --gold: #c9a84c;
-    --mist: #e8ddd5;
   }
 
   html, body {
@@ -25,7 +24,7 @@
     overflow: hidden;
   }
 
-  /* ── STARS ── */
+  /* STARS */
   #stars {
     position: fixed;
     inset: 0;
@@ -44,7 +43,7 @@
     100% { opacity: var(--op); transform: scale(1.2); }
   }
 
-  /* ── SCREENS ── */
+  /* SCREENS */
   .screen {
     position: fixed;
     inset: 0;
@@ -62,12 +61,8 @@
     opacity: 1;
     pointer-events: all;
   }
-  .screen.exit {
-    opacity: 0;
-    pointer-events: none;
-  }
 
-  /* ── SCREEN 0: SLEEPING ── */
+  /* SCREEN 0: SLEEPING */
   #s0 {
     background: transparent;
     text-align: center;
@@ -75,14 +70,15 @@
   }
   .sleeping-img-wrap {
     position: relative;
-    width: min(320px, 80vw);
-    margin: 0 auto 2rem;
+    width: min(300px, 78vw);
+    margin: 0 auto 1.5rem;
   }
   .sleeping-img-wrap img {
     width: 100%;
     border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-    filter: brightness(0.75) saturate(0.8);
-    box-shadow: 0 0 60px rgba(201, 137, 154, 0.3), 0 0 120px rgba(139, 94, 110, 0.15);
+    filter: brightness(0.78) saturate(0.85);
+    box-shadow: 0 0 60px rgba(201,137,154,0.3), 0 0 120px rgba(139,94,110,0.15);
+    display: block;
   }
   .glow-ring {
     position: absolute;
@@ -97,13 +93,12 @@
   }
 
   .date-label {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     letter-spacing: 0.25em;
     color: var(--rose);
     text-transform: uppercase;
     margin-bottom: 0.75rem;
-    opacity: 0.7;
+    opacity: 0.65;
   }
   .sleeping-title {
     font-family: 'Cormorant Garamond', serif;
@@ -112,43 +107,53 @@
     font-style: italic;
     color: var(--cream);
     line-height: 1.3;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
   }
   .sleeping-sub {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     color: var(--rose);
-    opacity: 0.6;
+    opacity: 0.55;
     letter-spacing: 0.05em;
   }
-  .zzz {
+
+  /* ZZZ */
+  .zzz-wrap {
+    margin: 1rem 0 0.5rem;
+    height: 2rem;
+    position: relative;
+    width: 60px;
     display: inline-block;
-    font-size: 1rem;
+  }
+  .zzz {
+    position: absolute;
     color: var(--rose);
-    opacity: 0.5;
-    animation: float-zzz 2.5s ease-in-out infinite;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    animation: float-zzz 3s ease-in-out infinite;
+    opacity: 0;
   }
-  .zzz:nth-child(2) { animation-delay: 0.5s; font-size: 0.75rem; }
-  .zzz:nth-child(3) { animation-delay: 1s; font-size: 0.55rem; }
+  .zzz:nth-child(1) { font-size: 1.1rem; left: 0; animation-delay: 0s; }
+  .zzz:nth-child(2) { font-size: 0.85rem; left: 16px; animation-delay: 0.8s; }
+  .zzz:nth-child(3) { font-size: 0.6rem; left: 28px; animation-delay: 1.6s; }
   @keyframes float-zzz {
-    0% { transform: translateY(0) translateX(0); opacity: 0.2; }
-    50% { opacity: 0.6; }
-    100% { transform: translateY(-28px) translateX(8px); opacity: 0; }
+    0% { transform: translateY(4px); opacity: 0; }
+    20% { opacity: 0.7; }
+    80% { opacity: 0.3; }
+    100% { transform: translateY(-22px) translateX(6px); opacity: 0; }
   }
+
   .tap-hint {
-    margin-top: 2.5rem;
-    font-size: 0.7rem;
+    margin-top: 2rem;
+    font-size: 0.65rem;
     letter-spacing: 0.2em;
     color: var(--rose);
     opacity: 0;
     text-transform: uppercase;
     animation: fade-hint 2s ease 2.5s forwards;
   }
-  @keyframes fade-hint {
-    to { opacity: 0.45; }
-  }
+  @keyframes fade-hint { to { opacity: 0.4; } }
 
-  /* ── DREAM OVERLAY ── */
+  /* DREAM FLASH */
   #dream-overlay {
     position: fixed;
     inset: 0;
@@ -156,13 +161,11 @@
     z-index: 50;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.6s ease;
+    transition: opacity 0.5s ease;
   }
-  #dream-overlay.flash {
-    opacity: 1;
-  }
+  #dream-overlay.flash { opacity: 1; }
 
-  /* ── SCREEN 1: VIDEO DREAM ── */
+  /* SCREEN 1: VIDEO */
   #s1 {
     background: var(--deep);
     padding: 0;
@@ -172,12 +175,12 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: saturate(0.85) brightness(0.9);
+    filter: saturate(0.85) brightness(0.88);
   }
   .video-vignette {
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse at center, transparent 40%, rgba(26,14,20,0.7) 100%);
+    background: radial-gradient(ellipse at center, transparent 35%, rgba(26,14,20,0.72) 100%);
     pointer-events: none;
   }
   .dream-label {
@@ -186,125 +189,135 @@
     left: 50%;
     transform: translateX(-50%);
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1rem, 3.5vw, 1.3rem);
+    font-size: clamp(0.9rem, 3.5vw, 1.25rem);
     font-style: italic;
     font-weight: 300;
-    color: rgba(250,247,242,0.75);
-    letter-spacing: 0.08em;
+    color: rgba(250,247,242,0.78);
+    letter-spacing: 0.06em;
     text-align: center;
-    white-space: nowrap;
+    width: 90%;
   }
   .video-tap-hint {
     position: absolute;
     bottom: 2.5rem;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     letter-spacing: 0.2em;
     color: rgba(201,137,154,0.5);
     text-transform: uppercase;
     animation: blink 2s ease-in-out infinite;
+    white-space: nowrap;
   }
   @keyframes blink {
-    0%, 100% { opacity: 0.3; }
+    0%, 100% { opacity: 0.25; }
     50% { opacity: 0.8; }
   }
 
-  /* ── SCREEN 2: LETTER ── */
+  /* SCREEN 2: LETTER */
   #s2 {
     background: var(--deep);
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 1.5s ease;
     align-items: center;
     justify-content: flex-start;
-    padding: 3rem 1.5rem 4rem;
+    padding: 3rem 1.5rem 5rem;
   }
-  #s2.active {
-    pointer-events: all;
-    opacity: 1;
-  }
+  #s2::-webkit-scrollbar { display: none; }
+  #s2 { scrollbar-width: none; }
 
   .letter-header {
     text-align: center;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
     width: 100%;
   }
   .letter-eyebrow {
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     letter-spacing: 0.25em;
     color: var(--rose);
     text-transform: uppercase;
-    opacity: 0.6;
+    opacity: 0.55;
     margin-bottom: 0.5rem;
   }
   .letter-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
     font-style: italic;
     font-weight: 300;
     color: var(--cream);
-    line-height: 1.2;
+    line-height: 1.25;
   }
 
   .letter-wrap {
     width: 100%;
-    max-width: 520px;
+    max-width: 500px;
     margin: 0 auto;
-    position: relative;
   }
   .letter-img {
     width: 100%;
-    border-radius: 4px;
+    border-radius: 3px;
     box-shadow:
-      0 2px 8px rgba(0,0,0,0.4),
-      0 0 40px rgba(201,137,154,0.12),
-      0 0 0 1px rgba(201,168,76,0.15);
+      0 4px 20px rgba(0,0,0,0.5),
+      0 0 50px rgba(201,137,154,0.1),
+      0 0 0 1px rgba(201,168,76,0.12);
     opacity: 0;
-    transform: translateY(24px) rotate(-1deg);
+    transform: translateY(20px) rotate(-1deg);
     transition: opacity 1.2s ease 0.3s, transform 1.2s ease 0.3s;
-    filter: sepia(0.15) brightness(0.95);
+    filter: sepia(0.12) brightness(0.96);
   }
   #s2.active .letter-img {
     opacity: 1;
     transform: translateY(0) rotate(-0.5deg);
   }
 
+  /* SPOTIFY */
+  .spotify-wrap {
+    width: 100%;
+    max-width: 500px;
+    margin: 2rem auto 0;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 1s ease 1.2s, transform 1s ease 1.2s;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  #s2.active .spotify-wrap {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   .letter-footer {
     text-align: center;
-    margin-top: 2.5rem;
+    margin-top: 2rem;
     opacity: 0;
-    transition: opacity 1s ease 1.5s;
+    transition: opacity 1s ease 2s;
+    width: 100%;
   }
-  #s2.active .letter-footer {
-    opacity: 1;
-  }
+  #s2.active .letter-footer { opacity: 1; }
+
   .letter-footer-text {
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     font-size: 1rem;
     color: var(--rose);
     opacity: 0.7;
-    line-height: 1.8;
+    line-height: 1.9;
   }
   .heart-final {
     font-size: 1.2rem;
     display: block;
-    margin-top: 0.5rem;
-    animation: heartbeat 2s ease-in-out infinite;
+    margin-top: 0.6rem;
+    animation: heartbeat 2.2s ease-in-out infinite;
   }
   @keyframes heartbeat {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.15); }
+    50% { transform: scale(1.18); }
   }
 
-  /* ── PARTICLES ── */
+  /* PARTICLES */
   .particle {
     position: fixed;
-    font-size: 0.6rem;
     pointer-events: none;
     z-index: 5;
     animation: drift var(--pd) ease-in-out infinite;
@@ -312,58 +325,28 @@
   }
   @keyframes drift {
     0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-    10% { opacity: 0.4; }
-    90% { opacity: 0.2; }
+    10% { opacity: 0.35; }
+    90% { opacity: 0.15; }
     100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
   }
 
-  /* ── AUDIO ── */
-  #audio-btn {
-    position: fixed;
-    bottom: 1.2rem;
-    right: 1.2rem;
-    z-index: 100;
-    background: rgba(139,94,110,0.3);
-    border: 1px solid rgba(201,137,154,0.3);
-    color: var(--rose);
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(8px);
-    transition: background 0.3s;
-    opacity: 0;
+  /* SNORE BTN - visible on s0 only */
+  #snore-btn {
+    display: none;
   }
-  #audio-btn.visible { opacity: 1; }
-  #audio-btn:hover { background: rgba(139,94,110,0.5); }
-
-  /* scrollbar hide */
-  #s2::-webkit-scrollbar { display: none; }
-  #s2 { scrollbar-width: none; }
 </style>
 </head>
 <body>
 
-<!-- Stars -->
 <div id="stars"></div>
-
-<!-- Particles -->
 <div id="particles"></div>
-
-<!-- Flash overlay -->
 <div id="dream-overlay"></div>
 
-<!-- Audio -->
-<audio id="bgm" loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+<!-- Snoring sound (soft, looping) -->
+<audio id="snore-audio" loop>
+  <!-- Free snoring sound from freesound-compatible CDN -->
+  <source src="https://assets.mixkit.co/active_storage/sfx/2893/2893-preview.mp3" type="audio/mpeg">
 </audio>
-<!-- Replace above src with your chosen song -->
-
-<button id="audio-btn" title="Toggle music">♪</button>
 
 <!-- SCREEN 0: SLEEPING -->
 <div class="screen active" id="s0">
@@ -371,17 +354,17 @@
 
   <div class="sleeping-img-wrap">
     <div class="glow-ring"></div>
-    <img src="/day/june/15/dream1.png" alt="Tingu sleeping" />
+    <img src="/day/june/15/tingu1.jpeg" alt="Tingu so rahi hai" />
   </div>
 
-  <div style="text-align:center; margin-bottom:1rem;">
+  <div class="zzz-wrap">
     <span class="zzz">z</span>
     <span class="zzz">z</span>
     <span class="zzz">z</span>
   </div>
 
   <div class="sleeping-title">Aapke Sapne Mein</div>
-  <div class="sleeping-sub">aap so rahi thi, par main wahan tha</div>
+  <div class="sleeping-sub">aaj aap so rahi thi, par main wahan tha</div>
 
   <div class="tap-hint">tap to enter the dream</div>
 </div>
@@ -389,14 +372,14 @@
 <!-- SCREEN 1: VIDEO DREAM -->
 <div class="screen" id="s1">
   <video id="dream-video" playsinline muted loop>
-    <source src="/day/june/15/tingudreamv.mp4" type="video/mp4">
+    <source src="/day/june/15/Tingudreamv.mp4" type="video/mp4">
   </video>
   <div class="video-vignette"></div>
-  <div class="dream-label">ek sapna tha -- aap aur main, apne ghar mein</div>
+  <div class="dream-label">ek sapna tha -- aap aur main, apne Gurgaon wale ghar mein</div>
   <div class="video-tap-hint">tap to wake up</div>
 </div>
 
-<!-- SCREEN 2: LETTER -->
+<!-- SCREEN 2: LETTER + SPOTIFY -->
 <div class="screen" id="s2">
   <div class="letter-header">
     <div class="letter-eyebrow">sirf aapke liye</div>
@@ -407,126 +390,117 @@
     <img class="letter-img" src="/day/june/15/letter3.jpeg" alt="Letter for Tingu" />
   </div>
 
+  <div class="spotify-wrap">
+    <iframe
+      style="border-radius:12px; display:block;"
+      src="https://open.spotify.com/embed/track/7eQl3Yqv35ioqUfveKHitE?utm_source=generator"
+      width="100%"
+      height="152"
+      frameBorder="0"
+      allowfullscreen=""
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy">
+    </iframe>
+  </div>
+
   <div class="letter-footer">
     <div class="letter-footer-text">
       jaldi aaunga, Tingu ji.<br>
-      tab tak sapno mein milte hain.
+      tab tak -- sapno mein milte hain.
     </div>
     <span class="heart-final">🌸</span>
   </div>
 </div>
 
 <script>
-  // ── Stars
+  // Stars
   const starsEl = document.getElementById('stars');
-  for (let i = 0; i < 120; i++) {
+  for (let i = 0; i < 110; i++) {
     const s = document.createElement('div');
     s.className = 'star';
-    const size = Math.random() * 2.5 + 0.5;
+    const size = Math.random() * 2.2 + 0.4;
     s.style.cssText = `
-      width:${size}px; height:${size}px;
-      left:${Math.random()*100}%; top:${Math.random()*100}%;
-      --d:${2 + Math.random()*4}s;
-      --op:${0.2 + Math.random()*0.7};
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;top:${Math.random()*100}%;
+      --d:${2+Math.random()*4}s;
+      --op:${0.15+Math.random()*0.65};
       animation-delay:${Math.random()*5}s;
     `;
     starsEl.appendChild(s);
   }
 
-  // ── Particles (rose petals / sparkles)
+  // Particles
   const particlesEl = document.getElementById('particles');
-  const emojis = ['✦','·','˚','✧','⋆'];
-  for (let i = 0; i < 18; i++) {
+  const chars = ['✦','·','˚','✧','⋆','*'];
+  for (let i = 0; i < 14; i++) {
     const p = document.createElement('div');
     p.className = 'particle';
-    p.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    p.textContent = chars[Math.floor(Math.random()*chars.length)];
     p.style.cssText = `
       left:${Math.random()*100}%;
-      color:rgba(201,137,154,${0.2+Math.random()*0.4});
-      --pd:${6+Math.random()*10}s;
-      animation-delay:${Math.random()*8}s;
+      font-size:${0.4+Math.random()*0.5}rem;
+      color:rgba(201,137,154,${0.15+Math.random()*0.35});
+      --pd:${7+Math.random()*11}s;
+      animation-delay:${Math.random()*9}s;
     `;
     particlesEl.appendChild(p);
   }
 
-  // ── Screens
   const s0 = document.getElementById('s0');
   const s1 = document.getElementById('s1');
   const s2 = document.getElementById('s2');
   const overlay = document.getElementById('dream-overlay');
   const video = document.getElementById('dream-video');
-  const audioBtn = document.getElementById('audio-btn');
-  const bgm = document.getElementById('bgm');
+  const snore = document.getElementById('snore-audio');
 
   let currentScreen = 0;
-  let musicPlaying = false;
+
+  // Start snoring softly on load
+  snore.volume = 0.3;
+  document.addEventListener('click', function startSnore() {
+    snore.play().catch(()=>{});
+    document.removeEventListener('click', startSnore);
+  }, { once: false });
+
+  // Actually try immediately too
+  setTimeout(() => { snore.play().catch(()=>{}); }, 500);
 
   function flashTransition(cb) {
+    overlay.style.transition = 'opacity 0.4s ease';
     overlay.classList.add('flash');
     setTimeout(() => {
       cb();
-      setTimeout(() => overlay.classList.remove('flash'), 600);
-    }, 300);
+      setTimeout(() => {
+        overlay.style.transition = 'opacity 0.8s ease';
+        overlay.classList.remove('flash');
+      }, 80);
+    }, 350);
   }
 
   function goToScreen(n) {
+    if (n === currentScreen) return;
     flashTransition(() => {
-      [s0, s1, s2].forEach(s => { s.classList.remove('active'); s.classList.add('exit'); });
-      setTimeout(() => {
-        [s0, s1, s2].forEach(s => s.classList.remove('exit'));
-        const screens = [s0, s1, s2];
-        screens[n].classList.add('active');
-        currentScreen = n;
+      [s0, s1, s2].forEach(s => s.classList.remove('active'));
+      const screens = [s0, s1, s2];
+      screens[n].classList.add('active');
+      currentScreen = n;
 
-        if (n === 1) {
-          video.play().catch(() => {});
-          audioBtn.classList.add('visible');
-          tryPlayMusic();
-        }
-        if (n === 2) {
-          video.pause();
-        }
-      }, 100);
+      if (n === 1) {
+        snore.pause();
+        snore.currentTime = 0;
+        video.play().catch(()=>{});
+      }
+      if (n === 0) {
+        snore.play().catch(()=>{});
+      }
+      if (n === 2) {
+        video.pause();
+      }
     });
   }
 
-  // S0 tap
-  s0.addEventListener('click', () => {
-    if (currentScreen === 0) goToScreen(1);
-  });
-
-  // S1 tap
-  s1.addEventListener('click', () => {
-    if (currentScreen === 1) goToScreen(2);
-  });
-
-  // ── Music
-  bgm.volume = 0.35;
-
-  function tryPlayMusic() {
-    bgm.play().then(() => {
-      musicPlaying = true;
-      audioBtn.textContent = '♪';
-    }).catch(() => {});
-  }
-
-  audioBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (musicPlaying) {
-      bgm.pause();
-      musicPlaying = false;
-      audioBtn.textContent = '♩';
-    } else {
-      bgm.play();
-      musicPlaying = true;
-      audioBtn.textContent = '♪';
-    }
-  });
-
-  // ── Preview mode bypass
-  if (new URLSearchParams(location.search).get('preview') === 'true') {
-    console.log('Preview mode on');
-  }
+  s0.addEventListener('click', () => { if (currentScreen === 0) goToScreen(1); });
+  s1.addEventListener('click', () => { if (currentScreen === 1) goToScreen(2); });
 </script>
 </body>
 </html>
