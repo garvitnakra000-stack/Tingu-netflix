@@ -168,101 +168,7 @@
     .footer { text-align:center; padding:8px 20px 0; position:relative; z-index:2; }
     .footer-text { font-size:10px; color:#4a2a36; letter-spacing:2px; text-transform:uppercase; }
 
-    /* ===== EXCITED POPUP ===== */
-   /* #excited-btn {
-      display: block;
-      margin: 0 auto 40px;
-      position: relative;
-      z-index: 2;
-      background: linear-gradient(135deg, #c0395a 0%, #8b2a4a 100%);
-      border: none;
-      border-radius: 50px;
-      padding: 14px 32px;
-      font-family: 'Playfair Display', serif;
-      font-size: 16px;
-      font-style: italic;
-      color: #fff5f0;
-      cursor: pointer;
-      box-shadow: 0 4px 24px rgba(180,40,80,0.35);
-      transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s;
-      animation: btnPulse 2.5s ease-in-out infinite;
-    }
-    @keyframes btnPulse { 0%,100%{box-shadow:0 4px 24px rgba(180,40,80,0.35)} 50%{box-shadow:0 4px 40px rgba(180,40,80,0.65)} }
-    #excited-btn:hover { transform: scale(1.06); }
-    #excited-btn:active { transform: scale(0.97); } = */
-
-    /* ===== KISSES OVERLAY ===== */
-     /* #kisses-overlay {
-      display: none;
-      position: fixed; inset: 0; z-index: 500;
-      background: rgba(10,2,6,0.92);
-      backdrop-filter: blur(4px);
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 40px 28px; 
-    } */
-    #kisses-overlay.active { display: flex; }
-
-    .kisses-emoji-shower {
-      position: absolute; inset: 0; pointer-events: none; overflow: hidden;
-    }
-    .kiss-fly {
-      position: absolute;
-      font-size: 28px;
-      animation: kissFly linear both;
-      opacity: 0;
-    }
-    @keyframes kissFly {
-      0%   { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 0; }
-      15%  { opacity: 1; }
-      80%  { opacity: 0.8; }
-      100% { transform: translateY(-100vh) scale(1.2) rotate(360deg); opacity: 0; }
-    }
-
-    .kisses-content { position: relative; z-index: 2; }
-    .kisses-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 8vw, 3rem);
-      color: #f5c0d4;
-      line-height: 1.2;
-      margin-bottom: 16px;
-      animation: fadeUp 0.6s ease both;
-    }
-    .kisses-sub {
-      font-size: 0.9rem;
-      color: #c07090;
-      line-height: 1.7;
-      max-width: 280px;
-      margin: 0 auto 28px;
-      animation: fadeUp 0.6s 0.1s ease both;
-    }
-    .kisses-big {
-      font-size: clamp(3rem, 12vw, 5rem);
-      display: block;
-      margin-bottom: 24px;
-      animation: heartPop 0.5s 0.2s cubic-bezier(.34,1.56,.64,1) both;
-    }
-    @keyframes heartPop { from{transform:scale(0)} to{transform:scale(1)} }
-    @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-
-    .kisses-close {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(228,160,180,0.25);
-      border-radius: 50px;
-      padding: 10px 28px;
-      font-family: 'Inter', sans-serif;
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: #c09090;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      animation: fadeUp 0.6s 0.3s ease both;
-    }
-    .kisses-close:hover { background: rgba(255,255,255,0.14); color: #fff5f0; }
-  </style>
+    </style>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-R7HVEC5HC5"></script>
   <script src="/analytics.js"></script>
   <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","x0p6ub2n2r");</script>
@@ -399,17 +305,9 @@
         <p class="hero-sub">${landing.hero.sub}</p>
       `;
 
-      // --- EXCITED BUTTON ---
-      document.getElementById('excited-btn').textContent = landing.excitedBtn.text;
+      
 
-      // --- KISSES OVERLAY ---
-      const k = landing.kisses;
-      document.getElementById('kisses-content').innerHTML = `
-        <span class="kisses-big">${k.bigEmoji}</span>
-        <h2 class="kisses-title">${k.title.replace('\n', '<br>')}</h2>
-        <p class="kisses-sub">${k.sub.replace('\n', '<br>')}</p>
-        <button class="kisses-close" onclick="closeKisses()">${k.closeText}</button>
-      `;
+      
 
       // --- COUNTDOWN SECTION ---
       document.getElementById('countdown-label').textContent = landing.countdownSection.label;
