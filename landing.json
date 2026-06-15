@@ -1,0 +1,55 @@
+{
+  "hero": {
+    "greeting": "a little corner of the internet",
+    "titleLine1": "meri pyari",
+    "titleHighlight": "Tingu ji",
+    "sub": "made with love, just for you"
+  },
+
+  "excitedBtn": {
+    "text": "are you excited to meet? 🥹"
+  },
+
+  "kisses": {
+    "bigEmoji": "😘💋🥰",
+    "title": "obviously yes,\nsending all the kisses 💋",
+    "sub": "itne saare kisses collect karo, Monday tak use karna 😌\nI'm SO excited to see you 🧸💜",
+    "closeText": "okay okay 🙈 close"
+  },
+
+  "countdownSection": {
+    "label": "our little forever",
+    "cards": [
+      { "id": "t1", "icon": "💬", "label": "we started talking", "dateKey": "startedTalking", "future": false },
+      { "id": "t2", "icon": "🌸", "label": "we first met",       "dateKey": "firstMet",       "future": false },
+      { "id": "t3", "icon": "🤗", "label": "last time we hugged","dateKey": "lastHug",        "future": false },
+      { "id": "t4", "icon": "🧸", "label": "next time we meet",  "dateKey": "nextMeet",       "future": true  }
+    ]
+  },
+
+  "navSection": {
+    "label": "your little universe",
+    "cards": [
+      {
+        "href": "/memories",
+        "iconEmoji": "🎬",
+        "iconClass": "icon-memories",
+        "title": "Our Memories",
+        "sub": "memory log",
+        "desc": "every moment we've collected, always here"
+      },
+      {
+        "href": "/day",
+        "iconEmoji": "💝",
+        "iconClass": "icon-gifts",
+        "title": "With Love,\nFor You",
+        "sub": "little gifts",
+        "desc": "things i made, just because"
+      }
+    ]
+  },
+
+  "footer": {
+    "text": "garvit \u00a0♥\u00a0 tingu \u00a0·\u00a0 forever in the making"
+  }
+}
