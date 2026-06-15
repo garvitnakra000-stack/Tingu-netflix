@@ -388,8 +388,8 @@
     // ===== RENDER FROM JSON =====
     async function init() {
       const [landing, rel] = await Promise.all([
-        fetch('/data/landing.json').then(r => r.json()),
-        fetch('/data/relationship.json').then(r => r.json())
+      fetch('./data/landing.json')
+      fetch('./data/relationship.json')
       ]);
 
       // --- HERO ---
