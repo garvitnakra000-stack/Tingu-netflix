@@ -11,7 +11,7 @@
       { "id": "t1", "icon": "💬", "label": "we started talking", "dateKey": "startedTalking", "future": false },
       { "id": "t2", "icon": "🌸", "label": "we first met",       "dateKey": "firstMet",       "future": false },
       { "id": "t3", "icon": "🤗", "label": "last time we hugged","dateKey": "lastHug",        "future": false },
-      { "id": "t5", "icon": "❤️", "label": "Since since you said yes","dateKey": "Officalyes", "future": false },
+      { "id": "t5", "icon": "❤️", "label": "Time since you said yes","dateKey": "Officalyes", "future": false },
       { "id": "t4", "icon": "🧸", "label": "next time we meet",  "dateKey": "nextMeet",       "future": true  }
     ]
   },
