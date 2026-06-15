@@ -107,7 +107,6 @@
       box-shadow: 0 0 40px rgba(200,60,100,0.22);
     }
 
-    /* glowing ring on future card */
     .countdown-card.future::before {
       content: '';
       position: absolute; inset: -1px;
@@ -128,7 +127,6 @@
     .timer-unit-label { font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase; color: #7a5a66; margin-top: 4px; display: block; }
     .timer-dot { font-family: 'Playfair Display', serif; font-size: 22px; color: #6b2e42; padding-bottom: 12px; line-height: 1; }
 
-    /* future card countdown styling */
     .future .timer-num { color: #f5c0d4; font-size: 28px; }
     .future .timer-unit-label { color: #c07090; }
     .future .timer-dot { color: #c07090; }
@@ -274,24 +272,14 @@
   <div class="teddy-bg">🧸</div>
   <div class="petals-bg" id="petals"></div>
 
-  <!-- KISSES OVERLAY -->
+  <!-- KISSES OVERLAY — rendered by JS -->
   <div id="kisses-overlay">
     <div class="kisses-emoji-shower" id="kiss-shower"></div>
-    <div class="kisses-content">
-      <span class="kisses-big">😘💋🥰</span>
-      <h2 class="kisses-title">obviously yes,<br>sending all the kisses 💋</h2>
-      <p class="kisses-sub">itne saare kisses collect karo, Monday tak use karna 😌<br>I'm SO excited to see you 🧸💜</p>
-      <button class="kisses-close" onclick="closeKisses()">okay okay 🙈 close</button>
-    </div>
+    <div class="kisses-content" id="kisses-content"></div>
   </div>
 
   <div class="page">
-
-    <div class="hero">
-      <p class="greeting">a little corner of the internet</p>
-      <h1 class="hero-title">meri pyari<br><em>Tingu ji</em></h1>
-      <p class="hero-sub">made with love, just for you</p>
-    </div>
+    <div class="hero" id="hero-section"></div>
 
     <div class="divider">
       <div class="divider-line"></div>
@@ -299,69 +287,21 @@
       <div class="divider-line"></div>
     </div>
 
-    <!-- EXCITED BUTTON -->
-    <button id="excited-btn" onclick="openKisses()">
-      are you excited to meet? 🥹
-    </button>
+    <button id="excited-btn" onclick="openKisses()"></button>
 
     <div class="countdown-wrap">
-      <p class="section-label">our little forever</p>
-      <div class="countdown-grid">
-
-        <div class="countdown-card">
-          <span class="card-icon">💬</span>
-          <div class="card-label">we started talking</div>
-          <div class="card-date">April 3, 2026</div>
-          <div class="timer-row" id="t1"></div>
-        </div>
-
-        <div class="countdown-card">
-          <span class="card-icon">🌸</span>
-          <div class="card-label">we first met</div>
-          <div class="card-date">April 25, 2026</div>
-          <div class="timer-row" id="t2"></div>
-        </div>
-
-        <div class="countdown-card">
-          <span class="card-icon">🤗</span>
-          <div class="card-label">last time we hugged</div>
-          <div class="card-date">April 29, 2026</div>
-          <div class="timer-row" id="t3"></div>
-        </div>
-
-        <div class="countdown-card future">
-          <div class="future-badge">✨ coming up</div>
-          <span class="card-icon">🧸</span>
-          <div class="card-label">next time we meet</div>
-          <div class="card-date">June 8, 2026 · 10 AM</div>
-          <div class="timer-row" id="t4"></div>
-        </div>
-
-      </div>
+      <p class="section-label" id="countdown-label"></p>
+      <div class="countdown-grid" id="countdown-grid"></div>
     </div>
 
     <div class="nav-wrap">
-      <p class="section-label">your little universe</p>
-      <div class="nav-grid">
-        <a href="/memories" class="nav-card">
-          <div class="nav-card-icon icon-memories">🎬</div>
-          <div class="nav-card-title">Our Memories</div>
-          <div class="nav-card-sub">memory log</div>
-          <p class="nav-card-desc">every moment we've collected, always here</p>
-        </a>
-        <a href="/day" class="nav-card">
-          <div class="nav-card-icon icon-gifts">💝</div>
-          <div class="nav-card-title">With Love,<br>For You</div>
-          <div class="nav-card-sub">little gifts</div>
-          <p class="nav-card-desc">things i made, just because</p>
-        </a>
-      </div>
+      <p class="section-label" id="nav-label"></p>
+      <div class="nav-grid" id="nav-grid"></div>
     </div>
 
     <div class="footer">
-      <p class="footer-text">garvit &nbsp;♥&nbsp; tingu &nbsp;·&nbsp; forever in the making</p>
+      <p class="footer-text" id="footer-text"></p>
     </div>
-
   </div>
 
   <script>
@@ -409,15 +349,13 @@
           setTimeout(() => el.remove(), parseFloat(dur) * 1000 + 100);
         }, i * 80);
       }
-      // keep spawning while overlay is open
       setTimeout(() => {
         if (document.getElementById('kisses-overlay').classList.contains('active')) spawnKisses();
       }, 4000);
     }
 
-    // ===== TIMERS =====
+    // ===== TIMER HELPERS =====
     function istTime(year, month, day, hour = 0, min = 0) {
-      // IST = UTC+5:30
       return new Date(Date.UTC(year, month - 1, day, hour - 5, min - 30, 0));
     }
 
@@ -447,12 +385,76 @@
       setInterval(tick, 1000);
     }
 
-    // past events (count up)
-    renderTimer('t1', istTime(2026, 4, 3),  false);
-    renderTimer('t2', istTime(2026, 4, 25), false);
-    renderTimer('t3', istTime(2026, 4, 29), false);
-    // next meeting (count down) — June 8, 10 AM IST
-    renderTimer('t4', istTime(2026, 6, 8, 10, 0), true);
+    // ===== RENDER FROM JSON =====
+    async function init() {
+      const [landing, rel] = await Promise.all([
+        fetch('/data/landing.json').then(r => r.json()),
+        fetch('/data/relationship.json').then(r => r.json())
+      ]);
+
+      // --- HERO ---
+      document.getElementById('hero-section').innerHTML = `
+        <p class="greeting">${landing.hero.greeting}</p>
+        <h1 class="hero-title">${landing.hero.titleLine1}<br><em>${landing.hero.titleHighlight}</em></h1>
+        <p class="hero-sub">${landing.hero.sub}</p>
+      `;
+
+      // --- EXCITED BUTTON ---
+      document.getElementById('excited-btn').textContent = landing.excitedBtn.text;
+
+      // --- KISSES OVERLAY ---
+      const k = landing.kisses;
+      document.getElementById('kisses-content').innerHTML = `
+        <span class="kisses-big">${k.bigEmoji}</span>
+        <h2 class="kisses-title">${k.title.replace('\n', '<br>')}</h2>
+        <p class="kisses-sub">${k.sub.replace('\n', '<br>')}</p>
+        <button class="kisses-close" onclick="closeKisses()">${k.closeText}</button>
+      `;
+
+      // --- COUNTDOWN SECTION ---
+      document.getElementById('countdown-label').textContent = landing.countdownSection.label;
+
+      const grid = document.getElementById('countdown-grid');
+      landing.countdownSection.cards.forEach(card => {
+        const d = rel[card.dateKey];
+        const isFuture = card.future;
+        const div = document.createElement('div');
+        div.className = 'countdown-card' + (isFuture ? ' future' : '');
+        div.innerHTML = `
+          ${isFuture ? '<div class="future-badge">✨ coming up</div>' : ''}
+          <span class="card-icon">${card.icon}</span>
+          <div class="card-label">${card.label}</div>
+          <div class="card-date">${d.label}</div>
+          <div class="timer-row" id="${card.id}"></div>
+        `;
+        grid.appendChild(div);
+
+        const target = istTime(d.year, d.month, d.day, d.hour || 0, d.minute || 0);
+        renderTimer(card.id, target, isFuture);
+      });
+
+      // --- NAV SECTION ---
+      document.getElementById('nav-label').textContent = landing.navSection.label;
+
+      const navGrid = document.getElementById('nav-grid');
+      landing.navSection.cards.forEach(card => {
+        const a = document.createElement('a');
+        a.href = card.href;
+        a.className = 'nav-card';
+        a.innerHTML = `
+          <div class="nav-card-icon ${card.iconClass}">${card.iconEmoji}</div>
+          <div class="nav-card-title">${card.title.replace('\n', '<br>')}</div>
+          <div class="nav-card-sub">${card.sub}</div>
+          <p class="nav-card-desc">${card.desc}</p>
+        `;
+        navGrid.appendChild(a);
+      });
+
+      // --- FOOTER ---
+      document.getElementById('footer-text').textContent = landing.footer.text;
+    }
+
+    init();
   </script>
 </body>
 </html>
