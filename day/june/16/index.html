@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>meri pyari tingu ji</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: #120608;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      color: #fff5f0;
+      overflow-x: hidden;
+    }
+
+    .bg-layer {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 15% 20%, rgba(180,40,70,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 85% 80%, rgba(120,30,80,0.2) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 50% 50%, rgba(90,10,30,0.15) 0%, transparent 60%);
+    }
+
+    .teddy-bg {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0.04;
+      font-size: min(70vw, 70vh);
+      user-select: none;
+    }
+
+    .petals-bg { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+    .petal { position: absolute; pointer-events: none; animation: petalFloat linear infinite; }
+    @keyframes petalFloat {
+      0%   { transform: translateY(-10px) rotate(0deg); opacity: 0; }
+      10%  { opacity: 0.07; }
+      90%  { opacity: 0.05; }
+      100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
+    }
+
+    .page {
+      position: relative; z-index: 2;
+      max-width: 600px; margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* HERO */
+    .eyebrow {
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      color: #d4956a; font-weight: 300; text-align: center; margin-bottom: 14px;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(30px, 7vw, 48px);
+      color: #fff5f0; line-height: 1.2; text-align: center; margin-bottom: 8px;
+    }
+    .hero-title em { color: #f0a0be; font-style: italic; }
+    .hero-sub {
+      font-size: 11px; color: #9e7a84; letter-spacing: 2.5px;
+      text-transform: uppercase; text-align: center; font-weight: 300; margin-bottom: 40px;
+    }
+
+    /* DIVIDER */
+    .divider {
+      display: flex; align-items: center; gap: 14px;
+      margin: 0 auto 40px; max-width: 280px;
+    }
+    .div-line { flex:1; height:1px; background: linear-gradient(to right, transparent, #8b3a52, transparent); }
+    .div-icon { font-size: 16px; }
+
+    /* LETTER */
+    .letter-card {
+      background: rgba(139,58,82,0.10);
+      border: 1px solid rgba(228,160,180,0.18);
+      border-radius: 18px; padding: 28px 28px 24px; margin-bottom: 32px;
+    }
+    .letter-label {
+      font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+      color: #7a5a66; margin-bottom: 18px; display: block;
+    }
+    .letter-body {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px; color: #e8d0d8; line-height: 1.85; font-style: italic;
+    }
+    .letter-body p { margin-bottom: 14px; }
+    .letter-body p:last-child { margin-bottom: 0; }
+    .letter-sign {
+      font-family: 'Playfair Display', serif;
+      font-size: 14px; color: #d4956a; margin-top: 20px; font-style: italic;
+    }
+
+    /* SPOTIFY */
+    .spotify-wrap { margin-bottom: 36px; }
+    .spotify-label {
+      font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+      color: #7a5a66; margin-bottom: 12px; display: block; text-align: center;
+    }
+    .spotify-wrap iframe { display: block; }
+
+    /* CROWN */
+    .crown-wrap { text-align: center; margin: 36px 0 24px; }
+    .crown-emoji { font-size: 32px; display: block; margin-bottom: 10px; }
+    .crown-line {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px; color: #f0a0be; font-style: italic;
+    }
+    .crown-sub {
+      font-size: 11px; color: #7a5a66; letter-spacing: 2px;
+      text-transform: uppercase; margin-top: 6px;
+    }
+
+    /* REASONS */
+    .reasons-label {
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      color: #7a5a66; text-align: center; margin-bottom: 22px;
+    }
+    .reason {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 16px 18px;
+      background: rgba(255,245,240,0.03);
+      border: 1px solid rgba(228,160,180,0.12);
+      border-radius: 14px; margin-bottom: 12px;
+    }
+    .reason-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; color: rgba(240,160,190,0.35); line-height: 1; min-width: 28px;
+    }
+    .reason-text {
+      font-size: 13px; color: #c8a0b0; line-height: 1.65; font-weight: 300; padding-top: 3px;
+    }
+    .reason-text strong {
+      color: #e8d0d8; font-weight: 500; display: block;
+      margin-bottom: 3px; font-size: 14px;
+    }
+
+    /* FOOTER */
+    .footer-note {
+      text-align: center; font-size: 10px; color: #4a2a36;
+      letter-spacing: 2px; text-transform: uppercase; margin-top: 40px;
+    }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R7HVEC5HC5"></script>
+  <script src="/analytics.js"></script>
+  <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","x0p6ub2n2r");</script>
+</head>
+<body>
+  <div class="bg-layer"></div>
+  <div class="teddy-bg">🧸</div>
+  <div class="petals-bg" id="petals"></div>
+
+  <div class="page">
+
+    <p class="eyebrow">a little corner, just for us</p>
+    <h1 class="hero-title">miles apart,<br><em>still god's favourite</em></h1>
+    <p class="hero-sub">bangalore is just a chapter · not the end</p>
+
+    <div class="divider">
+      <div class="div-line"></div>
+      <span class="div-icon">🌹</span>
+      <div class="div-line"></div>
+    </div>
+
+    <div class="letter-card">
+      <span class="letter-label">a note, from me to you</span>
+      <div class="letter-body">
+        <p>tingu ji, I know we're both a little scared. bangalore wasn't the plan — but then again, nothing about us was really planned, and look how that turned out.</p>
+        <p>every single thing that could've gone wrong between us, hasn't. touchwood, nazar na lage. I don't think that's luck. I think that's us. I think that's god being a little extra kind to two people who really, really deserve each other.</p>
+        <p>the distance is real. but so is this. and I'll take this, every single time.</p>
+      </div>
+      <div class="letter-sign">— always yours, no matter which city 🧸</div>
+    </div>
+
+    <div class="spotify-wrap">
+      <span class="spotify-label">our song for this chapter</span>
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/5dTJMpqiELczVuHJP3OAEu?utm_source=generator&si=73ccda7d6e6b4c7f" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+
+    <div class="crown-wrap">
+      <span class="crown-emoji">👑</span>
+      <div class="crown-line">god's favourite couple</div>
+      <div class="crown-sub">and here's exactly why</div>
+    </div>
+
+    <p class="reasons-label">reasons we'll make it</p>
+
+    <div class="reason">
+      <span class="reason-num">01</span>
+      <div class="reason-text">
+        <strong>nothing has gone wrong yet — and that's not nothing</strong>
+        every hurdle, every almost-fight, every hard moment — we came out the other side. touchwood, that track record doesn't lie.
+      </div>
+    </div>
+
+    <div class="reason">
+      <span class="reason-num">02</span>
+      <div class="reason-text">
+        <strong>we chose this, eyes open</strong>
+        we both know what the distance means. and we're still here. that choice — made scared, made anyway — means everything.
+      </div>
+    </div>
+
+    <div class="reason">
+      <span class="reason-num">03</span>
+      <div class="reason-text">
+        <strong>bangalore is a city, not a wall</strong>
+        flights exist. weekends exist. calls at midnight exist. the distance is measurable. what we have isn't.
+      </div>
+    </div>
+
+    <div class="reason">
+      <span class="reason-num">04</span>
+      <div class="reason-text">
+        <strong>we're each other's safe place — that doesn't move cities</strong>
+        the part of you that feels like home to me? that's not in gurgaon. that's just you. that comes everywhere.
+      </div>
+    </div>
+
+    <div class="reason">
+      <span class="reason-num">05</span>
+      <div class="reason-text">
+        <strong>god's favourites don't get this far just to give up</strong>
+        we've been quietly, stubbornly protected. I'm not about to stop believing in that now.
+      </div>
+    </div>
+
+    <p class="footer-note">garvit &nbsp;♥&nbsp; tingu &nbsp;·&nbsp; every city, always</p>
+
+  </div>
+
+  <script>
+    const petalsEl = document.getElementById('petals');
+    const symbols = ['🌹','🌸','💗','✿','❀','💕'];
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement('div');
+      p.className = 'petal';
+      p.textContent = symbols[i % symbols.length];
+      p.style.left = (Math.random() * 96) + '%';
+      p.style.top = '-40px';
+      p.style.fontSize = (11 + Math.random() * 16) + 'px';
+      const dur = (18 + Math.random() * 20) + 's';
+      const delay = (Math.random() * 20) + 's';
+      p.style.animation = `petalFloat ${dur} ${delay} linear infinite`;
+      petalsEl.appendChild(p);
+    }
+  </script>
+</body>
+</html>
