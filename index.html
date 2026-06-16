@@ -18,7 +18,6 @@
       overflow-x: hidden;
     }
 
-    /* ===== BACKGROUND ===== */
     .bg-layer {
       position: fixed; inset: 0; pointer-events: none; z-index: 0;
       background:
@@ -27,7 +26,6 @@
         radial-gradient(ellipse 40% 30% at 50% 50%, rgba(90,10,30,0.15) 0%, transparent 60%);
     }
 
-    /* ===== TEDDY BACKGROUND ===== */
     .teddy-bg {
       position: fixed; inset: 0; pointer-events: none; z-index: 0;
       display: flex; align-items: center; justify-content: center;
@@ -36,7 +34,6 @@
       user-select: none;
     }
 
-    /* ===== PETALS ===== */
     .petals-bg { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
     .petal { position: absolute; pointer-events: none; animation: petalFloat linear infinite; }
     @keyframes petalFloat {
@@ -48,7 +45,6 @@
 
     .page { position: relative; min-height: 100vh; padding: 0 0 60px; }
 
-    /* ===== HERO ===== */
     .hero {
       text-align: center; padding: 60px 24px 32px;
       position: relative; z-index: 2;
@@ -65,7 +61,6 @@
     .hero-title em { color: #f0a0be; font-style: italic; }
     .hero-sub { font-size: 10px; color: #9e7a84; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 300; }
 
-    /* ===== DIVIDER ===== */
     .divider {
       display: flex; align-items: center; justify-content: center;
       gap: 14px; margin: 10px auto 40px; max-width: 340px; padding: 0 24px;
@@ -73,13 +68,11 @@
     .divider-line { flex:1; height:1px; background:linear-gradient(to right,transparent,#8b3a52,transparent); }
     .divider-icon { font-size: 18px; }
 
-    /* ===== SECTION LABEL ===== */
     .section-label {
       text-align: center; font-size: 10px; letter-spacing: 4px;
       text-transform: uppercase; color: #7a5a66; margin-bottom: 22px; font-weight: 400;
     }
 
-    /* ===== COUNTDOWN ===== */
     .countdown-wrap { padding: 0 20px; margin-bottom: 52px; position: relative; z-index: 2; }
     .countdown-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 620px; margin: 0 auto; }
     @media(max-width:480px){ .countdown-grid { grid-template-columns: 1fr; } }
@@ -106,7 +99,6 @@
       transform: translateY(-3px);
       box-shadow: 0 0 40px rgba(200,60,100,0.22);
     }
-
     .countdown-card.future::before {
       content: '';
       position: absolute; inset: -1px;
@@ -143,7 +135,6 @@
       margin-bottom: 12px;
     }
 
-    /* ===== NAV CARDS ===== */
     .nav-wrap { padding: 0 20px; margin-bottom: 48px; position: relative; z-index: 2; }
     .nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 620px; margin: 0 auto; }
     @media(max-width:420px){ .nav-grid { grid-template-columns: 1fr; } }
@@ -164,11 +155,9 @@
     .nav-card-sub { font-size:10px; color:#7a5a66; letter-spacing:2px; text-transform:uppercase; font-weight:400; }
     .nav-card-desc { font-size:12px; color:#b8909a; margin-top:10px; line-height:1.6; font-weight:300; }
 
-    /* ===== FOOTER ===== */
     .footer { text-align:center; padding:8px 20px 0; position:relative; z-index:2; }
     .footer-text { font-size:10px; color:#4a2a36; letter-spacing:2px; text-transform:uppercase; }
-
-    </style>
+  </style>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-R7HVEC5HC5"></script>
   <script src="/analytics.js"></script>
   <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","x0p6ub2n2r");</script>
@@ -178,12 +167,6 @@
   <div class="teddy-bg">🧸</div>
   <div class="petals-bg" id="petals"></div>
 
-  <!-- KISSES OVERLAY — rendered by JS -->
-  <div id="kisses-overlay">
-    <div class="kisses-emoji-shower" id="kiss-shower"></div>
-    <div class="kisses-content" id="kisses-content"></div>
-  </div>
-
   <div class="page">
     <div class="hero" id="hero-section"></div>
 
@@ -192,8 +175,6 @@
       <span class="divider-icon">🌹</span>
       <div class="divider-line"></div>
     </div>
-
-    <button id="excited-btn" onclick="openKisses()"></button>
 
     <div class="countdown-wrap">
       <p class="section-label" id="countdown-label"></p>
@@ -227,39 +208,6 @@
       petalsEl.appendChild(p);
     }
 
-    // ===== KISSES =====
-    function openKisses() {
-      const overlay = document.getElementById('kisses-overlay');
-      overlay.classList.add('active');
-      spawnKisses();
-    }
-    function closeKisses() {
-      document.getElementById('kisses-overlay').classList.remove('active');
-      document.getElementById('kiss-shower').innerHTML = '';
-    }
-    function spawnKisses() {
-      const shower = document.getElementById('kiss-shower');
-      shower.innerHTML = '';
-      const emojis = ['💋','😘','🥰','💗','💕','❤️','🌹','💝'];
-      for (let i = 0; i < 40; i++) {
-        setTimeout(() => {
-          const el = document.createElement('div');
-          el.className = 'kiss-fly';
-          el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-          el.style.left = (Math.random() * 95) + '%';
-          el.style.bottom = '-20px';
-          el.style.fontSize = (18 + Math.random() * 22) + 'px';
-          const dur = (2 + Math.random() * 3) + 's';
-          el.style.animation = `kissFly ${dur} ease both`;
-          shower.appendChild(el);
-          setTimeout(() => el.remove(), parseFloat(dur) * 1000 + 100);
-        }, i * 80);
-      }
-      setTimeout(() => {
-        if (document.getElementById('kisses-overlay').classList.contains('active')) spawnKisses();
-      }, 4000);
-    }
-
     // ===== TIMER HELPERS =====
     function istTime(year, month, day, hour = 0, min = 0) {
       return new Date(Date.UTC(year, month - 1, day, hour - 5, min - 30, 0));
@@ -291,65 +239,62 @@
       setInterval(tick, 1000);
     }
 
-    // ===== RENDER FROM JSON =====
+    // ===== LOAD & RENDER =====
     async function init() {
-      const [landing, rel] = await Promise.all([
-      fetch('/data/landing.json')
-      fetch('/data/relationship.json')
-      ]);
+      try {
+        const [landing, rel] = await Promise.all([
+          fetch('/data/landing.json').then(r => r.json()),
+          fetch('/data/relationship.json').then(r => r.json())
+        ]);
 
-      // --- HERO ---
-      document.getElementById('hero-section').innerHTML = `
-        <p class="greeting">${landing.hero.greeting}</p>
-        <h1 class="hero-title">${landing.hero.titleLine1}<br><em>${landing.hero.titleHighlight}</em></h1>
-        <p class="hero-sub">${landing.hero.sub}</p>
-      `;
-
-      
-
-      
-
-      // --- COUNTDOWN SECTION ---
-      document.getElementById('countdown-label').textContent = landing.countdownSection.label;
-
-      const grid = document.getElementById('countdown-grid');
-      landing.countdownSection.cards.forEach(card => {
-        const d = rel[card.dateKey];
-        const isFuture = card.future;
-        const div = document.createElement('div');
-        div.className = 'countdown-card' + (isFuture ? ' future' : '');
-        div.innerHTML = `
-          ${isFuture ? '<div class="future-badge">✨ coming up</div>' : ''}
-          <span class="card-icon">${card.icon}</span>
-          <div class="card-label">${card.label}</div>
-          <div class="card-date">${d.label}</div>
-          <div class="timer-row" id="${card.id}"></div>
+        // HERO
+        document.getElementById('hero-section').innerHTML = `
+          <p class="greeting">${landing.hero.greeting}</p>
+          <h1 class="hero-title">${landing.hero.titleLine1}<br><em>${landing.hero.titleHighlight}</em></h1>
+          <p class="hero-sub">${landing.hero.sub}</p>
         `;
-        grid.appendChild(div);
 
-        const target = istTime(d.year, d.month, d.day, d.hour || 0, d.minute || 0);
-        renderTimer(card.id, target, isFuture);
-      });
+        // COUNTDOWN
+        document.getElementById('countdown-label').textContent = landing.countdownSection.label;
+        const grid = document.getElementById('countdown-grid');
+        landing.countdownSection.cards.forEach(card => {
+          const d = rel[card.dateKey];
+          if (!d) { console.warn('Missing dateKey in relationship.json:', card.dateKey); return; }
+          const div = document.createElement('div');
+          div.className = 'countdown-card' + (card.future ? ' future' : '');
+          div.innerHTML = `
+            ${card.future ? '<div class="future-badge">✨ coming up</div>' : ''}
+            <span class="card-icon">${card.icon}</span>
+            <div class="card-label">${card.label}</div>
+            <div class="card-date">${d.label}</div>
+            <div class="timer-row" id="${card.id}"></div>
+          `;
+          grid.appendChild(div);
+          renderTimer(card.id, istTime(d.year, d.month, d.day, d.hour || 0, d.minute || 0), card.future);
+        });
 
-      // --- NAV SECTION ---
-      document.getElementById('nav-label').textContent = landing.navSection.label;
+        // NAV
+        document.getElementById('nav-label').textContent = landing.navSection.label;
+        const navGrid = document.getElementById('nav-grid');
+        landing.navSection.cards.forEach(card => {
+          const a = document.createElement('a');
+          a.href = card.href;
+          a.className = 'nav-card';
+          a.innerHTML = `
+            <div class="nav-card-icon ${card.iconClass}">${card.iconEmoji}</div>
+            <div class="nav-card-title">${card.title.replace('\n', '<br>')}</div>
+            <div class="nav-card-sub">${card.sub}</div>
+            <p class="nav-card-desc">${card.desc}</p>
+          `;
+          navGrid.appendChild(a);
+        });
 
-      const navGrid = document.getElementById('nav-grid');
-      landing.navSection.cards.forEach(card => {
-        const a = document.createElement('a');
-        a.href = card.href;
-        a.className = 'nav-card';
-        a.innerHTML = `
-          <div class="nav-card-icon ${card.iconClass}">${card.iconEmoji}</div>
-          <div class="nav-card-title">${card.title.replace('\n', '<br>')}</div>
-          <div class="nav-card-sub">${card.sub}</div>
-          <p class="nav-card-desc">${card.desc}</p>
-        `;
-        navGrid.appendChild(a);
-      });
+        // FOOTER
+        document.getElementById('footer-text').textContent = landing.footer.text;
 
-      // --- FOOTER ---
-      document.getElementById('footer-text').textContent = landing.footer.text;
+      } catch (err) {
+        console.error('Failed to load data:', err);
+      }
     }
 
     init();
