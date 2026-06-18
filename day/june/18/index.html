@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>data doesn't lie — meripyaritingu</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream: #FAF7F2;
+  --cream-dark: #F0EBE1;
+  --rose: #C9748A;
+  --rose-light: #E8C4CE;
+  --rose-pale: #F7EEF1;
+  --plum: #6B3A5C;
+  --plum-light: #9B6B8A;
+  --ink: #2C1F28;
+  --ink-muted: #6B5060;
+  --gold: #C4975A;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── LOCK SCREEN ── */
+#lockScreen {
+  position: fixed; inset: 0;
+  background: var(--cream);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 100; padding: 2rem;
+  text-align: center;
+}
+.lock-eyebrow {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--plum-light);
+  margin-bottom: 1.5rem;
+}
+.lock-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 7vw, 3rem);
+  font-weight: 300; color: var(--plum);
+  line-height: 1.2; margin-bottom: 1rem;
+}
+.lock-title em { font-style: italic; color: var(--rose); }
+.lock-sub { font-size: 14px; color: var(--ink-muted); margin-bottom: 2.5rem; line-height: 1.6; }
+.lock-time {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.5rem; font-weight: 300;
+  color: var(--plum); letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+.lock-date { font-size: 13px; color: var(--plum-light); }
+.lock-divider {
+  width: 40px; height: 1px;
+  background: var(--rose-light);
+  margin: 2rem auto;
+}
+
+/* ── SCREEN SYSTEM ── */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── HEADER ── */
+.site-header {
+  text-align: center;
+  padding: 3rem 1.5rem 2rem;
+  border-bottom: 1px solid var(--rose-light);
+}
+.eyebrow {
+  font-size: 11px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--plum-light);
+  margin-bottom: 0.75rem;
+}
+.header-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: 300; color: var(--plum);
+  line-height: 1.2;
+}
+.header-title em { font-style: italic; color: var(--rose); }
+.header-sub { margin-top: 0.75rem; font-size: 14px; color: var(--ink-muted); font-weight: 300; }
+
+/* ── QUESTION SCREEN ── */
+#questionScreen { max-width: 560px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+.q-intro {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.4rem, 4vw, 1.8rem);
+  font-weight: 400; color: var(--plum);
+  line-height: 1.5; margin-bottom: 1.5rem;
+  text-align: center;
+}
+.q-intro em { font-style: italic; color: var(--rose); }
+
+.q-body {
+  font-size: 14px; color: var(--ink-muted);
+  line-height: 1.8; text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.question-card {
+  background: white;
+  border: 1px solid var(--rose-light);
+  border-radius: 16px;
+  padding: 1.75rem 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.question-label {
+  font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--plum-light);
+  margin-bottom: 1rem;
+}
+.question-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.3rem, 3.5vw, 1.6rem);
+  font-weight: 400; color: var(--plum);
+  line-height: 1.5;
+}
+
+.q-instruction {
+  background: var(--rose-pale);
+  border: 1px solid var(--rose-light);
+  border-radius: 12px;
+  padding: 1.1rem 1.25rem;
+  font-size: 13px;
+  color: var(--ink-muted);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.q-instruction strong { color: var(--plum); font-weight: 500; }
+
+.reveal-btn {
+  display: block; width: 100%;
+  padding: 1rem;
+  background: var(--plum); color: white;
+  border: none; border-radius: 100px;
+  font-size: 15px; font-family: 'DM Sans', sans-serif;
+  cursor: pointer; transition: background 0.2s;
+  letter-spacing: 0.02em;
+}
+.reveal-btn:hover { background: var(--rose); }
+
+/* ── STATS SCREEN ── */
+#statsScreen { max-width: 620px; margin: 0 auto; padding: 2rem 1.5rem 5rem; }
+
+.stats-hero {
+  text-align: center; margin-bottom: 3rem;
+  padding: 1rem 0;
+}
+.stats-hero .sh-eyebrow {
+  font-size: 11px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--plum-light);
+  margin-bottom: 0.75rem;
+}
+.stats-hero h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-weight: 300; color: var(--plum);
+  line-height: 1.2; margin-bottom: 0.75rem;
+}
+.stats-hero h2 em { font-style: italic; color: var(--rose); }
+.stats-hero p { font-size: 14px; color: var(--ink-muted); line-height: 1.6; }
+
+/* spotify */
+.spotify-wrap { margin-bottom: 2.5rem; border-radius: 12px; overflow: hidden; }
+
+/* narrative stat block */
+.stat-block {
+  margin-bottom: 2rem;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.stat-block.visible { opacity: 1; transform: translateY(0); }
+
+.stat-card-main {
+  background: white;
+  border: 1px solid var(--cream-dark);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+.stat-card-main.accent-plum { background: var(--plum); border-color: var(--plum); }
+.stat-card-main.accent-rose { background: var(--rose-pale); border-color: var(--rose-light); }
+
+.sc-tag {
+  font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--plum-light); margin-bottom: 0.5rem;
+}
+.accent-plum .sc-tag { color: rgba(255,255,255,0.5); }
+
+.sc-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.5rem, 8vw, 3.5rem);
+  font-weight: 300; color: var(--plum);
+  line-height: 1; margin-bottom: 0.25rem;
+}
+.accent-plum .sc-number { color: var(--rose-light); }
+
+.sc-label {
+  font-size: 14px; color: var(--ink-muted); line-height: 1.5;
+}
+.accent-plum .sc-label { color: rgba(255,255,255,0.65); }
+
+.sc-narrative {
+  font-size: 13px; color: var(--ink-muted);
+  line-height: 1.7; font-style: italic;
+  padding: 0 0.25rem;
+}
+.sc-narrative strong { color: var(--plum); font-weight: 500; font-style: normal; }
+
+/* split bar */
+.split-wrap { margin-bottom: 2.5rem; }
+.split-label-row {
+  display: flex; justify-content: space-between;
+  font-size: 13px; margin-bottom: 8px;
+}
+.split-label-row .lbl-me { color: var(--plum); font-weight: 500; }
+.split-label-row .lbl-her { color: var(--rose); font-weight: 500; }
+.split-bar {
+  height: 12px; border-radius: 100px;
+  background: var(--cream-dark); overflow: hidden;
+  display: flex; margin-bottom: 4px;
+}
+.split-bar .bar-me {
+  background: var(--plum); border-radius: 100px 0 0 100px;
+  transition: width 1s ease;
+}
+.split-bar .bar-her {
+  background: var(--rose); border-radius: 0 100px 100px 0;
+  transition: width 1s ease;
+}
+.split-pct-row {
+  display: flex; justify-content: space-between;
+  font-size: 12px; color: var(--ink-muted);
+}
+
+/* hour heatmap */
+.heatmap-wrap {
+  background: white; border: 1px solid var(--cream-dark);
+  border-radius: 16px; padding: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+.heatmap-title {
+  font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--plum-light);
+  margin-bottom: 1rem;
+}
+.heatmap-grid {
+  display: grid; grid-template-columns: repeat(24, 1fr);
+  gap: 3px;
+}
+.heatmap-cell {
+  height: 28px; border-radius: 3px;
+  background: var(--cream-dark);
+  transition: background 0.3s;
+  position: relative;
+}
+.heatmap-cell:hover::after {
+  content: attr(data-label);
+  position: absolute; bottom: 110%;
+  left: 50%; transform: translateX(-50%);
+  background: var(--plum); color: white;
+  font-size: 10px; padding: 3px 6px;
+  border-radius: 4px; white-space: nowrap;
+  pointer-events: none; z-index: 10;
+}
+.heatmap-times {
+  display: flex; justify-content: space-between;
+  margin-top: 6px; font-size: 10px; color: var(--ink-muted);
+}
+
+/* emoji grid */
+.emoji-row {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-bottom: 0.75rem;
+}
+.emoji-pill {
+  background: white; border: 1px solid var(--cream-dark);
+  border-radius: 100px; padding: 0.4rem 0.9rem;
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px;
+}
+.emoji-pill .ep-emoji { font-size: 1.2rem; }
+.emoji-pill .ep-count { color: var(--ink-muted); font-size: 12px; }
+
+/* love stat */
+.love-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-bottom: 0.75rem;
+}
+.love-card {
+  background: white; border: 1px solid var(--cream-dark);
+  border-radius: 14px; padding: 1.1rem; text-align: center;
+}
+.love-card.her { background: var(--rose-pale); border-color: var(--rose-light); }
+.love-card .lc-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem; color: var(--plum); line-height: 1;
+}
+.love-card.her .lc-num { color: var(--rose); }
+.love-card .lc-name { font-size: 11px; color: var(--ink-muted); margin-top: 4px; }
+
+/* section title */
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem; font-weight: 400;
+  color: var(--plum); margin: 2.5rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--rose-light);
+}
+
+/* closing */
+.closing {
+  text-align: center; margin-top: 3rem;
+  padding: 2rem 1rem;
+  border-top: 1px solid var(--rose-light);
+}
+.closing p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.3rem, 4vw, 1.7rem);
+  font-weight: 300; font-style: italic;
+  color: var(--plum); line-height: 1.6;
+}
+.closing .closing-name {
+  margin-top: 1rem; font-size: 13px;
+  color: var(--ink-muted); font-style: normal;
+  font-family: 'DM Sans', sans-serif;
+}
+
+@media (max-width: 480px) {
+  .heatmap-cell { height: 22px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── LOCK SCREEN ── -->
+<div id="lockScreen">
+  <p class="lock-eyebrow">meripyaritingu.xyz — june 18</p>
+  <div class="lock-time" id="lockTime">--:--</div>
+  <div class="lock-date" id="lockDate"></div>
+  <div class="lock-divider"></div>
+  <h1 class="lock-title">kuch <em>discover</em> kiya hai</h1>
+  <p class="lock-sub">3 baje tak wait karo —<br>kuch reveal karna hai aaj.</p>
+</div>
+
+<!-- ── MAIN ── -->
+<div id="mainContent">
+
+  <header class="site-header">
+    <p class="eyebrow">june 18 · meripyaritingu.xyz</p>
+    <h1 class="header-title">data doesn't lie,<br><em>tingu ji.</em></h1>
+    <p class="header-sub">maine research ki hai. numbers ke saath argue mat karna. 🔍</p>
+  </header>
+
+  <!-- QUESTION SCREEN -->
+  <div class="screen active" id="questionScreen">
+    <p class="q-intro" style="margin-top:1.5rem;">ek <em>honest</em> sawal —</p>
+    <p class="q-body">
+      maine aaj kuch numbers dekhe hain.<br>
+      par pehle tumhara jawab chahiye.<br>
+      honestly. sochke.
+    </p>
+
+    <div class="question-card">
+      <p class="question-label">aaj ka sawal</p>
+      <p class="question-text">
+        "hamare beech kaun zyada effort deta hai baat karne mein — aap ya main?"
+      </p>
+    </div>
+
+    <div class="q-instruction">
+      <strong>WhatsApp pe jawab do.</strong><br>
+      Jo bhi lagta hai — honestly likho.<br>
+      Phir neeche wala button dabao. 👇
+    </div>
+
+    <button class="reveal-btn" onclick="showStats()">
+      ab dekho data kya kehta hai →
+    </button>
+  </div>
+
+  <!-- STATS SCREEN -->
+  <div class="screen" id="statsScreen">
+
+    <div class="stats-hero">
+      <p class="sh-eyebrow">73 din. 76,922 messages. ek sach.</p>
+      <h2>tumne hi <em>zyada</em> kiya hai,<br>hamesha.</h2>
+      <p>maine socha tha main better hun. data ne prove kar diya — nahi hun. 🙈</p>
+    </div>
+
+    <!-- Spotify -->
+    <div class="spotify-wrap">
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/0RsH8g8DxdYZgdGcod5I36?utm_source=generator&si=2ba6092b86dc4a53" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+
+    <!-- STAT 1: Messages split -->
+    <div class="stat-block" id="sb1">
+      <p class="section-title">kaun zyada bolta hai?</p>
+      <div class="split-wrap">
+        <div class="split-label-row">
+          <span class="lbl-me">Garvit — 30,652</span>
+          <span class="lbl-her">Tingu ji — 46,270</span>
+        </div>
+        <div class="split-bar">
+          <div class="bar-me" style="width:39%"></div>
+          <div class="bar-her" style="width:61%"></div>
+        </div>
+        <div class="split-pct-row">
+          <span>39%</span>
+          <span>61%</span>
+        </div>
+      </div>
+      <p class="sc-narrative">
+        Out of 76,922 messages, <strong>tum ne 46,270 bheje</strong> — yaani har 10 messages mein se 6 tumhare the. Maine socha tha main zyada bolta hun. I was wrong. 😶
+      </p>
+    </div>
+
+    <!-- STAT 2: Who texts first -->
+    <div class="stat-block" id="sb2">
+      <p class="section-title">kaun pehle yaad karta hai?</p>
+      <div class="stat-card-main accent-plum">
+        <p class="sc-tag">din mein pehla message</p>
+        <p class="sc-number">56%</p>
+        <p class="sc-label">din pe tum ne conversation shuru ki</p>
+      </div>
+      <p class="sc-narrative">
+        72 din mein se <strong>41 din tum ne pehle text kiya</strong>. Main sirf 31 din. Matlab tum hi the jo pehle yaad karti thi — every single morning almost.
+      </p>
+    </div>
+
+    <!-- STAT 3: Characters -->
+    <div class="stat-block" id="sb3">
+      <p class="section-title">kaun zyada likhta hai?</p>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:0.75rem;">
+        <div class="stat-card-main" style="text-align:center;">
+          <p class="sc-tag">Garvit</p>
+          <p class="sc-number" style="font-size:2rem;">16</p>
+          <p class="sc-label">avg chars per msg</p>
+        </div>
+        <div class="stat-card-main accent-rose" style="text-align:center;">
+          <p class="sc-tag">Tingu ji</p>
+          <p class="sc-number" style="font-size:2rem; color:var(--rose);">19</p>
+          <p class="sc-label">avg chars per msg</p>
+        </div>
+      </div>
+      <p class="sc-narrative">
+        Tumne total <strong>9,14,426 characters</strong> likhe — vs mera 5,19,742. Tumhare messages lambe bhi hote hain aur zyada bhi. I literally write less and say less. Working on it. 🙈
+      </p>
+    </div>
+
+    <!-- STAT 4: Love count -->
+    <div class="stat-block" id="sb4">
+      <p class="section-title">kisne zyada "love" bola?</p>
+      <div class="love-row">
+        <div class="love-card">
+          <div class="lc-num">399</div>
+          <div class="lc-name">Garvit — "love"</div>
+        </div>
+        <div class="love-card her">
+          <div class="lc-num">548</div>
+          <div class="lc-name">Tingu ji — "love"</div>
+        </div>
+      </div>
+      <div class="love-row">
+        <div class="love-card">
+          <div class="lc-num">59</div>
+          <div class="lc-name">Garvit — "pyar"</div>
+        </div>
+        <div class="love-card her">
+          <div class="lc-num">43</div>
+          <div class="lc-name">Tingu ji — "pyaar"</div>
+        </div>
+      </div>
+      <p class="sc-narrative">
+        Tumne <strong>"love" 548 baar</strong> likha, maine 399. Aur "pyaar" bhi tumne zyada. Total love expressions mein tum aage ho. Officially. 💕
+      </p>
+    </div>
+
+    <!-- STAT 5: Emoji -->
+    <div class="stat-block" id="sb5">
+      <p class="section-title">sabse zyada kaun sa emoji?</p>
+      <div class="emoji-row">
+        <div class="emoji-pill"><span class="ep-emoji">😭</span><span class="ep-count">21,685</span></div>
+        <div class="emoji-pill"><span class="ep-emoji">😘</span><span class="ep-count">7,814</span></div>
+        <div class="emoji-pill"><span class="ep-emoji">😂</span><span class="ep-count">6,524</span></div>
+        <div class="emoji-pill"><span class="ep-emoji">🥺</span><span class="ep-count">4,160</span></div>
+        <div class="emoji-pill"><span class="ep-emoji">🥲</span><span class="ep-count">3,792</span></div>
+        <div class="emoji-pill"><span class="ep-emoji">🤣</span><span class="ep-count">3,446</span></div>
+        <div class="emoji-pill"><span class="ep-emoji">♥</span><span class="ep-count">3,403</span></div>
+        <div class="emoji-pill"><span class="ep-emoji">🫣</span><span class="ep-count">3,363</span></div>
+        <div class="emoji-pill"><span class="ep-emoji">🙈</span><span class="ep-count">3,342</span></div>
+      </div>
+      <p class="sc-narrative">
+        <strong>😭 was used 21,685 times.</strong> Twenty-one thousand. I'm convinced 90% of those are yours. We are collectively the most dramatic couple in existence. No notes.
+      </p>
+    </div>
+
+    <!-- STAT 6: Heatmap -->
+    <div class="stat-block" id="sb6">
+      <p class="section-title">kis waqt hoti hai baat?</p>
+      <div class="heatmap-wrap">
+        <p class="heatmap-title">messages by hour — darker = more</p>
+        <div class="heatmap-grid" id="heatmapGrid"></div>
+        <div class="heatmap-times">
+          <span>12am</span><span>6am</span><span>12pm</span><span>6pm</span><span>11pm</span>
+        </div>
+      </div>
+      <p class="sc-narrative">
+        <strong>11 PM is peak hour — 9,975 messages.</strong> Raat ko neend nahi aati jab tak baat na ho. Aur 12 AM, 1 AM bhi full active. Hum dono raat ke log hain clearly. 🌙
+      </p>
+    </div>
+
+    <!-- STAT 7: Streak -->
+    <div class="stat-block" id="sb7">
+      <p class="section-title">kitne din bina ruke baat ki?</p>
+      <div class="stat-card-main accent-plum">
+        <p class="sc-tag">longest streak</p>
+        <p class="sc-number">50 days</p>
+        <p class="sc-label">29 Apr – 17 Jun 2026 · lagatar, bina ek din chhode</p>
+      </div>
+      <p class="sc-narrative">
+        Aur ek hi din tha jab hum ne baat nahi ki — <strong>28 April</strong>. Sirf ek. 73 din mein se 72 din hum ne baat ki. Jo ek din nahi ki, uski bhi story hogi. 👀
+      </p>
+    </div>
+
+    <!-- STAT 8: Sunday -->
+    <div class="stat-block" id="sb8">
+      <p class="section-title">sabse pyaara din?</p>
+      <div class="stat-card-main accent-rose">
+        <p class="sc-tag">most active day of week</p>
+        <p class="sc-number" style="color:var(--rose);">Sunday</p>
+        <p class="sc-label">15,085 messages — almost double any other day</p>
+      </div>
+      <p class="sc-narrative">
+        Sunday ko <strong>15,085 messages</strong> — baaki sab din ~10,000 ke around. Matlab Sunday matlab sirf ek kaam — <strong>baat karna</strong>. No plans needed when we have each other. 🌸
+      </p>
+    </div>
+
+    <!-- CLOSING -->
+    <div class="closing">
+      <p>"data ne prove kar diya —<br>tum hi ho jo zyada deti ho.<br>aur main rozana grateful hun."</p>
+      <p class="closing-name">— Garvit, June 18 · with receipts 🧾</p>
+    </div>
+
+  </div><!-- /statsScreen -->
+</div><!-- /mainContent -->
+
+<script>
+// ── LOCK ──
+const UNLOCK_HOUR = 15;
+const PREVIEW = new URLSearchParams(location.search).get('preview') === 'true';
+
+function pad(n) { return String(n).padStart(2, '0'); }
+
+function updateClock() {
+  const now = new Date();
+  const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+  document.getElementById('lockTime').textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('lockDate').textContent =
+    `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+}
+
+function checkLock() {
+  const now = new Date();
+  const unlocked = PREVIEW || now.getHours() >= UNLOCK_HOUR;
+  if (unlocked) {
+    document.getElementById('lockScreen').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+  }
+}
+
+setInterval(updateClock, 1000);
+setInterval(checkLock, 5000);
+updateClock();
+
+document.getElementById('mainContent').style.display = 'none';
+checkLock();
+
+// ── SCREENS ──
+function showStats() {
+  document.getElementById('questionScreen').classList.remove('active');
+  document.getElementById('statsScreen').classList.add('active');
+  window.scrollTo(0, 0);
+  buildHeatmap();
+  setTimeout(revealBlocks, 300);
+}
+
+// ── HEATMAP ──
+const hourData = [8352,5510,2768,494,202,22,175,233,344,677,1380,2260,2921,2606,2159,2827,3627,3095,3768,4185,5128,5787,8427,9975];
+const maxH = Math.max(...hourData);
+
+function buildHeatmap() {
+  const grid = document.getElementById('heatmapGrid');
+  grid.innerHTML = '';
+  const amLabels = ['12am','1am','2am','3am','4am','5am','6am','7am','8am','9am','10am','11am',
+                    '12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm','11pm'];
+  hourData.forEach((count, i) => {
+    const cell = document.createElement('div');
+    cell.className = 'heatmap-cell';
+    const intensity = count / maxH;
+    cell.style.background = `rgba(107, 58, 92, ${0.08 + intensity * 0.92})`;
+    cell.setAttribute('data-label', `${amLabels[i]}: ${count.toLocaleString()}`);
+    grid.appendChild(cell);
+  });
+}
+
+// ── SCROLL REVEAL ──
+function revealBlocks() {
+  const blocks = document.querySelectorAll('.stat-block');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  blocks.forEach(b => observer.observe(b));
+}
+</script>
+</body>
+</html>
