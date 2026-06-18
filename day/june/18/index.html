@@ -150,10 +150,6 @@ body {
   font-size: 1.3rem; color: var(--plum);
   font-weight: 500; display: block; margin-bottom: 6px;
 }
-.choice-btn .cb-sub {
-  font-size: 12px; color: var(--ink-muted);
-  line-height: 1.5; display: block;
-}
 
 /* REVEAL */
 .reveal-panel {
@@ -526,8 +522,8 @@ const questions = [
     text: 'kaun pehle text karta hai — har roz?',
     sub: 'Har subah koi na koi conversation shuru karta hai. Wo kaun hai?',
     options: [
-      { name: 'Pingu', sub: 'jo sochta hai "wo karti hogi na"' },
-      { name: 'Tingu', sub: 'jo actually karti hai' }
+      { name: 'Pingu'},
+      { name: 'Tingu'}
     ],
     answer: 1,
     correct_header: 'haan, aap hi the.',
@@ -545,8 +541,8 @@ const questions = [
     text: 'kisne zyada baar "love" likha?',
     sub: 'Total count. Sochke jawab dena.',
     options: [
-      { name: 'Pingu', sub: 'jo feel karta hai par likhta kam hai' },
-      { name: 'Tingu', sub: 'jo feel bhi karti hai aur likhti bhi hai' }
+      { name: 'Pingu'},
+      { name: 'Tingu'}
     ],
     answer: 1,
     correct_header: 'officially confirmed.',
@@ -608,10 +604,9 @@ function renderQuestion() {
     <p class="q-subtext">${q.sub}</p>
     <div class="choice-row">
       ${q.options.map((o, i) => `
-        <button class="choice-btn" onclick="selectAnswer(${i})">
-          <span class="cb-name">${o.name}</span>
-          <span class="cb-sub">${o.sub}</span>
-        </button>
+       <button class="choice-btn" onclick="selectAnswer(${i})">
+  <span class="cb-name">${o.name}</span>
+</button>
       `).join('')}
     </div>
     <div class="reveal-panel" id="revealPanel"></div>
