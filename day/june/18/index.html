@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
   --cream: #FAF7F2;
   --cream-dark: #F0EBE1;
@@ -18,9 +17,7 @@
   --plum-light: #9B6B8A;
   --ink: #2C1F28;
   --ink-muted: #6B5060;
-  --gold: #C4975A;
 }
-
 html { scroll-behavior: smooth; }
 body {
   font-family: 'DM Sans', sans-serif;
@@ -30,46 +27,38 @@ body {
   overflow-x: hidden;
 }
 
-/* ── LOCK SCREEN ── */
+/* LOCK */
 #lockScreen {
   position: fixed; inset: 0;
   background: var(--cream);
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  z-index: 100; padding: 2rem;
-  text-align: center;
+  z-index: 100; padding: 2rem; text-align: center;
 }
 .lock-eyebrow {
   font-size: 11px; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--plum-light);
-  margin-bottom: 1.5rem;
+  text-transform: uppercase; color: var(--plum-light); margin-bottom: 1.5rem;
 }
-.lock-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2rem, 7vw, 3rem);
-  font-weight: 300; color: var(--plum);
-  line-height: 1.2; margin-bottom: 1rem;
-}
-.lock-title em { font-style: italic; color: var(--rose); }
-.lock-sub { font-size: 14px; color: var(--ink-muted); margin-bottom: 2.5rem; line-height: 1.6; }
 .lock-time {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 3.5rem; font-weight: 300;
-  color: var(--plum); letter-spacing: 0.05em;
-  margin-bottom: 0.5rem;
+  font-size: 4rem; font-weight: 300;
+  color: var(--plum); letter-spacing: 0.05em; margin-bottom: 0.5rem;
 }
-.lock-date { font-size: 13px; color: var(--plum-light); }
-.lock-divider {
-  width: 40px; height: 1px;
-  background: var(--rose-light);
-  margin: 2rem auto;
+.lock-date { font-size: 13px; color: var(--plum-light); margin-bottom: 2rem; }
+.lock-divider { width: 40px; height: 1px; background: var(--rose-light); margin: 0 auto 2rem; }
+.lock-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 6vw, 2.6rem);
+  font-weight: 300; color: var(--plum); line-height: 1.3;
 }
+.lock-title em { font-style: italic; color: var(--rose); }
+.lock-sub { margin-top: 0.75rem; font-size: 14px; color: var(--ink-muted); line-height: 1.6; }
 
-/* ── SCREEN SYSTEM ── */
-.screen { display: none; }
+/* SCREENS */
+.screen { display: none; min-height: 100vh; }
 .screen.active { display: block; }
 
-/* ── HEADER ── */
+/* HEADER */
 .site-header {
   text-align: center;
   padding: 3rem 1.5rem 2rem;
@@ -77,560 +66,626 @@ body {
 }
 .eyebrow {
   font-size: 11px; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--plum-light);
-  margin-bottom: 0.75rem;
+  text-transform: uppercase; color: var(--plum-light); margin-bottom: 0.75rem;
 }
 .header-title {
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(2rem, 6vw, 3rem);
-  font-weight: 300; color: var(--plum);
-  line-height: 1.2;
+  font-weight: 300; color: var(--plum); line-height: 1.2;
 }
 .header-title em { font-style: italic; color: var(--rose); }
 .header-sub { margin-top: 0.75rem; font-size: 14px; color: var(--ink-muted); font-weight: 300; }
 
-/* ── QUESTION SCREEN ── */
-#questionScreen { max-width: 560px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
-
-.q-intro {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.4rem, 4vw, 1.8rem);
-  font-weight: 400; color: var(--plum);
-  line-height: 1.5; margin-bottom: 1.5rem;
-  text-align: center;
+/* TEASER */
+#teaserScreen .inner {
+  max-width: 520px; margin: 0 auto;
+  padding: 3rem 1.5rem 5rem; text-align: center;
 }
-.q-intro em { font-style: italic; color: var(--rose); }
-
-.q-body {
+.teaser-big {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+  font-weight: 300; color: var(--plum); line-height: 1.5; margin-bottom: 1.5rem;
+}
+.teaser-big em { font-style: italic; color: var(--rose); }
+.teaser-body {
   font-size: 14px; color: var(--ink-muted);
-  line-height: 1.8; text-align: center;
-  margin-bottom: 2.5rem;
+  line-height: 1.9; margin-bottom: 2.5rem;
 }
-
-.question-card {
-  background: white;
-  border: 1px solid var(--rose-light);
-  border-radius: 16px;
-  padding: 1.75rem 1.5rem;
-  margin-bottom: 2rem;
-  text-align: center;
+.teaser-body strong { color: var(--plum); font-weight: 500; }
+.teaser-fact-strip {
+  display: flex; justify-content: center; gap: 2.5rem;
+  margin-bottom: 2.5rem; flex-wrap: wrap;
 }
-.question-label {
-  font-size: 11px; letter-spacing: 0.12em;
-  text-transform: uppercase; color: var(--plum-light);
-  margin-bottom: 1rem;
-}
-.question-text {
+.tf-item { text-align: center; }
+.tf-num {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.3rem, 3.5vw, 1.6rem);
-  font-weight: 400; color: var(--plum);
-  line-height: 1.5;
+  font-size: 2.4rem; font-weight: 300; color: var(--plum); line-height: 1;
 }
-
-.q-instruction {
-  background: var(--rose-pale);
-  border: 1px solid var(--rose-light);
-  border-radius: 12px;
-  padding: 1.1rem 1.25rem;
-  font-size: 13px;
-  color: var(--ink-muted);
-  line-height: 1.7;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-.q-instruction strong { color: var(--plum); font-weight: 500; }
-
-.reveal-btn {
-  display: block; width: 100%;
-  padding: 1rem;
+.tf-label { font-size: 11px; color: var(--ink-muted); letter-spacing: 0.06em; margin-top: 4px; }
+.start-btn {
+  display: inline-block; padding: 0.9rem 2.5rem;
   background: var(--plum); color: white;
   border: none; border-radius: 100px;
   font-size: 15px; font-family: 'DM Sans', sans-serif;
   cursor: pointer; transition: background 0.2s;
-  letter-spacing: 0.02em;
 }
-.reveal-btn:hover { background: var(--rose); }
+.start-btn:hover { background: var(--rose); }
 
-/* ── STATS SCREEN ── */
-#statsScreen { max-width: 620px; margin: 0 auto; padding: 2rem 1.5rem 5rem; }
-
-.stats-hero {
-  text-align: center; margin-bottom: 3rem;
-  padding: 1rem 0;
+/* QUIZ */
+#quizScreen .inner {
+  max-width: 520px; margin: 0 auto;
+  padding: 2.5rem 1.5rem 5rem;
 }
-.stats-hero .sh-eyebrow {
+.progress-row { display: flex; gap: 6px; margin-bottom: 2.5rem; }
+.progress-dot {
+  height: 4px; flex: 1; border-radius: 100px;
+  background: var(--cream-dark); transition: background 0.3s;
+}
+.progress-dot.done { background: var(--plum); }
+.progress-dot.active { background: var(--rose); }
+
+.q-number {
   font-size: 11px; letter-spacing: 0.15em;
-  text-transform: uppercase; color: var(--plum-light);
-  margin-bottom: 0.75rem;
+  text-transform: uppercase; color: var(--plum-light); margin-bottom: 0.75rem;
 }
-.stats-hero h2 {
+.q-text {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.8rem, 5vw, 2.6rem);
-  font-weight: 300; color: var(--plum);
-  line-height: 1.2; margin-bottom: 0.75rem;
+  font-size: clamp(1.4rem, 4.5vw, 1.9rem);
+  font-weight: 400; color: var(--plum); line-height: 1.4; margin-bottom: 0.75rem;
 }
-.stats-hero h2 em { font-style: italic; color: var(--rose); }
-.stats-hero p { font-size: 14px; color: var(--ink-muted); line-height: 1.6; }
+.q-text em { font-style: italic; color: var(--rose); }
+.q-subtext { font-size: 13px; color: var(--ink-muted); line-height: 1.7; margin-bottom: 2rem; }
 
-/* spotify */
+.choice-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
+.choice-btn {
+  padding: 1.4rem 1rem;
+  border: 1.5px solid var(--rose-light);
+  border-radius: 16px; background: white;
+  cursor: pointer; text-align: center;
+  transition: all 0.15s; font-family: 'DM Sans', sans-serif;
+}
+.choice-btn:hover { border-color: var(--plum); background: var(--rose-pale); }
+.choice-btn .cb-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem; color: var(--plum);
+  font-weight: 500; display: block; margin-bottom: 6px;
+}
+.choice-btn .cb-sub {
+  font-size: 12px; color: var(--ink-muted);
+  line-height: 1.5; display: block;
+}
+
+/* REVEAL */
+.reveal-panel {
+  display: none; border-radius: 16px; overflow: hidden;
+  margin-top: 0.5rem;
+  animation: slideUp 0.4s ease;
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal-panel.show { display: block; }
+.rp-header {
+  padding: 1.25rem 1.5rem;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.rp-header.correct { background: var(--plum); }
+.rp-header.wrong { background: var(--rose); }
+.rp-verdict {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem; font-weight: 400; color: white; line-height: 1.4;
+}
+.rp-verdict span { font-size: 0.9rem; opacity: 0.8; display: block; margin-top: 3px; }
+.rp-body {
+  background: white; border: 1px solid var(--cream-dark);
+  border-top: none; padding: 1.25rem 1.5rem;
+}
+.rp-stat-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.5rem 0; border-bottom: 1px solid var(--cream-dark);
+}
+.rp-stat-row:last-of-type { border-bottom: none; }
+.rp-stat-label { font-size: 13px; color: var(--ink-muted); }
+.rp-stat-val { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--plum); }
+.rp-stat-val.her { color: var(--rose); }
+.rp-narrative {
+  font-size: 13px; color: var(--ink-muted);
+  line-height: 1.7; font-style: italic; padding-top: 0.75rem;
+}
+.rp-narrative strong { color: var(--plum); font-weight: 500; font-style: normal; }
+.next-btn {
+  display: block; width: 100%; padding: 0.9rem; margin-top: 1rem;
+  background: var(--plum); color: white; border: none; border-radius: 100px;
+  font-size: 15px; font-family: 'DM Sans', sans-serif;
+  cursor: pointer; transition: background 0.2s;
+}
+.next-btn:hover { background: var(--rose); }
+
+/* FINAL */
+#finalScreen .inner {
+  max-width: 620px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem;
+}
+.final-hero { text-align: center; margin-bottom: 2.5rem; }
+.fh-eyebrow {
+  font-size: 11px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--plum-light); margin-bottom: 0.75rem;
+}
+.final-hero h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 5.5vw, 2.8rem);
+  font-weight: 300; color: var(--plum); line-height: 1.2; margin-bottom: 0.75rem;
+}
+.final-hero h2 em { font-style: italic; color: var(--rose); }
+.final-hero p { font-size: 14px; color: var(--ink-muted); line-height: 1.7; }
+
 .spotify-wrap { margin-bottom: 2.5rem; border-radius: 12px; overflow: hidden; }
 
-/* narrative stat block */
-.stat-block {
-  margin-bottom: 2rem;
-  opacity: 0; transform: translateY(20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-.stat-block.visible { opacity: 1; transform: translateY(0); }
-
-.stat-card-main {
-  background: white;
-  border: 1px solid var(--cream-dark);
-  border-radius: 16px;
-  padding: 1.5rem;
-  margin-bottom: 0.75rem;
-}
-.stat-card-main.accent-plum { background: var(--plum); border-color: var(--plum); }
-.stat-card-main.accent-rose { background: var(--rose-pale); border-color: var(--rose-light); }
-
-.sc-tag {
-  font-size: 11px; letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--plum-light); margin-bottom: 0.5rem;
-}
-.accent-plum .sc-tag { color: rgba(255,255,255,0.5); }
-
-.sc-number {
+.section-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2.5rem, 8vw, 3.5rem);
-  font-weight: 300; color: var(--plum);
-  line-height: 1; margin-bottom: 0.25rem;
+  font-size: 1.25rem; font-weight: 400; color: var(--plum);
+  margin: 2.5rem 0 1rem; padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--rose-light);
 }
-.accent-plum .sc-number { color: var(--rose-light); }
 
-.sc-label {
-  font-size: 14px; color: var(--ink-muted); line-height: 1.5;
-}
-.accent-plum .sc-label { color: rgba(255,255,255,0.65); }
-
-.sc-narrative {
-  font-size: 13px; color: var(--ink-muted);
-  line-height: 1.7; font-style: italic;
-  padding: 0 0.25rem;
-}
-.sc-narrative strong { color: var(--plum); font-weight: 500; font-style: normal; }
-
-/* split bar */
-.split-wrap { margin-bottom: 2.5rem; }
-.split-label-row {
+.split-wrap { margin-bottom: 0.75rem; }
+.split-names {
   display: flex; justify-content: space-between;
-  font-size: 13px; margin-bottom: 8px;
+  font-size: 13px; margin-bottom: 8px; font-weight: 500;
 }
-.split-label-row .lbl-me { color: var(--plum); font-weight: 500; }
-.split-label-row .lbl-her { color: var(--rose); font-weight: 500; }
+.sn-me { color: var(--plum); }
+.sn-her { color: var(--rose); }
 .split-bar {
   height: 12px; border-radius: 100px;
-  background: var(--cream-dark); overflow: hidden;
-  display: flex; margin-bottom: 4px;
+  background: var(--cream-dark); overflow: hidden; display: flex;
 }
-.split-bar .bar-me {
-  background: var(--plum); border-radius: 100px 0 0 100px;
-  transition: width 1s ease;
-}
-.split-bar .bar-her {
-  background: var(--rose); border-radius: 0 100px 100px 0;
-  transition: width 1s ease;
-}
-.split-pct-row {
+.bar-me { background: var(--plum); border-radius: 100px 0 0 100px; }
+.bar-her { background: var(--rose); border-radius: 0 100px 100px 0; }
+.split-pcts {
   display: flex; justify-content: space-between;
-  font-size: 12px; color: var(--ink-muted);
+  font-size: 12px; color: var(--ink-muted); margin-top: 4px;
 }
 
-/* hour heatmap */
 .heatmap-wrap {
   background: white; border: 1px solid var(--cream-dark);
-  border-radius: 16px; padding: 1.25rem;
-  margin-bottom: 0.75rem;
+  border-radius: 16px; padding: 1.25rem; margin-bottom: 0.75rem;
 }
 .heatmap-title {
-  font-size: 11px; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--plum-light);
-  margin-bottom: 1rem;
+  font-size: 11px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--plum-light); margin-bottom: 1rem;
 }
-.heatmap-grid {
-  display: grid; grid-template-columns: repeat(24, 1fr);
-  gap: 3px;
-}
-.heatmap-cell {
-  height: 28px; border-radius: 3px;
-  background: var(--cream-dark);
-  transition: background 0.3s;
-  position: relative;
-}
+.heatmap-grid { display: grid; grid-template-columns: repeat(24, 1fr); gap: 3px; }
+.heatmap-cell { height: 28px; border-radius: 3px; position: relative; }
 .heatmap-cell:hover::after {
   content: attr(data-label);
-  position: absolute; bottom: 110%;
-  left: 50%; transform: translateX(-50%);
-  background: var(--plum); color: white;
-  font-size: 10px; padding: 3px 6px;
-  border-radius: 4px; white-space: nowrap;
-  pointer-events: none; z-index: 10;
+  position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%);
+  background: var(--plum); color: white; font-size: 10px;
+  padding: 3px 6px; border-radius: 4px; white-space: nowrap; z-index: 10;
 }
 .heatmap-times {
   display: flex; justify-content: space-between;
   margin-top: 6px; font-size: 10px; color: var(--ink-muted);
 }
 
-/* emoji grid */
-.emoji-row {
-  display: flex; flex-wrap: wrap; gap: 10px;
-  margin-bottom: 0.75rem;
-}
+.emoji-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 0.75rem; }
 .emoji-pill {
   background: white; border: 1px solid var(--cream-dark);
-  border-radius: 100px; padding: 0.4rem 0.9rem;
+  border-radius: 100px; padding: 0.35rem 0.85rem;
   display: flex; align-items: center; gap: 6px;
-  font-size: 13px;
 }
-.emoji-pill .ep-emoji { font-size: 1.2rem; }
-.emoji-pill .ep-count { color: var(--ink-muted); font-size: 12px; }
+.ep-emoji { font-size: 1.1rem; }
+.ep-count { font-size: 12px; color: var(--ink-muted); }
 
-/* love stat */
-.love-row {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 10px; margin-bottom: 0.75rem;
-}
-.love-card {
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 0.75rem; }
+.mini-card {
   background: white; border: 1px solid var(--cream-dark);
   border-radius: 14px; padding: 1.1rem; text-align: center;
 }
-.love-card.her { background: var(--rose-pale); border-color: var(--rose-light); }
-.love-card .lc-num {
+.mini-card.plum-bg { background: var(--plum); border-color: var(--plum); }
+.mini-card.rose-bg { background: var(--rose-pale); border-color: var(--rose-light); }
+.mc-num {
   font-family: 'Cormorant Garamond', serif;
   font-size: 2rem; color: var(--plum); line-height: 1;
 }
-.love-card.her .lc-num { color: var(--rose); }
-.love-card .lc-name { font-size: 11px; color: var(--ink-muted); margin-top: 4px; }
+.plum-bg .mc-num { color: var(--rose-light); }
+.rose-bg .mc-num { color: var(--rose); }
+.mc-label { font-size: 11px; color: var(--ink-muted); margin-top: 4px; line-height: 1.4; }
+.plum-bg .mc-label { color: rgba(255,255,255,0.6); }
 
-/* section title */
-.section-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.3rem; font-weight: 400;
-  color: var(--plum); margin: 2.5rem 0 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--rose-light);
+.narrative {
+  font-size: 13px; color: var(--ink-muted);
+  line-height: 1.7; font-style: italic; margin-bottom: 0.5rem;
 }
+.narrative strong { color: var(--plum); font-weight: 500; font-style: normal; }
 
-/* closing */
 .closing {
   text-align: center; margin-top: 3rem;
-  padding: 2rem 1rem;
-  border-top: 1px solid var(--rose-light);
+  padding: 2rem 1rem; border-top: 1px solid var(--rose-light);
 }
 .closing p {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.3rem, 4vw, 1.7rem);
+  font-size: clamp(1.2rem, 3.5vw, 1.6rem);
   font-weight: 300; font-style: italic;
-  color: var(--plum); line-height: 1.6;
+  color: var(--plum); line-height: 1.7;
 }
-.closing .closing-name {
+.closing .sig {
   margin-top: 1rem; font-size: 13px;
   color: var(--ink-muted); font-style: normal;
   font-family: 'DM Sans', sans-serif;
 }
 
-@media (max-width: 480px) {
-  .heatmap-cell { height: 22px; }
+.reveal-block {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.reveal-block.visible { opacity: 1; transform: none; }
+
+@media (max-width: 400px) {
+  .heatmap-cell { height: 20px; }
+  .two-col { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
-<!-- ── LOCK SCREEN ── -->
+<!-- LOCK -->
 <div id="lockScreen">
   <p class="lock-eyebrow">meripyaritingu.xyz — june 18</p>
-  <div class="lock-time" id="lockTime">--:--</div>
+  <div class="lock-time" id="lockTime">--:--:--</div>
   <div class="lock-date" id="lockDate"></div>
   <div class="lock-divider"></div>
   <h1 class="lock-title">kuch <em>discover</em> kiya hai</h1>
-  <p class="lock-sub">3 baje tak wait karo —<br>kuch reveal karna hai aaj.</p>
+  <p class="lock-sub">3 baje tak wait karein —<br>kuch reveal karna hai aaj.</p>
 </div>
 
-<!-- ── MAIN ── -->
-<div id="mainContent">
+<!-- MAIN -->
+<div id="mainContent" style="display:none;">
 
   <header class="site-header">
     <p class="eyebrow">june 18 · meripyaritingu.xyz</p>
-    <h1 class="header-title">data doesn't lie,<br><em>tingu ji.</em></h1>
-    <p class="header-sub">maine research ki hai. numbers ke saath argue mat karna. 🔍</p>
+    <h1 class="header-title">data doesn't lie,<br><em>Tingu Ji.</em></h1>
+    <p class="header-sub">maine research ki hai. numbers ke saath argue mat karna.</p>
   </header>
 
-  <!-- QUESTION SCREEN -->
-  <div class="screen active" id="questionScreen">
-    <p class="q-intro" style="margin-top:1.5rem;">ek <em>honest</em> sawal —</p>
-    <p class="q-body">
-      maine aaj kuch numbers dekhe hain.<br>
-      par pehle tumhara jawab chahiye.<br>
-      honestly. sochke.
-    </p>
-
-    <div class="question-card">
-      <p class="question-label">aaj ka sawal</p>
-      <p class="question-text">
-        "hamare beech kaun zyada effort deta hai baat karne mein — aap ya main?"
+  <!-- TEASER -->
+  <div class="screen active" id="teaserScreen">
+    <div class="inner">
+      <p class="teaser-big">73 din ho gaye hain.<br><em>76,922 messages</em> bheje hain hum ne.</p>
+      <p class="teaser-body">
+        Aaj maine wo sab count kiya.<br>
+        Har message. Har emoji. Har "good morning" aur har raat ka last text.<br><br>
+        <strong>Aur kuch cheezein bahut clearly saaf ho gayi hain.</strong><br><br>
+        Par pehle aapse kuch sawaal poochne hain. Honest jawab dena.
       </p>
+      <div class="teaser-fact-strip">
+        <div class="tf-item"><div class="tf-num">76,922</div><div class="tf-label">total messages</div></div>
+        <div class="tf-item"><div class="tf-num">73</div><div class="tf-label">din saath</div></div>
+        <div class="tf-item"><div class="tf-num">1</div><div class="tf-label">din silent</div></div>
+      </div>
+      <button class="start-btn" onclick="goTo('quizScreen'); initQuiz()">theek hai, poochho</button>
     </div>
-
-    <div class="q-instruction">
-      <strong>WhatsApp pe jawab do.</strong><br>
-      Jo bhi lagta hai — honestly likho.<br>
-      Phir neeche wala button dabao. 👇
-    </div>
-
-    <button class="reveal-btn" onclick="showStats()">
-      ab dekho data kya kehta hai →
-    </button>
   </div>
 
-  <!-- STATS SCREEN -->
-  <div class="screen" id="statsScreen">
-
-    <div class="stats-hero">
-      <p class="sh-eyebrow">73 din. 76,922 messages. ek sach.</p>
-      <h2>tumne hi <em>zyada</em> kiya hai,<br>hamesha.</h2>
-      <p>maine socha tha main better hun. data ne prove kar diya — nahi hun. 🙈</p>
+  <!-- QUIZ -->
+  <div class="screen" id="quizScreen">
+    <div class="inner">
+      <div class="progress-row" id="progressRow"></div>
+      <div id="quizContent"></div>
     </div>
+  </div>
 
-    <!-- Spotify -->
-    <div class="spotify-wrap">
-      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/0RsH8g8DxdYZgdGcod5I36?utm_source=generator&si=2ba6092b86dc4a53" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    </div>
+  <!-- FINAL -->
+  <div class="screen" id="finalScreen">
+    <div class="inner">
 
-    <!-- STAT 1: Messages split -->
-    <div class="stat-block" id="sb1">
-      <p class="section-title">kaun zyada bolta hai?</p>
-      <div class="split-wrap">
-        <div class="split-label-row">
-          <span class="lbl-me">Garvit — 30,652</span>
-          <span class="lbl-her">Tingu ji — 46,270</span>
-        </div>
-        <div class="split-bar">
-          <div class="bar-me" style="width:39%"></div>
-          <div class="bar-her" style="width:61%"></div>
-        </div>
-        <div class="split-pct-row">
-          <span>39%</span>
-          <span>61%</span>
-        </div>
+      <div class="final-hero">
+        <p class="fh-eyebrow">data ka final verdict</p>
+        <h2>Tingu Ji wins.<br><em>hamesha.</em></h2>
+        <p>Maine socha tha main better hun. Data ne prove kar diya — bilkul nahi. Aur ab mujhe officially maanna padega.</p>
       </div>
-      <p class="sc-narrative">
-        Out of 76,922 messages, <strong>tum ne 46,270 bheje</strong> — yaani har 10 messages mein se 6 tumhare the. Maine socha tha main zyada bolta hun. I was wrong. 😶
-      </p>
-    </div>
 
-    <!-- STAT 2: Who texts first -->
-    <div class="stat-block" id="sb2">
-      <p class="section-title">kaun pehle yaad karta hai?</p>
-      <div class="stat-card-main accent-plum">
-        <p class="sc-tag">din mein pehla message</p>
-        <p class="sc-number">56%</p>
-        <p class="sc-label">din pe tum ne conversation shuru ki</p>
+      <div class="spotify-wrap">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/0RsH8g8DxdYZgdGcod5I36?utm_source=generator&si=2ba6092b86dc4a53" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
       </div>
-      <p class="sc-narrative">
-        72 din mein se <strong>41 din tum ne pehle text kiya</strong>. Main sirf 31 din. Matlab tum hi the jo pehle yaad karti thi — every single morning almost.
-      </p>
-    </div>
 
-    <!-- STAT 3: Characters -->
-    <div class="stat-block" id="sb3">
-      <p class="section-title">kaun zyada likhta hai?</p>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:0.75rem;">
-        <div class="stat-card-main" style="text-align:center;">
-          <p class="sc-tag">Garvit</p>
-          <p class="sc-number" style="font-size:2rem;">16</p>
-          <p class="sc-label">avg chars per msg</p>
+      <div class="reveal-block">
+        <p class="section-title">kitne messages bheje aap ne?</p>
+        <div class="split-wrap">
+          <div class="split-names">
+            <span class="sn-me">Pingu — 30,652</span>
+            <span class="sn-her">Tingu — 46,270</span>
+          </div>
+          <div class="split-bar">
+            <div class="bar-me" style="width:39%"></div>
+            <div class="bar-her" style="width:61%"></div>
+          </div>
+          <div class="split-pcts"><span>39%</span><span>61%</span></div>
         </div>
-        <div class="stat-card-main accent-rose" style="text-align:center;">
-          <p class="sc-tag">Tingu ji</p>
-          <p class="sc-number" style="font-size:2rem; color:var(--rose);">19</p>
-          <p class="sc-label">avg chars per msg</p>
+        <p class="narrative">Har 10 messages mein se 6 aapke the. <strong>Aap ne 15,618 zyada messages bheje</strong> mere se. Yeh gap itna bada hai ki main sharminda hun.</p>
+      </div>
+
+      <div class="reveal-block">
+        <p class="section-title">kaun zyada likhta hai?</p>
+        <div class="two-col">
+          <div class="mini-card"><div class="mc-num">16</div><div class="mc-label">Pingu ka avg chars per msg</div></div>
+          <div class="mini-card rose-bg"><div class="mc-num">19</div><div class="mc-label">Tingu ka avg chars per msg</div></div>
         </div>
+        <p class="narrative">Aapne total <strong>9,14,426 characters</strong> likhe. Maine sirf 5,19,742. Aapke messages lambe bhi hain aur zyada bhi. Double effort.</p>
       </div>
-      <p class="sc-narrative">
-        Tumne total <strong>9,14,426 characters</strong> likhe — vs mera 5,19,742. Tumhare messages lambe bhi hote hain aur zyada bhi. I literally write less and say less. Working on it. 🙈
-      </p>
-    </div>
 
-    <!-- STAT 4: Love count -->
-    <div class="stat-block" id="sb4">
-      <p class="section-title">kisne zyada "love" bola?</p>
-      <div class="love-row">
-        <div class="love-card">
-          <div class="lc-num">399</div>
-          <div class="lc-name">Garvit — "love"</div>
+      <div class="reveal-block">
+        <p class="section-title">kis waqt hoti hai sabse zyada baat?</p>
+        <div class="heatmap-wrap">
+          <p class="heatmap-title">messages by hour — hover karo</p>
+          <div class="heatmap-grid" id="heatmapGrid"></div>
+          <div class="heatmap-times">
+            <span>12am</span><span>6am</span><span>12pm</span><span>6pm</span><span>11pm</span>
+          </div>
         </div>
-        <div class="love-card her">
-          <div class="lc-num">548</div>
-          <div class="lc-name">Tingu ji — "love"</div>
+        <p class="narrative"><strong>11 PM pe 9,975 messages.</strong> Raat ko neend nahi aati jab tak baat na ho. Midnight ke baad bhi full active. Hum dono raat ke log hain.</p>
+      </div>
+
+      <div class="reveal-block">
+        <p class="section-title">sabse zyada kaun sa emoji?</p>
+        <div class="emoji-row">
+          <div class="emoji-pill"><span class="ep-emoji">😭</span><span class="ep-count">21,685</span></div>
+          <div class="emoji-pill"><span class="ep-emoji">😘</span><span class="ep-count">7,814</span></div>
+          <div class="emoji-pill"><span class="ep-emoji">😂</span><span class="ep-count">6,524</span></div>
+          <div class="emoji-pill"><span class="ep-emoji">🥺</span><span class="ep-count">4,160</span></div>
+          <div class="emoji-pill"><span class="ep-emoji">🥲</span><span class="ep-count">3,792</span></div>
+          <div class="emoji-pill"><span class="ep-emoji">🤣</span><span class="ep-count">3,446</span></div>
+          <div class="emoji-pill"><span class="ep-emoji">♥</span><span class="ep-count">3,403</span></div>
+          <div class="emoji-pill"><span class="ep-emoji">🫣</span><span class="ep-count">3,363</span></div>
+          <div class="emoji-pill"><span class="ep-emoji">🙈</span><span class="ep-count">3,342</span></div>
         </div>
+        <p class="narrative"><strong>21,685 baar wala emoji.</strong> Twenty one hazaar. Hum dono mein se koi bhi drama queen award ke liye eligible hain. No contest.</p>
       </div>
-      <div class="love-row">
-        <div class="love-card">
-          <div class="lc-num">59</div>
-          <div class="lc-name">Garvit — "pyar"</div>
+
+      <div class="reveal-block">
+        <p class="section-title">streak aur ek chup din</p>
+        <div class="two-col">
+          <div class="mini-card plum-bg"><div class="mc-num">50</div><div class="mc-label">longest streak<br>29 Apr – 17 Jun</div></div>
+          <div class="mini-card"><div class="mc-num">1</div><div class="mc-label">total silent days<br>28 April 2026</div></div>
         </div>
-        <div class="love-card her">
-          <div class="lc-num">43</div>
-          <div class="lc-name">Tingu ji — "pyaar"</div>
+        <p class="narrative">73 din mein sirf ek din aisa tha jab baat nahi hui — <strong>28 April</strong>. Uske baad 50 din lagatar. Koi gap nahi, koi break nahi.</p>
+      </div>
+
+      <div class="reveal-block">
+        <p class="section-title">sabse pyaara din?</p>
+        <div class="mini-card rose-bg" style="text-align:center; padding:1.5rem; margin-bottom:0.75rem;">
+          <div class="mc-num" style="font-size:2.5rem;">Sunday</div>
+          <div class="mc-label" style="font-size:13px; margin-top:6px;">15,085 messages — baaki dinon se almost double</div>
         </div>
+        <p class="narrative">Sunday matlab sirf ek kaam — <strong>baat karna</strong>. Koi plans nahi chahiye jab aap ho.</p>
       </div>
-      <p class="sc-narrative">
-        Tumne <strong>"love" 548 baar</strong> likha, maine 399. Aur "pyaar" bhi tumne zyada. Total love expressions mein tum aage ho. Officially. 💕
-      </p>
-    </div>
 
-    <!-- STAT 5: Emoji -->
-    <div class="stat-block" id="sb5">
-      <p class="section-title">sabse zyada kaun sa emoji?</p>
-      <div class="emoji-row">
-        <div class="emoji-pill"><span class="ep-emoji">😭</span><span class="ep-count">21,685</span></div>
-        <div class="emoji-pill"><span class="ep-emoji">😘</span><span class="ep-count">7,814</span></div>
-        <div class="emoji-pill"><span class="ep-emoji">😂</span><span class="ep-count">6,524</span></div>
-        <div class="emoji-pill"><span class="ep-emoji">🥺</span><span class="ep-count">4,160</span></div>
-        <div class="emoji-pill"><span class="ep-emoji">🥲</span><span class="ep-count">3,792</span></div>
-        <div class="emoji-pill"><span class="ep-emoji">🤣</span><span class="ep-count">3,446</span></div>
-        <div class="emoji-pill"><span class="ep-emoji">♥</span><span class="ep-count">3,403</span></div>
-        <div class="emoji-pill"><span class="ep-emoji">🫣</span><span class="ep-count">3,363</span></div>
-        <div class="emoji-pill"><span class="ep-emoji">🙈</span><span class="ep-count">3,342</span></div>
+      <div class="closing">
+        <p>"data ne prove kar diya jo main pehle se jaanta tha —<br>aap hi deti hain zyada, hamesha.<br>aur main rozana grateful hun."</p>
+        <p class="sig">— Pingu, June 18 · with receipts</p>
       </div>
-      <p class="sc-narrative">
-        <strong>😭 was used 21,685 times.</strong> Twenty-one thousand. I'm convinced 90% of those are yours. We are collectively the most dramatic couple in existence. No notes.
-      </p>
-    </div>
 
-    <!-- STAT 6: Heatmap -->
-    <div class="stat-block" id="sb6">
-      <p class="section-title">kis waqt hoti hai baat?</p>
-      <div class="heatmap-wrap">
-        <p class="heatmap-title">messages by hour — darker = more</p>
-        <div class="heatmap-grid" id="heatmapGrid"></div>
-        <div class="heatmap-times">
-          <span>12am</span><span>6am</span><span>12pm</span><span>6pm</span><span>11pm</span>
-        </div>
-      </div>
-      <p class="sc-narrative">
-        <strong>11 PM is peak hour — 9,975 messages.</strong> Raat ko neend nahi aati jab tak baat na ho. Aur 12 AM, 1 AM bhi full active. Hum dono raat ke log hain clearly. 🌙
-      </p>
     </div>
+  </div>
 
-    <!-- STAT 7: Streak -->
-    <div class="stat-block" id="sb7">
-      <p class="section-title">kitne din bina ruke baat ki?</p>
-      <div class="stat-card-main accent-plum">
-        <p class="sc-tag">longest streak</p>
-        <p class="sc-number">50 days</p>
-        <p class="sc-label">29 Apr – 17 Jun 2026 · lagatar, bina ek din chhode</p>
-      </div>
-      <p class="sc-narrative">
-        Aur ek hi din tha jab hum ne baat nahi ki — <strong>28 April</strong>. Sirf ek. 73 din mein se 72 din hum ne baat ki. Jo ek din nahi ki, uski bhi story hogi. 👀
-      </p>
-    </div>
-
-    <!-- STAT 8: Sunday -->
-    <div class="stat-block" id="sb8">
-      <p class="section-title">sabse pyaara din?</p>
-      <div class="stat-card-main accent-rose">
-        <p class="sc-tag">most active day of week</p>
-        <p class="sc-number" style="color:var(--rose);">Sunday</p>
-        <p class="sc-label">15,085 messages — almost double any other day</p>
-      </div>
-      <p class="sc-narrative">
-        Sunday ko <strong>15,085 messages</strong> — baaki sab din ~10,000 ke around. Matlab Sunday matlab sirf ek kaam — <strong>baat karna</strong>. No plans needed when we have each other. 🌸
-      </p>
-    </div>
-
-    <!-- CLOSING -->
-    <div class="closing">
-      <p>"data ne prove kar diya —<br>tum hi ho jo zyada deti ho.<br>aur main rozana grateful hun."</p>
-      <p class="closing-name">— Garvit, June 18 · with receipts 🧾</p>
-    </div>
-
-  </div><!-- /statsScreen -->
-</div><!-- /mainContent -->
+</div>
 
 <script>
-// ── LOCK ──
-const UNLOCK_HOUR = 15;
+// LOCK
 const PREVIEW = new URLSearchParams(location.search).get('preview') === 'true';
-
-function pad(n) { return String(n).padStart(2, '0'); }
-
+function pad(n) { return String(n).padStart(2,'0'); }
 function updateClock() {
   const now = new Date();
-  const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
-  document.getElementById('lockTime').textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+  document.getElementById('lockTime').textContent =
+    `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
   const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   document.getElementById('lockDate').textContent =
     `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
 }
-
 function checkLock() {
   const now = new Date();
-  const unlocked = PREVIEW || now.getHours() >= UNLOCK_HOUR;
-  if (unlocked) {
+  if (PREVIEW || now.getHours() >= 15) {
     document.getElementById('lockScreen').style.display = 'none';
     document.getElementById('mainContent').style.display = 'block';
   }
 }
-
 setInterval(updateClock, 1000);
 setInterval(checkLock, 5000);
-updateClock();
+updateClock(); checkLock();
 
-document.getElementById('mainContent').style.display = 'none';
-checkLock();
-
-// ── SCREENS ──
-function showStats() {
-  document.getElementById('questionScreen').classList.remove('active');
-  document.getElementById('statsScreen').classList.add('active');
-  window.scrollTo(0, 0);
-  buildHeatmap();
-  setTimeout(revealBlocks, 300);
+// SCREENS
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
 }
 
-// ── HEATMAP ──
+// QUIZ
+const questions = [
+  {
+    number: '01',
+    text: 'hamare beech kaun zyada messages bhejta hai?',
+    sub: 'Sirf ek hi sahi jawab hai. 73 din ka data hai mere paas.',
+    options: [
+      { name: 'Pingu', sub: 'jo kehta hai "main bhi karta hun"' },
+      { name: 'Tingu', sub: 'jo actually karti hai' }
+    ],
+    answer: 1,
+    correct_header: 'bilkul sahi.',
+    correct_sub: 'Aapko pata tha. Phir bhi pooch liya.',
+    wrong_header: 'nahi ji. galat.',
+    wrong_sub: 'Sach saamne aa hi gaya.',
+    stats: [
+      { label: 'Pingu ne bheje', val: '30,652', her: false },
+      { label: 'Tingu ne bheje', val: '46,270', her: true }
+    ],
+    narrative: '<strong>Tingu ne 15,618 zyada messages bheje.</strong> Yeh itna bada gap hai ki main sharminda hun honestly.'
+  },
+  {
+    number: '02',
+    text: 'kaun pehle text karta hai — har roz?',
+    sub: 'Har subah koi na koi conversation shuru karta hai. Wo kaun hai?',
+    options: [
+      { name: 'Pingu', sub: 'jo sochta hai "wo karti hogi na"' },
+      { name: 'Tingu', sub: 'jo actually karti hai' }
+    ],
+    answer: 1,
+    correct_header: 'haan, aap hi the.',
+    correct_sub: 'Aap hi yaad karti thi pehle.',
+    wrong_header: 'nope.',
+    wrong_sub: 'Data kabhi jhooth nahi bolta.',
+    stats: [
+      { label: 'Pingu ne shuru kiya', val: '31 din', her: false },
+      { label: 'Tingu ne shuru kiya', val: '41 din', her: true }
+    ],
+    narrative: '72 din mein se <strong>41 din aap ne pehle text kiya.</strong> Matlab aap hi thi jo pehle yaad karti thi — almost har subah.'
+  },
+  {
+    number: '03',
+    text: 'kisne zyada baar "love" likha?',
+    sub: 'Total count. Sochke jawab dena.',
+    options: [
+      { name: 'Pingu', sub: 'jo feel karta hai par likhta kam hai' },
+      { name: 'Tingu', sub: 'jo feel bhi karti hai aur likhti bhi hai' }
+    ],
+    answer: 1,
+    correct_header: 'officially confirmed.',
+    correct_sub: 'Aapne hi zyada bola — data ke saath.',
+    wrong_header: 'galat.',
+    wrong_sub: 'Aap ne hi zyada baar "love" likha hai.',
+    stats: [
+      { label: 'Pingu — "love"', val: '399 baar', her: false },
+      { label: 'Tingu — "love"', val: '548 baar', her: true }
+    ],
+    narrative: '<strong>548 vs 399.</strong> Aap zyada bolti hain "love" aur zyada dikhati bhi hain. Both.'
+  },
+  {
+    number: '04',
+    text: 'kaun zyada rota hai?',
+    sub: 'Yeh sab se important emoji ka count hai. Sochke jawab dena.',
+    options: [
+      { name: 'Pingu', sub: 'jo rota toh hai par quietly' },
+      { name: 'Tingu', sub: 'jo openly, freely, publicly roti hai' }
+    ],
+    answer: 1,
+    correct_header: 'self-awareness is a gift.',
+    correct_sub: 'Aap jaanti thi.',
+    wrong_header: 'Tingu Ji, really?',
+    wrong_sub: '21,685 — combined, par hum dono jaante hain sach kya hai.',
+    stats: [
+      { label: 'total used', val: '21,685', her: false },
+      { label: 'sabse popular emoji', val: 'number one', her: true }
+    ],
+    narrative: '<strong>21,685 baar</strong> wala emoji use hua. Yeh number itna bada hai ki main comment nahi karunga. Hum dono dramatic hain. Case closed.'
+  }
+];
+
+let currentQ = 0;
+let answered = false;
+
+function initQuiz() {
+  currentQ = 0;
+  renderQuestion();
+}
+
+function renderProgress() {
+  const row = document.getElementById('progressRow');
+  row.innerHTML = '';
+  questions.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'progress-dot' + (i < currentQ ? ' done' : i === currentQ ? ' active' : '');
+    row.appendChild(dot);
+  });
+}
+
+function renderQuestion() {
+  answered = false;
+  const q = questions[currentQ];
+  renderProgress();
+  document.getElementById('quizContent').innerHTML = `
+    <p class="q-number">sawal ${q.number} / 04</p>
+    <p class="q-text">${q.text}</p>
+    <p class="q-subtext">${q.sub}</p>
+    <div class="choice-row">
+      ${q.options.map((o, i) => `
+        <button class="choice-btn" onclick="selectAnswer(${i})">
+          <span class="cb-name">${o.name}</span>
+          <span class="cb-sub">${o.sub}</span>
+        </button>
+      `).join('')}
+    </div>
+    <div class="reveal-panel" id="revealPanel"></div>
+  `;
+}
+
+function selectAnswer(chosen) {
+  if (answered) return;
+  answered = true;
+  const q = questions[currentQ];
+  const isCorrect = chosen === q.answer;
+  const panel = document.getElementById('revealPanel');
+  const isLast = currentQ === questions.length - 1;
+
+  panel.innerHTML = `
+    <div class="rp-header ${isCorrect ? 'correct' : 'wrong'}">
+      <div class="rp-verdict">
+        ${isCorrect ? q.correct_header : q.wrong_header}
+        <span>${isCorrect ? q.correct_sub : q.wrong_sub}</span>
+      </div>
+    </div>
+    <div class="rp-body">
+      ${q.stats.map(s => `
+        <div class="rp-stat-row">
+          <span class="rp-stat-label">${s.label}</span>
+          <span class="rp-stat-val ${s.her ? 'her' : ''}">${s.val}</span>
+        </div>
+      `).join('')}
+      <p class="rp-narrative">${q.narrative}</p>
+    </div>
+    <button class="next-btn" onclick="${isLast ? 'showFinal()' : 'nextQuestion()'}">
+      ${isLast ? 'poora data dekhein' : 'agla sawal'}
+    </button>
+  `;
+  panel.classList.add('show');
+  setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+}
+
+function nextQuestion() { currentQ++; renderQuestion(); window.scrollTo(0,0); }
+
+function showFinal() {
+  goTo('finalScreen');
+  buildHeatmap();
+  initScrollReveal();
+}
+
+// HEATMAP
 const hourData = [8352,5510,2768,494,202,22,175,233,344,677,1380,2260,2921,2606,2159,2827,3627,3095,3768,4185,5128,5787,8427,9975];
 const maxH = Math.max(...hourData);
+const amLabels = ['12am','1am','2am','3am','4am','5am','6am','7am','8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm','11pm'];
 
 function buildHeatmap() {
   const grid = document.getElementById('heatmapGrid');
+  if (!grid) return;
   grid.innerHTML = '';
-  const amLabels = ['12am','1am','2am','3am','4am','5am','6am','7am','8am','9am','10am','11am',
-                    '12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm','11pm'];
   hourData.forEach((count, i) => {
     const cell = document.createElement('div');
     cell.className = 'heatmap-cell';
     const intensity = count / maxH;
-    cell.style.background = `rgba(107, 58, 92, ${0.08 + intensity * 0.92})`;
+    cell.style.background = `rgba(107,58,92,${(0.08 + intensity * 0.92).toFixed(2)})`;
     cell.setAttribute('data-label', `${amLabels[i]}: ${count.toLocaleString()}`);
     grid.appendChild(cell);
   });
 }
 
-// ── SCROLL REVEAL ──
-function revealBlocks() {
-  const blocks = document.querySelectorAll('.stat-block');
-  const observer = new IntersectionObserver(entries => {
+// SCROLL REVEAL
+function initScrollReveal() {
+  const blocks = document.querySelectorAll('#finalScreen .reveal-block');
+  const obs = new IntersectionObserver(entries => {
     entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
     });
-  }, { threshold: 0.15 });
-  blocks.forEach(b => observer.observe(b));
+  }, { threshold: 0.12 });
+  blocks.forEach(b => obs.observe(b));
 }
 </script>
 </body>
