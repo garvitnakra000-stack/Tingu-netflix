@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I am really really so far</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lora:ital@0;1&family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #f5efe6;
+    color: #2c1a2e;
+    font-family: 'Lora', Georgia, serif;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  .header {
+    text-align: center;
+    padding: 60px 24px 32px;
+  }
+
+  .eyebrow {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: #7b4f7e;
+    letter-spacing: 0.12em;
+    margin-bottom: 14px;
+    opacity: 0.8;
+  }
+
+  .title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 600;
+    color: #2c1a2e;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    font-family: 'Dancing Script', cursive;
+    font-size: 22px;
+    color: #7b4f7e;
+    margin-bottom: 0;
+  }
+
+  .divider {
+    width: 60px;
+    height: 1.5px;
+    background: #c9a96e;
+    margin: 28px auto;
+    border-radius: 2px;
+  }
+
+  .note {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: #5c3d5e;
+    text-align: center;
+    max-width: 480px;
+    margin: 0 auto 48px;
+    padding: 0 24px;
+    line-height: 1.8;
+  }
+
+  .videos {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .video-block {
+    background: #fdf6ec;
+    border: 1px solid #e2c99a;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .video-label {
+    padding: 20px 24px 14px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .video-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: #c9a96e;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .video-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: #2c1a2e;
+    line-height: 1.3;
+  }
+
+  .video-wrap {
+    position: relative;
+    padding-bottom: 56.25%;
+    background: #1a0e1c;
+  }
+
+  .video-wrap iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: none;
+  }
+
+  .music-block {
+    max-width: 720px;
+    margin: 48px auto 0;
+    padding: 0 20px;
+  }
+
+  .music-inner {
+    background: #fdf6ec;
+    border: 1px solid #e2c99a;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .music-label {
+    padding: 20px 24px 14px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .music-inner iframe {
+    display: block;
+    border-radius: 0 0 12px 12px;
+    border: none;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 52px 24px 0;
+    font-family: 'Dancing Script', cursive;
+    font-size: 20px;
+    color: #7b4f7e;
+  }
+
+  @media (max-width: 480px) {
+    .title { font-size: 30px; }
+    .video-label { padding: 16px 16px 10px; }
+    .video-title { font-size: 16px; }
+    .music-label { padding: 16px 16px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <p class="eyebrow">22 june 2026 &nbsp;·&nbsp; bangalore</p>
+  <h1 class="title">Day 1</h1>
+  <p class="subtitle">just aap ke liye</p>
+</div>
+
+<div class="divider"></div>
+
+<p class="note">Kal apko bata ni paya to record karleta hu</p>
+
+<div class="videos">
+
+  <div class="video-block">
+    <div class="video-label">
+      <span class="video-num">I</span>
+      <span class="video-title">Office — part 1</span>
+    </div>
+    <div class="video-wrap">
+      <iframe
+        src="https://www.youtube.com/embed/Zw3fvwRJFRU"
+        title="Office Day 1 part 1"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+
+  <div class="video-block">
+    <div class="video-label">
+      <span class="video-num">II</span>
+      <span class="video-title">Office part 2</span>
+    </div>
+    <div class="video-wrap">
+      <iframe
+        src="https://www.youtube.com/embed/Zay_O3ncyEc"
+        title="Office Day 1 part 2"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+
+  <div class="video-block">
+    <div class="video-label">
+      <span class="video-num">III</span>
+      <span class="video-title">Woh parcel wali story</span>
+    </div>
+    <div class="video-wrap">
+      <iframe
+        src="https://www.youtube.com/embed/SfzLSJupmHM"
+        title="Parcel story"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+
+</div>
+
+<div class="music-block">
+  <div class="music-inner">
+    <div class="music-label">
+      <span class="video-num">♩</span>
+      <span class="video-title">aaj ka background score</span>
+    </div>
+    <iframe
+      src="https://open.spotify.com/embed/track/5sUSbJo0brScvv48ZZ1HrQ?utm_source=generator&theme=0"
+      width="100%"
+      height="152"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy">
+    </iframe>
+  </div>
+</div>
+
+<p class="footer">— Pingu 🐧</p>
+
+</body>
+</html>
