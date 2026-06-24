@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>24 June — Pingu ke saath ✨</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lora:ital@0;1&family=Dancing+Script:wght@600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --parchment: #f5efe6;
+      --parchment-dark: #ede3d4;
+      --plum: #5c2d4a;
+      --plum-light: #7a3d62;
+      --rose: #c97a8f;
+      --ink: #2e1b26;
+      --muted: #8a6a78;
+      --gold: #b8860b;
+    }
+
+    body {
+      background-color: var(--parchment);
+      color: var(--ink);
+      font-family: 'Lora', serif;
+      min-height: 100vh;
+      padding: 2rem 1rem 4rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .date-label {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.1rem;
+      color: var(--rose);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      color: var(--plum);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    header p.sub {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      color: var(--muted);
+      margin-top: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .divider {
+      width: 60px;
+      height: 2px;
+      background: var(--rose);
+      margin: 1.5rem auto;
+      border-radius: 2px;
+    }
+
+    /* ── Memory Cards ── */
+    .series-intro {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--plum);
+      font-style: italic;
+      margin-bottom: 2rem;
+    }
+
+    .memory-card {
+      background: #fff9f4;
+      border: 1.5px solid var(--parchment-dark);
+      border-radius: 16px;
+      padding: 1.8rem 1.6rem;
+      margin-bottom: 2rem;
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 2px 12px rgba(92, 45, 74, 0.07);
+    }
+
+    .card-number {
+      font-family: 'Dancing Script', cursive;
+      font-size: 0.95rem;
+      color: var(--rose);
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.05em;
+    }
+
+    .card-question {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: var(--plum);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+
+    .card-cta {
+      font-family: 'Lora', serif;
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 1.2rem;
+    }
+
+    .reveal-btn {
+      background: var(--plum);
+      color: #fff;
+      font-family: 'Lora', serif;
+      font-size: 0.9rem;
+      border: none;
+      padding: 0.6rem 1.4rem;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      display: inline-block;
+    }
+
+    .reveal-btn:hover {
+      background: var(--plum-light);
+    }
+
+    .reveal-section {
+      display: none;
+      margin-top: 1.4rem;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .reveal-section.visible {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal-section img {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--parchment-dark);
+      object-fit: cover;
+      max-height: 420px;
+    }
+
+    .reveal-caption {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 0.7rem;
+      text-align: center;
+    }
+
+    /* ── Song Section ── */
+    .song-section {
+      max-width: 640px;
+      margin: 3rem auto 0;
+      text-align: center;
+    }
+
+    .song-label {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.05rem;
+      color: var(--rose);
+      margin-bottom: 0.6rem;
+    }
+
+    .song-note {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.2rem;
+      line-height: 1.6;
+    }
+
+    .spotify-wrap {
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 1.4rem;
+    }
+
+    .pingu-note {
+      background: var(--parchment-dark);
+      border-left: 3px solid var(--rose);
+      padding: 1rem 1.2rem;
+      border-radius: 0 10px 10px 0;
+      font-family: 'Lora', serif;
+      font-size: 0.97rem;
+      color: var(--ink);
+      line-height: 1.7;
+      text-align: left;
+    }
+
+    .sign-off {
+      text-align: center;
+      margin-top: 3rem;
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.3rem;
+      color: var(--plum);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <p class="date-label">24 June 2025</p>
+    <h1>Yaadein Series, Tingu 🧡</h1>
+    <p class="sub">Kuch cheezein jo sirf hum dono ko pata hain.</p>
+    <div class="divider"></div>
+  </header>
+
+  <p class="series-intro">Do you remember...?</p>
+
+  <!-- Card 1 -->
+  <div class="memory-card">
+    <p class="card-number">Memory 01</p>
+    <p class="card-question">Pehli photo jo aapne mujhe bheji thi — do you remember?</p>
+    <p class="card-cta">Sochiye thoda. Phir reveal karo. 🙈</p>
+    <button class="reveal-btn" onclick="reveal('r1')">Reveal karo</button>
+    <div class="reveal-section" id="r1">
+      <img src="/days/june/24/firstphoto.jpg" alt="Pehli photo" />
+      <p class="reveal-caption">Yahi thi. Mujhe aaj bhi yaad hai. 🥹</p>
+    </div>
+  </div>
+
+  <!-- Card 2 -->
+  <div class="memory-card">
+    <p class="card-number">Memory 02</p>
+    <p class="card-question">Pehli baar aap embarrass hui thi — mujhe lagta hai aapko hona nahi chahiye tha, but still. Do you remember?</p>
+    <p class="card-cta">Mujhe pata hai aapko yaad hai. 😏</p>
+    <button class="reveal-btn" onclick="reveal('r2')">Reveal karo</button>
+    <div class="reveal-section" id="r2">
+      <img src="/days/june/24/embarassing.png" alt="Embarrassing moment" />
+      <p class="reveal-caption">Ab bhi I think you had nothing to be embarrassed about. Just saying. 🤷</p>
+    </div>
+  </div>
+
+  <!-- Card 3 -->
+  <div class="memory-card">
+    <p class="card-number">Memory 03</p>
+    <p class="card-question">Pehla risky text — maine bheja tha, aur honestly I thought it was risky at the time. Do you remember?</p>
+    <p class="card-cta">Yes ya No? Phir dekhiye. 😅</p>
+    <button class="reveal-btn" onclick="reveal('r3')">Reveal karo</button>
+    <div class="reveal-section" id="r3">
+      <img src="/days/june/24/risky.png" alt="Risky text" />
+      <p class="reveal-caption">Risky tha ya nahi, par bhej ke accha laga. 😌</p>
+    </div>
+  </div>
+
+  <!-- Song Section -->
+  <div class="song-section">
+    <div class="divider"></div>
+    <p class="song-label">Aaj ka song 🎵</p>
+    <p class="song-note">Ek cheez bolna chahta hoon is song ke baare mein.</p>
+    <div class="spotify-wrap">
+      <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/2vR23BjIzpLMtzsyKrM6Mb?utm_source=generator&si=6d5883b4fa7743d4" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+    <div class="pingu-note">
+      Honestly, if I had a choice I would give up everything for you — but we need money to raise our kids (you know how many 😂), so this song says what I want to say instead.
+    </div>
+  </div>
+
+  <div class="sign-off">
+    — Aapka Pingu 🐧
+  </div>
+
+  <script>
+    function reveal(id) {
+      const section = document.getElementById(id);
+      section.classList.add('visible');
+      const btn = section.previousElementSibling;
+      btn.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
