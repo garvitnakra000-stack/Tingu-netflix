@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>25 June — Aapka Assignment 🪷</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;1,400&family=Dancing+Script:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --parchment: #F7F0E6;
+      --parchment-2: #EFE5D0;
+      --plum: #6B2D5E;
+      --plum-light: #9B4A89;
+      --plum-pale: #E8D5E4;
+      --ink: #2C1A27;
+      --dust: #B09AA0;
+      --gold: #C9963A;
+    }
+
+    body {
+      background: var(--parchment);
+      color: var(--ink);
+      font-family: 'Lora', serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 1rem 4rem;
+    }
+
+    header {
+      width: 100%;
+      max-width: 620px;
+      text-align: center;
+      padding: 3rem 1rem 1.5rem;
+      border-bottom: 1px solid var(--plum-pale);
+    }
+
+    .date-label {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.1rem;
+      color: var(--dust);
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 6vw, 2.8rem);
+      color: var(--plum);
+      line-height: 1.2;
+      margin-bottom: 0.4rem;
+    }
+
+    .subtitle {
+      font-family: 'Lora', serif;
+      font-size: 1rem;
+      color: var(--dust);
+      font-style: italic;
+      margin-top: 0.5rem;
+    }
+
+    .intro {
+      width: 100%;
+      max-width: 620px;
+      margin: 2rem auto 0;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--ink);
+      text-align: center;
+      font-style: italic;
+      color: var(--plum-light);
+    }
+
+    /* Time label */
+    .time-group {
+      width: 100%;
+      max-width: 620px;
+      margin: 2.5rem auto 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .time-group::before, .time-group::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--plum-pale);
+    }
+
+    .time-label {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1rem;
+      color: var(--dust);
+      white-space: nowrap;
+    }
+
+    /* Task card */
+    .task {
+      width: 100%;
+      max-width: 620px;
+      margin: 0.8rem auto 0;
+      background: #fff;
+      border-radius: 14px;
+      padding: 1.4rem 1.6rem;
+      border: 1px solid var(--plum-pale);
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      transition: opacity 0.4s, filter 0.4s;
+    }
+
+    .task.locked {
+      opacity: 0.35;
+      filter: blur(1.5px);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .task-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--plum-pale);
+      line-height: 1;
+      min-width: 1.8rem;
+      padding-top: 0.1rem;
+    }
+
+    .task-body { flex: 1; }
+
+    .task-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: var(--plum);
+      margin-bottom: 0.3rem;
+    }
+
+    .task-desc {
+      font-size: 0.92rem;
+      color: var(--dust);
+      line-height: 1.65;
+    }
+
+    .task-emoji {
+      font-size: 1.4rem;
+      padding-top: 0.1rem;
+    }
+
+    .lock-badge {
+      font-family: 'Dancing Script', cursive;
+      font-size: 0.8rem;
+      color: var(--dust);
+      background: var(--parchment-2);
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      margin-top: 0.5rem;
+      display: inline-block;
+    }
+
+    /* Spotify */
+    .spotify-wrap {
+      width: 100%;
+      max-width: 620px;
+      margin: 2.5rem auto 0;
+    }
+
+    footer {
+      width: 100%;
+      max-width: 620px;
+      margin: 2.5rem auto 0;
+      text-align: center;
+      font-family: 'Dancing Script', cursive;
+      font-size: 1rem;
+      color: var(--dust);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <p class="date-label">25 June 2026 • A little something for aap 🪷</p>
+    <h1>Aapka Assignment,<br/>Tingu.</h1>
+  </header>
+
+  <p class="intro">Pingu ka ek chhota sa request hai aaj. Koi pressure nahi — bas jab time mile. 🐧</p>
+
+  <!-- Morning -->
+  <div class="time-group"><span class="time-label">☀️ Morning — On the way</span></div>
+
+  <div class="task" id="t1">
+    <span class="task-number">01</span>
+    <div class="task-body">
+      <p class="task-title">Fit check, please 🎬</p>
+      <p class="task-desc">Auto ya metro mein — ek video bhejiye. Bas aap, aapka outfit, aur woh morning face. Pingu ko bahut miss hota hai.</p>
+    </div>
+    <span class="task-emoji">🪟</span>
+  </div>
+
+  <div class="task" id="t2">
+    <span class="task-number">02</span>
+    <div class="task-body">
+      <p class="task-title">Mera sabse favourite message 💬</p>
+      <p class="task-desc">Hamari chat mein se — jo aap ko lagta hai Pingu ko sabse zyada pasand aaya hoga. Screenshot bhejo.</p>
+    </div>
+    <span class="task-emoji">📸</span>
+  </div>
+
+  <!-- Afternoon -->
+  <div class="time-group"><span class="time-label">🌤️ Afternoon — Office mein</span></div>
+
+  <div class="task locked" id="t3">
+    <span class="task-number">03</span>
+    <div class="task-body">
+      <p class="task-title">Aapka favourite photo of mine 🖼️</p>
+      <p class="task-desc">Gallery kholo — ek photo jo aap ko genuinely achha lagta hai mera. Woh bhejo. No filters needed.</p>
+      <span class="lock-badge">🔒 Unlocks at 1 PM</span>
+    </div>
+    <span class="task-emoji">💜</span>
+  </div>
+
+  <div class="task locked" id="t4">
+    <span class="task-number">04</span>
+    <div class="task-body">
+      <p class="task-title">Woh message jisme main offend hua tha 😭</p>
+      <p class="task-desc">Aap jaanti hain exactly which one. Screenshot bhejo. Bas ek.</p>
+      <span class="lock-badge">🔒 Unlocks at 1 PM</span>
+    </div>
+    <span class="task-emoji">😶</span>
+  </div>
+
+  <!-- Evening -->
+  <div class="time-group"><span class="time-label">🌙 Evening — Getting home</span></div>
+
+  <div class="task locked" id="t5">
+    <span class="task-number">05</span>
+    <div class="task-body">
+      <p class="task-title">Washroom wala kiss 💋</p>
+      <p class="task-desc">Ghar pahuncho, washroom jao, mirror mein ek flying kiss bhejo. Sirf Pingu ke liye. No one has to know.</p>
+      <span class="lock-badge">🔒 Unlocks at 6 PM</span>
+    </div>
+    <span class="task-emoji">🪞</span>
+  </div>
+
+  <div class="task locked" id="t6">
+    <span class="task-number">06</span>
+    <div class="task-body">
+      <p class="task-title">Aaj ka best moment 🌸</p>
+      <p class="task-desc">Din mein ek cheez jo acha laga — choti si bhi chalegi. Batao Pingu ko.</p>
+      <span class="lock-badge">🔒 Unlocks at 6 PM</span>
+    </div>
+    <span class="task-emoji">✨</span>
+  </div>
+
+  <!-- Spotify -->
+  <div class="spotify-wrap">
+    <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/0Y6YW1552df031DjV8qBHv?utm_source=generator&si=d3b3f5c33c0a4285" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+
+  <footer>Tingu-Netflix • 25 June 2026 • Aapka Pingu 🐧</footer>
+
+  <script>
+    function unlockByTime() {
+      const now = new Date();
+      const hour = now.getHours();
+
+      // Unlock afternoon tasks at 1 PM
+      if (hour >= 13) {
+        document.getElementById('t3').classList.remove('locked');
+        document.getElementById('t4').classList.remove('locked');
+      }
+
+      // Unlock evening tasks at 6 PM
+      if (hour >= 18) {
+        document.getElementById('t5').classList.remove('locked');
+        document.getElementById('t6').classList.remove('locked');
+      }
+    }
+
+    unlockByTime();
+    setInterval(unlockByTime, 60000); // check every minute
+  </script>
+
+</body>
+</html>
