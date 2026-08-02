@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>01 · 08 · 2026 — Girlfriend Day</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf7f2;
+    --parchment: #f2e8d5;
+    --dark-parchment: #e8d9b8;
+    --blush: #f5e6e0;
+    --rose: #e8c4b8;
+    --mauve: #c9a0a0;
+    --plum: #8b5e6e;
+    --deep: #4a3040;
+    --deep2: #2a1520;
+    --soft-purple: #9b7fb0;
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --candle: #e8935a;
+    --candle-glow: #ffb877;
+    --text-main: #3d2b35;
+    --text-soft: #7a5c68;
+    --text-muted: #b0909a;
+    --card-bg: rgba(255,255,255,0.75);
+    --border: rgba(200,160,170,0.3);
+    --shadow: 0 8px 40px rgba(139,94,110,0.13);
+    --radius: 20px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { min-height: 100%; font-family: 'DM Sans', sans-serif; color: var(--text-main); overflow-x: hidden; background: #120608; }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  @keyframes flicker {
+    0%,100% { transform: scaleY(1) scaleX(1) rotate(-1deg); opacity: 1; }
+    25% { transform: scaleY(1.08) scaleX(0.96) rotate(1.5deg); opacity: 0.92; }
+    50% { transform: scaleY(0.94) scaleX(1.03) rotate(-2deg); opacity: 1; }
+    75% { transform: scaleY(1.05) scaleX(0.98) rotate(1deg); opacity: 0.95; }
+  }
+  @keyframes glowPulse {
+    0%,100% { box-shadow: 0 0 24px 6px rgba(232,147,90,0.35); }
+    50% { box-shadow: 0 0 34px 10px rgba(232,147,90,0.55); }
+  }
+
+  /* ===== ENVELOPE SCREEN ===== */
+  #envelope-screen {
+    position: fixed; inset: 0; z-index: 900;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, #2a1020 0%, #120608 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 24px; padding: 40px 24px; text-align: center;
+  }
+  .env-label { font-size: 0.72rem; letter-spacing: 0.25em; color: rgba(201,168,76,0.6); text-transform: uppercase; animation: fadeIn 1.5s ease both; }
+  .env-title { font-family: 'IM Fell English', serif; font-size: 1.1rem; color: rgba(255,245,240,0.5); font-style: italic; animation: fadeIn 2s ease both; max-width: 260px; line-height: 1.6; }
+  .envelope-wrap { position: relative; width: 280px; height: 190px; cursor: pointer; -webkit-tap-highlight-color: transparent; animation: float 4s ease-in-out infinite; transition: transform 0.3s ease; }
+  .envelope-wrap:active { transform: scale(0.96); }
+  .envelope-body { position: absolute; inset: 0; background: linear-gradient(160deg, #3a1a28 0%, #2a1020 100%); border-radius: 4px 4px 12px 12px; border: 1px solid rgba(201,168,76,0.3); box-shadow: 0 12px 50px rgba(0,0,0,0.5), inset 0 1px 0 rgba(201,168,76,0.15); }
+  .envelope-flap { position: absolute; top: 0; left: 0; right: 0; height: 110px; overflow: hidden; transform-origin: top center; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2; }
+  .envelope-flap svg { width: 280px; height: 110px; display: block; }
+  .envelope-flap.open { transform: rotateX(180deg); }
+  .envelope-lines { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 6px; width: 160px; opacity: 0.3; }
+  .env-line { height: 1px; background: rgba(201,168,76,0.5); border-radius: 1px; }
+  .wax-seal { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 64px; height: 64px; z-index: 3; cursor: pointer; }
+  .seal-circle { width: 64px; height: 64px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, var(--candle-glow), var(--candle)); box-shadow: 0 4px 20px rgba(232,147,90,0.5), inset 0 1px 0 rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  .seal-circle:active { transform: scale(0.92); }
+  .wax-seal.cracked .seal-circle { animation: sealCrack 0.4s ease both; }
+  @keyframes sealCrack { 0%{transform:scale(1)} 30%{transform:scale(1.15) rotate(5deg)} 60%{transform:scale(0.9) rotate(-3deg)} 100%{transform:scale(0) rotate(10deg); opacity:0;} }
+  .env-hint { font-size: 0.75rem; color: rgba(201,168,76,0.5); font-style: italic; font-family: 'IM Fell English', serif; animation: fadeIn 3s ease both; }
+
+  /* ===== MAIN ===== */
+  #main-content { display: none; position: relative; z-index: 1; max-width: 500px; margin: 0 auto; padding: 0 0 80px; background: var(--cream); min-height: 100vh; }
+  #main-content.visible { display: block; }
+  body.unlocked { background: var(--cream); }
+  body.unlocked::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%,rgba(232,196,184,0.35) 0%,transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 90%,rgba(212,196,216,0.3) 0%,transparent 55%);
+  }
+
+  .site-header { padding: 48px 24px 20px; text-align: center; position: relative; z-index: 1; animation: fadeUp 0.9s ease both; }
+  .date-label { font-size: 0.72rem; letter-spacing: 0.25em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 14px; }
+  .site-header h1 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 400; color: var(--deep); line-height: 1.25; margin-bottom: 8px; }
+  .site-header .sub { font-size: 0.875rem; color: var(--text-soft); line-height: 1.6; }
+
+  .section-label { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--text-muted); text-transform: uppercase; text-align: center; padding: 8px 0 4px; position: relative; z-index: 1; }
+
+  .card { background: var(--card-bg); border: 1px solid var(--border); backdrop-filter: blur(16px); border-radius: var(--radius); padding: 24px; margin: 0 16px 20px; box-shadow: var(--shadow); position: relative; z-index: 1; animation: fadeUp 0.7s ease both; overflow: hidden; }
+
+  /* ===== RECEIPT (the Taco Bell order) ===== */
+  .receipt-card {
+    background: #fffdf8;
+    border: 1px dashed rgba(139,94,110,0.35);
+    border-radius: 6px;
+    margin: 0 16px 20px;
+    padding: 0;
+    box-shadow: var(--shadow);
+    position: relative; z-index: 1;
+    animation: fadeUp 0.7s ease both;
+  }
+  .receipt-top { text-align: center; padding: 22px 20px 14px; border-bottom: 1px dashed rgba(139,94,110,0.3); }
+  .receipt-store { font-family: 'IM Fell English', serif; font-size: 1.3rem; color: var(--deep); letter-spacing: 0.05em; }
+  .receipt-sub { font-size: 0.68rem; color: var(--text-muted); letter-spacing: 0.15em; text-transform: uppercase; margin-top: 4px; }
+  .receipt-meta { display: flex; justify-content: space-between; padding: 12px 20px; font-size: 0.7rem; color: var(--text-soft); border-bottom: 1px dashed rgba(139,94,110,0.3); }
+  .receipt-body { padding: 16px 20px; }
+  .receipt-line { display: flex; justify-content: space-between; gap: 10px; padding: 9px 0; border-bottom: 1px dotted rgba(139,94,110,0.2); }
+  .receipt-line:last-child { border-bottom: none; }
+  .receipt-item { font-family: 'IM Fell English', serif; font-size: 0.98rem; color: var(--text-main); }
+  .receipt-item span { display: block; font-family: 'DM Sans', sans-serif; font-size: 0.68rem; color: var(--text-muted); margin-top: 2px; font-style: normal; }
+  .receipt-qty { font-size: 0.85rem; color: var(--plum); white-space: nowrap; font-weight: 500; }
+  .receipt-total { display: flex; justify-content: space-between; padding: 14px 20px; background: rgba(139,94,110,0.06); border-top: 1px dashed rgba(139,94,110,0.3); }
+  .receipt-total-label { font-family: 'IM Fell English', serif; font-size: 1rem; color: var(--deep); }
+  .receipt-total-val { font-family: 'IM Fell English', serif; font-size: 1rem; color: var(--plum); }
+  .receipt-note { text-align: center; padding: 14px 20px 20px; font-family: 'IM Fell English', serif; font-size: 0.85rem; color: var(--text-soft); font-style: italic; line-height: 1.6; }
+  .receipt-zigzag { height: 10px; background:
+    linear-gradient(135deg, var(--cream) 25%, transparent 25%) 0 0,
+    linear-gradient(225deg, var(--cream) 25%, transparent 25%) 0 0;
+    background-size: 12px 12px; background-color: transparent; }
+
+  /* ===== TICKET STUB (Eternals) ===== */
+  .ticket-card {
+    display: flex; margin: 0 16px 20px; border-radius: 16px; overflow: hidden;
+    box-shadow: var(--shadow); position: relative; z-index: 1; animation: fadeUp 0.7s ease both;
+    background: linear-gradient(160deg, #2a1a30 0%, #1c1024 100%);
+  }
+  .ticket-main { flex: 1; padding: 20px; color: #f5ece8; }
+  .ticket-eyebrow { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(232,196,184,0.55); margin-bottom: 6px; }
+  .ticket-title { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; margin-bottom: 4px; color: #fff5f0; }
+  .ticket-sub { font-size: 0.75rem; color: rgba(255,245,240,0.55); line-height: 1.6; }
+  .ticket-row { display: flex; gap: 18px; margin-top: 14px; }
+  .ticket-field { }
+  .ticket-field-label { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(232,196,184,0.4); margin-bottom: 3px; }
+  .ticket-field-val { font-family: 'IM Fell English', serif; font-size: 0.9rem; color: #f5ece8; }
+  .ticket-stub {
+    width: 64px; flex-shrink: 0; position: relative;
+    background: repeating-linear-gradient(0deg, transparent 0 6px, rgba(255,245,240,0.08) 6px 8px);
+    border-left: 2px dashed rgba(255,245,240,0.2);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ticket-stub-text { writing-mode: vertical-rl; font-family: 'IM Fell English', serif; font-size: 0.8rem; letter-spacing: 0.15em; color: rgba(255,245,240,0.45); }
+
+  /* ===== CANDLE QUESTIONS ===== */
+  .candle-scene { display: flex; flex-direction: column; align-items: center; padding: 8px 0 4px; margin-bottom: 6px; position: relative; z-index: 1; }
+  .candle-svg-wrap { width: 54px; height: 90px; position: relative; }
+  .flame { transform-origin: 50% 100%; animation: flicker 2.4s ease-in-out infinite; }
+  .candle-glow-ring { position: absolute; top: 2px; left: 50%; transform: translateX(-50%); width: 26px; height: 26px; border-radius: 50%; animation: glowPulse 2.4s ease-in-out infinite; pointer-events: none; }
+
+  .qa-card { background: var(--card-bg); border: 1px solid var(--border); backdrop-filter: blur(16px); border-radius: 16px; padding: 20px; margin: 0 16px 14px; box-shadow: var(--shadow); position: relative; z-index: 1; }
+  .qa-num { font-family: 'Cormorant Garamond', serif; font-size: 0.78rem; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+  .qa-q { font-family: 'IM Fell English', serif; font-size: 1.05rem; color: var(--deep); font-style: italic; line-height: 1.55; margin-bottom: 10px; }
+  .qa-a { font-size: 0.85rem; color: var(--text-soft); line-height: 1.7; border-left: 2px solid var(--rose); padding-left: 12px; }
+
+  /* ===== SCRAPBOOK REVISIT ===== */
+  .scrap-card {
+    margin: 0 16px 20px; border-radius: 18px; overflow: hidden; position: relative; z-index: 1;
+    box-shadow: var(--shadow); animation: fadeUp 0.7s ease both;
+    background: linear-gradient(150deg, var(--blush) 0%, var(--parchment) 100%);
+    border: 1px solid rgba(201,168,76,0.35);
+    padding: 24px; text-align: center;
+  }
+  .scrap-tape { position: absolute; top: -6px; left: 50%; transform: translateX(-50%) rotate(-2deg); width: 90px; height: 22px; background: rgba(255,255,255,0.55); border: 1px solid rgba(200,160,170,0.3); }
+  .scrap-icon { font-size: 1.8rem; margin-bottom: 8px; display: block; }
+  .scrap-title { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; color: var(--deep); margin-bottom: 8px; }
+  .scrap-text { font-size: 0.85rem; color: var(--text-soft); line-height: 1.7; margin-bottom: 16px; }
+  .scrap-btn { display: inline-block; background: linear-gradient(135deg, var(--plum) 0%, var(--soft-purple) 100%); color: white; border: none; border-radius: 50px; padding: 11px 26px; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+
+  /* ===== SPOTIFY ===== */
+  .spotify-wrap { border-radius: 12px; overflow: hidden; }
+  .song-caption { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; font-style: italic; color: var(--text-soft); text-align: center; margin-top: 12px; line-height: 1.6; }
+
+  .footer-line { text-align: center; padding: 20px 24px 4px; font-family: 'IM Fell English', serif; font-size: 0.85rem; color: var(--text-muted); font-style: italic; position: relative; z-index: 1; }
+
+  /* ===== INVITATION MEMO ===== */
+  .memo-card {
+    background: var(--parchment);
+    border: 1.5px solid rgba(201,168,76,0.35);
+    border-radius: 10px;
+    margin: 0 16px 20px;
+    box-shadow: var(--shadow);
+    position: relative; z-index: 1;
+    animation: fadeUp 0.7s ease both;
+    overflow: hidden;
+  }
+  .memo-header { padding: 18px 22px 14px; border-bottom: 1px dashed rgba(139,94,110,0.3); }
+  .memo-eyebrow { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+  .memo-field-row { display: flex; gap: 6px; font-size: 0.75rem; color: var(--text-soft); margin-bottom: 3px; }
+  .memo-field-row strong { color: var(--text-main); }
+  .memo-subject { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--deep); margin-top: 8px; }
+  .memo-body { padding: 18px 22px; }
+  .memo-p { font-family: 'IM Fell English', serif; font-size: 0.92rem; color: var(--text-main); line-height: 1.75; margin-bottom: 12px; }
+  .memo-list { list-style: none; margin: 0 0 14px; display: flex; flex-direction: column; gap: 6px; }
+  .memo-list li { font-family: 'IM Fell English', serif; font-size: 0.88rem; color: var(--text-main); line-height: 1.6; padding-left: 16px; position: relative; }
+  .memo-list li::before { content: '·'; position: absolute; left: 2px; color: var(--plum); font-weight: 700; }
+  .memo-detail-row { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 10px 0 14px; font-size: 0.76rem; color: var(--text-soft); }
+  .memo-detail-row strong { color: var(--text-main); }
+  .memo-ps { font-size: 0.8rem; color: var(--text-soft); font-style: italic; line-height: 1.6; margin-bottom: 14px; }
+  .memo-btn { display: inline-block; background: linear-gradient(135deg, var(--plum) 0%, var(--soft-purple) 100%); color: white; border: none; border-radius: 50px; padding: 10px 22px; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+  .memo-sign { margin-top: 16px; padding-top: 14px; border-top: 1px dashed rgba(139,94,110,0.3); font-family: 'IM Fell English', serif; font-size: 0.85rem; color: var(--text-soft); font-style: italic; }
+</style>
+</head>
+<body>
+
+<!-- ===== ENVELOPE SCREEN ===== -->
+<div id="envelope-screen">
+  <p class="env-label">01 · 08 · 2026 · girlfriend day</p>
+  <p class="env-title">Thank you for saying yes!!</p>
+  <div class="envelope-wrap" onclick="crackSeal()">
+    <div class="envelope-body">
+      <div class="envelope-lines">
+        <div class="env-line"></div>
+        <div class="env-line" style="width:80%"></div>
+        <div class="env-line" style="width:60%"></div>
+      </div>
+    </div>
+    <div class="envelope-flap" id="env-flap">
+      <svg viewBox="0 0 280 110" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="0,0 280,0 280,110 140,55 0,110" fill="#3a1a28" stroke="rgba(201,168,76,0.3)" stroke-width="1"/>
+        <polygon points="0,0 140,70 280,0" fill="#2a1020" stroke="rgba(201,168,76,0.2)" stroke-width="1"/>
+      </svg>
+    </div>
+    <div class="wax-seal" id="wax-seal">
+      <div class="seal-circle">🕯️</div>
+    </div>
+  </div>
+  <p class="env-hint">tap the flame to open 🔏</p>
+</div>
+
+<!-- ===== MAIN ===== -->
+<div id="main-content">
+
+  <div class="site-header">
+    <p class="date-label">01 · 08 · 2026</p>
+    <h1>hamara girlfriend day 🕯️</h1>
+    <p class="sub">screens ke beech bhi, saath hi the aap ke saath. yahan wapas se jee lete hain.</p>
+  </div>
+
+  <!-- INVITATION MEMO -->
+  <p class="section-label">✉️ jaise aap ne bulaya tha</p>
+  <div class="memo-card">
+    <div class="memo-header">
+      <p class="memo-eyebrow">Formal Invitation · Received</p>
+      <div class="memo-field-row"><span>From:</span> <strong>Tinguuu (Yours Favourite)</strong></div>
+      <div class="memo-field-row"><span>To:</span> <strong>Mr. Nakra</strong></div>
+      <p class="memo-subject">Lunch Engagement — Request for Availability</p>
+    </div>
+    <div class="memo-body">
+      <p class="memo-p">Dear Mr. Nakra, I hope this email finds you well. This is to formally request your availability for a one-on-one Lunch Engagement with the undersigned.</p>
+      <p class="memo-p" style="margin-bottom:6px;"><strong>Meeting Objective:</strong></p>
+      <ul class="memo-list">
+        <li>Strengthen our already wonderful partnership.</li>
+        <li>Conduct meaningful discussions accompanied by good food.</li>
+        <li>Exchange smiles, laughter, and unnecessary but adorable conversations.</li>
+        <li>Create memorable moments outside our usual schedule.</li>
+      </ul>
+      <div class="memo-detail-row">
+        <span><strong>Date:</strong> 1st August</span>
+        <span><strong>Duration:</strong> 1–2 hrs (extendable)</span>
+        <span><strong>Dress Code:</strong> your cutest smile is enough babyyyyy</span>
+      </div>
+      <p class="memo-ps">P.S. As part of pre-onboarding, kindly review the portal below before joining. Your cooperation is appreciated. 💜</p>
+      <a href="https://mrnakraandmrsnakra.lovable.app/" class="memo-btn" target="_blank" rel="noopener">Pre-Joining Portal ✉️</a>
+      <div class="memo-sign">Warm regards,<br>Yours Favourite,<br>Tinguuu</div>
+    </div>
+  </div>
+
+  <!-- RECEIPT -->
+  <p class="section-label">🌮 same order, do shehar</p>
+  <div class="receipt-card">
+    <div class="receipt-top">
+      <div class="receipt-store">Taco Bell</div>
+      <div class="receipt-sub">Two Cities · One Order · Video Call</div>
+    </div>
+    <div class="receipt-meta">
+      <span>Order · Aap + Main</span>
+      <span>01 Aug 2026</span>
+    </div>
+    <div class="receipt-body">
+      <div class="receipt-line">
+        <div class="receipt-item">Cheesy Fries<span>tingu ka favourite, obviously</span></div>
+        <div class="receipt-qty">x2</div>
+      </div>
+      <div class="receipt-line">
+        <div class="receipt-item">Veg Rice Bowl<span>same bite, same time, do phone screens</span></div>
+        <div class="receipt-qty">x2</div>
+      </div>
+      <div class="receipt-line">
+        <div class="receipt-item">Chilli Cheese Hash Brown Pocket<span>iska toh naam bhi mushkil se yaad hai</span></div>
+        <div class="receipt-qty">x2</div>
+      </div>
+    </div>
+    <div class="receipt-total">
+      <div class="receipt-total-label">Distance</div>
+      <div class="receipt-total-val">0 km, jab saath khaya</div>
+    </div>
+    <div class="receipt-note">thank you for introducing me to such good food. ab toh yeh haal hai — apka fav is my fav. 🌮💜</div>
+    <div class="receipt-zigzag"></div>
+  </div>
+
+  <!-- TICKET -->
+  <p class="section-label">🎬 aaj ki film</p>
+  <div class="ticket-card">
+    <div class="ticket-main">
+      <div class="ticket-eyebrow">Virtual Date · Watch Party</div>
+      <div class="ticket-title">Eternals</div>
+      <div class="ticket-sub">bohot cute movie thi haina? we should watch more cute stuff like this. 🥹</div>
+      <div class="ticket-row">
+        <div class="ticket-field">
+          <div class="ticket-field-label">Seats</div>
+          <div class="ticket-field-val">Pingu + Tingu</div>
+        </div>
+        <div class="ticket-field">
+          <div class="ticket-field-label">Screen</div>
+          <div class="ticket-field-val">Watchparty · Phone se</div>
+        </div>
+      </div>
+      <p style="margin-top:14px; font-family:'IM Fell English', serif; font-size:0.85rem; color:rgba(255,245,240,0.6); font-style:italic; line-height:1.6;">aur haan, us diet coke wali dress mein aap bohot pyaari lag rahi thi. bas keh dena tha. 🥹</p>
+    </div>
+    <div class="ticket-stub"><span class="ticket-stub-text">ADMIT TWO ✂</span></div>
+  </div>
+
+  <!-- CANDLE BACKLOG -->
+  <p class="section-label">🕯️ candle ka backlog</p>
+  <div class="candle-scene">
+    <div class="candle-svg-wrap">
+      <svg viewBox="0 0 54 90" width="54" height="90">
+        <rect x="18" y="34" width="18" height="50" rx="3" fill="#f2e8d5" stroke="rgba(139,94,110,0.25)"/>
+        <rect x="18" y="34" width="18" height="6" fill="rgba(139,94,110,0.15)"/>
+        <ellipse cx="27" cy="34" rx="9" ry="3" fill="#faf7f2" stroke="rgba(139,94,110,0.25)"/>
+        <line x1="27" y1="30" x2="27" y2="22" stroke="#7a5c68" stroke-width="1.4"/>
+        <g class="flame">
+          <path d="M27 6 C33 14, 33 22, 27 26 C21 22, 21 14, 27 6 Z" fill="var(--candle)"/>
+          <path d="M27 12 C30 17, 30 21, 27 24 C24 21, 24 17, 27 12 Z" fill="var(--candle-glow)"/>
+        </g>
+      </svg>
+      <div class="candle-glow-ring"></div>
+    </div>
+  </div>
+
+  <div class="qa-card">
+    <p class="qa-q">itna saara backlog clear kiya aaj Candle pe. accha laga sab kuch ek saath jawab dena.</p>
+    <p class="qa-a">par kuch jawab aise the jo sirf padhke poora nahi lagta — un pe call pe baat karni hai, aaram se, jab dono free ho. 🕯️</p>
+  </div>
+
+  <!-- SCRAPBOOK -->
+  <p class="section-label">📖 main aata hoon Delhi jaldi se</p>
+  <div class="scrap-card">
+    <div class="scrap-tape"></div>
+    <span class="scrap-icon">📖✨</span>
+    <p class="scrap-title">woh scrapbook, phir se yaad aaya</p>
+    <p class="scrap-text">Bangla Sahib, Sarvana Bhawan, INA metro wait, taco bell and movie marathon — Mumbai ka woh digital + physical scrapbook jo aap ne banaya tha, itna creative aur itna sweet hai ki aaj bhi sochke smile aa jaati hai. aap sach mein kuch alag ho, Tingu ji.</p>
+  </div>
+
+  <!-- SONG -->
+  <p class="section-label">🎵 aaj ka song</p>
+  <div class="card">
+    <div class="spotify-wrap">
+      <iframe style="border-radius:12px"
+        src="https://open.spotify.com/embed/track/0DpUQ3mpAGy3bYsEKVy6t5?utm_source=generator&theme=0"
+        width="100%" height="152" frameBorder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy">
+      </iframe>
+    </div>
+    <p class="song-caption">aaj ka gaana, aapke liye. screens ke beech bhi, sabse paas laata hai. 🕯️💜</p>
+  </div>
+
+  <p class="footer-line">girlfriend day mubarak ho, Tingu. saath door se bhi, dil se hamesha paas. 🕯️💜</p>
+
+</div><!-- end main -->
+
+<script>
+  function crackSeal(){
+    const seal = document.getElementById('wax-seal');
+    const flap = document.getElementById('env-flap');
+    seal.classList.add('cracked');
+    setTimeout(function(){ flap.classList.add('open'); }, 300);
+    setTimeout(function(){
+      var env = document.getElementById('envelope-screen');
+      env.style.transition = 'opacity 1s ease';
+      env.style.opacity = '0';
+      setTimeout(function(){
+        env.style.display = 'none';
+        document.body.classList.add('unlocked');
+        var main = document.getElementById('main-content');
+        main.classList.add('visible');
+        main.style.opacity = '0';
+        main.style.transition = 'opacity 0.9s ease';
+        setTimeout(function(){ main.style.opacity = '1'; }, 50);
+      }, 1000);
+    }, 1200);
+  }
+</script>
+</body>
+</html>
