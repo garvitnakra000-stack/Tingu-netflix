@@ -263,16 +263,18 @@
   <script>
     function unlockByTime() {
       const now = new Date();
-      const hour = now.getHours();
+      // June 25, 2026 in IST, so tasks stay unlocked on later days
+      const onePM = new Date(Date.UTC(2026, 5, 25, 7, 30));
+      const sixPM = new Date(Date.UTC(2026, 5, 25, 12, 30));
 
       // Unlock afternoon tasks at 1 PM
-      if (hour >= 13) {
+      if (now >= onePM) {
         document.getElementById('t3').classList.remove('locked');
         document.getElementById('t4').classList.remove('locked');
       }
 
       // Unlock evening tasks at 6 PM
-      if (hour >= 18) {
+      if (now >= sixPM) {
         document.getElementById('t5').classList.remove('locked');
         document.getElementById('t6').classList.remove('locked');
       }
