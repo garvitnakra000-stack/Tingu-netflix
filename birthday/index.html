@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Happy Birthday, Tingu ji 🎂</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #120608;
+      --ink: #fff5f0;
+      --pink: #f0a0be;
+      --pink-soft: #f5c0d4;
+      --rose: #8b3a52;
+      --gold: #d4956a;
+      --muted: #9e7a84;
+      --faint: #7a5a66;
+      --card: rgba(139,58,82,0.10);
+      --card-border: rgba(228,160,180,0.16);
+    }
+
+    html, body {
+      background: var(--bg);
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      color: var(--ink);
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+    button { font: inherit; color: inherit; cursor: pointer; }
+
+    .bg-layer {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 15% 20%, rgba(180,40,70,0.20) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 85% 80%, rgba(120,30,80,0.22) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 50% 50%, rgba(90,10,30,0.15) 0%, transparent 60%);
+    }
+    .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    .star { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff; opacity: 0.25; animation: twinkle 3s ease-in-out infinite; }
+    @keyframes twinkle { 50% { opacity: 0.8; } }
+
+    #fx { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 80; }
+
+    .page { position: relative; z-index: 2; max-width: 680px; margin: 0 auto; padding: 0 16px 90px; }
+
+    .preview-pill {
+      position: fixed; top: 10px; left: 50%; transform: translateX(-50%); z-index: 90;
+      background: rgba(212,149,106,0.18); border: 1px solid rgba(212,149,106,0.45);
+      color: #f3c9a8; font-size: 11px; letter-spacing: 1px; padding: 5px 12px; border-radius: 99px;
+      backdrop-filter: blur(6px);
+    }
+
+    /* ── Hero ───────────────────────────── */
+    .hero { text-align: center; padding: 64px 8px 26px; }
+    .eyebrow { font-size: 10px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 18px; font-weight: 300; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-weight: 400; font-size: clamp(38px, 10vw, 64px); line-height: 1.1; }
+    .hero h1 em { color: var(--pink); font-style: italic; display: block; }
+    .hero-sub { margin-top: 14px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    .big-countdown { display: flex; justify-content: center; gap: 10px; margin: 30px auto 6px; }
+    .cd-unit {
+      min-width: 70px; padding: 14px 6px 10px; border-radius: 16px;
+      background: linear-gradient(135deg, rgba(180,60,90,0.18), rgba(212,100,140,0.08));
+      border: 1px solid rgba(240,160,190,0.3);
+    }
+    .cd-num { font-family: 'Playfair Display', serif; font-size: clamp(28px, 8vw, 40px); color: var(--pink-soft); display: block; line-height: 1; }
+    .cd-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #c07090; margin-top: 6px; display: block; }
+
+    .ticker {
+      min-height: 52px; margin: 22px auto 0; max-width: 460px;
+      font-family: 'Playfair Display', serif; font-style: italic; font-size: 17px; color: var(--pink-soft);
+      transition: opacity 0.5s, transform 0.5s; line-height: 1.5;
+    }
+    .ticker.out { opacity: 0; transform: translateY(6px); }
+
+    .divider { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 26px auto 30px; max-width: 340px; }
+    .divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--rose), transparent); }
+
+    .section-label { text-align: center; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
+    .section-sub { text-align: center; font-size: 12px; color: var(--muted); margin-bottom: 22px; }
+
+    /* ── Schedule cards ─────────────────── */
+    .schedule { display: flex; flex-direction: column; gap: 12px; }
+    .slot {
+      background: var(--card); border: 1px solid var(--card-border); border-radius: 18px;
+      overflow: hidden; transition: border-color 0.3s, background 0.3s;
+    }
+    .slot.open { border-color: rgba(240,160,190,0.35); background: rgba(139,58,82,0.16); }
+    .slot.locked { opacity: 0.55; }
+    .slot.new { box-shadow: 0 0 0 1px rgba(240,160,190,0.4), 0 0 30px rgba(200,60,100,0.18); }
+    .slot-head { width: 100%; display: flex; align-items: center; gap: 14px; padding: 16px 16px; background: none; border: 0; text-align: left; }
+    .slot.locked .slot-head { cursor: default; }
+    .slot-time {
+      flex-shrink: 0; width: 56px; padding: 8px 0; border-radius: 12px; text-align: center;
+      background: rgba(240,160,190,0.08); border: 1px solid rgba(240,160,190,0.18);
+      font-size: 11px; color: var(--pink-soft); line-height: 1.3;
+    }
+    .slot-time span { display: block; font-size: 18px; }
+    .slot-meta { flex: 1; min-width: 0; }
+    .slot-title { font-family: 'Playfair Display', serif; font-size: 18px; }
+    .slot-hint { font-size: 12px; color: var(--muted); margin-top: 3px; }
+    .slot-status { flex-shrink: 0; font-size: 12px; color: var(--muted); text-align: right; }
+    .slot-status .chev { display: inline-block; transition: transform 0.3s; font-size: 16px; color: var(--pink); }
+    .slot.open .chev { transform: rotate(180deg); }
+    .badge-new { display: inline-block; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; background: var(--pink); color: #3a0f1c; padding: 3px 7px; border-radius: 99px; font-weight: 600; margin-right: 6px; }
+    .slot-body { display: none; padding: 4px 16px 22px; }
+    .slot.open .slot-body { display: block; animation: rise 0.45s ease; }
+    @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+    .note { font-size: 14px; color: #e9cfd7; line-height: 1.7; text-align: center; margin: 14px auto 0; max-width: 460px; }
+    .note.serif { font-family: 'Playfair Display', serif; font-style: italic; font-size: 17px; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 99px;
+      background: linear-gradient(135deg, #c2527a, #8b3a52); border: 0; color: #fff; font-size: 14px; font-weight: 500;
+      box-shadow: 0 6px 20px rgba(194,82,122,0.3); transition: transform 0.15s;
+    }
+    .btn:active { transform: scale(0.96); }
+    .btn.ghost { background: rgba(240,160,190,0.1); border: 1px solid rgba(240,160,190,0.3); box-shadow: none; }
+    .center { text-align: center; }
+    .row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+
+    /* ── Video ──────────────────────────── */
+    .video-frame {
+      position: relative; width: min(100%, 320px); aspect-ratio: 9 / 16; margin: 6px auto 0;
+      border-radius: 16px; overflow: hidden; background: #000; border: 1px solid var(--card-border);
+    }
+    .video-frame img, .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border: 0; }
+    .play {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px;
+      background: linear-gradient(to top, rgba(18,6,8,0.75), rgba(18,6,8,0.1)); border: 0; color: #fff; font-size: 13px;
+    }
+    .play-circle { width: 66px; height: 66px; border-radius: 50%; background: rgba(240,160,190,0.9); display: flex; align-items: center; justify-content: center; font-size: 24px; color: #3a0f1c; padding-left: 4px; box-shadow: 0 0 30px rgba(240,160,190,0.5); }
+
+    /* ── Cake ───────────────────────────── */
+    .cake-wrap { display: flex; flex-direction: column; align-items: center; padding-top: 34px; }
+    .cake { position: relative; width: 220px; }
+    .candles { position: absolute; left: 0; right: 0; top: -46px; display: flex; justify-content: center; gap: 18px; z-index: 2; }
+    .candle { position: relative; width: 10px; height: 46px; border-radius: 3px; background: repeating-linear-gradient(45deg, #fff5f0 0 6px, #f0a0be 6px 12px); }
+    .flame {
+      position: absolute; left: 50%; top: -26px; width: 16px; height: 26px; margin-left: -8px; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      background: radial-gradient(ellipse at 50% 70%, #fff7c2 0%, #ffcf5a 40%, #ff8a3d 75%, transparent 100%);
+      box-shadow: 0 0 18px 6px rgba(255,190,90,0.45); animation: flicker 0.18s ease-in-out infinite alternate; transform-origin: 50% 100%;
+      border: 0; padding: 0;
+    }
+    .flame::after { content: ''; position: absolute; inset: -14px; }
+    @keyframes flicker { to { transform: scaleY(1.08) scaleX(0.92) rotate(-2deg); } }
+    .candle.out .flame { animation: none; opacity: 0; transform: scale(0.2); transition: all 0.35s; box-shadow: none; }
+    .candle.out::after { content: ''; position: absolute; left: 50%; top: -18px; width: 6px; height: 6px; margin-left: -3px; border-radius: 50%; background: rgba(220,220,220,0.5); animation: smoke 1.6s ease-out forwards; }
+    @keyframes smoke { to { transform: translate(6px, -50px) scale(5); opacity: 0; } }
+    .tier { border-radius: 14px 14px 10px 10px; position: relative; margin: 0 auto; }
+    .tier.top { width: 160px; height: 62px; background: linear-gradient(#f7c6d6, #e993b3); }
+    .tier.bottom { width: 220px; height: 78px; background: linear-gradient(#c2527a, #8b3a52); margin-top: -4px; }
+    .tier.top::before, .tier.bottom::before {
+      content: ''; position: absolute; left: 0; right: 0; top: 0; height: 18px; border-radius: 14px 14px 0 0;
+      background: radial-gradient(circle at 10px 0, #fff5f0 10px, transparent 11px) 0 0 / 20px 18px repeat-x;
+    }
+    .tier.bottom::after { content: 'Tingu ji'; position: absolute; inset: 30px 0 0; text-align: center; font-family: 'Playfair Display', serif; font-style: italic; font-size: 20px; color: #fff5f0; }
+    .plate { width: 260px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.15); margin-top: -4px; }
+    .mic-meter { width: 200px; height: 6px; border-radius: 99px; background: rgba(255,255,255,0.08); margin: 18px auto 0; overflow: hidden; display: none; }
+    .mic-meter i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--pink), #ffcf5a); transition: width 0.08s; }
+
+    /* ── Song ───────────────────────────── */
+    .song-card { text-align: center; }
+    .vinyl {
+      width: 150px; height: 150px; border-radius: 50%; margin: 6px auto 16px;
+      background: radial-gradient(circle, var(--pink) 0 18%, #2a0d14 19% 21%, #1a0a0e 22% 100%);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5), inset 0 0 0 6px rgba(255,255,255,0.03);
+      animation: spin 4s linear infinite; animation-play-state: paused;
+    }
+    .vinyl.playing { animation-play-state: running; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .song-progress { width: 100%; max-width: 360px; margin: 14px auto 0; accent-color: var(--pink); }
+    .lyrics { max-height: 230px; overflow-y: auto; margin-top: 18px; padding: 10px 6px; scroll-behavior: smooth; mask-image: linear-gradient(transparent, #000 18%, #000 82%, transparent); }
+    .lyric { font-family: 'Playfair Display', serif; font-size: 17px; color: rgba(255,245,240,0.32); padding: 7px 0; transition: color 0.3s, transform 0.3s; }
+    .lyric.active { color: var(--pink-soft); transform: scale(1.06); }
+    .timing-tool { margin-top: 22px; padding: 14px; border-radius: 14px; border: 1px dashed rgba(212,149,106,0.5); text-align: left; font-size: 12px; color: #f3c9a8; }
+    .timing-tool textarea { width: 100%; min-height: 110px; margin: 8px 0; background: rgba(0,0,0,0.3); color: var(--ink); border: 1px solid var(--card-border); border-radius: 8px; padding: 8px; font: 12px/1.5 monospace; }
+    .timing-tool .current { font-size: 15px; color: var(--ink); margin: 8px 0; min-height: 22px; }
+
+    /* ── Carousel ───────────────────────── */
+    .carousel { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 26px 30px 30px; margin: 0 -16px; scrollbar-width: none; }
+    .carousel::-webkit-scrollbar { display: none; }
+    .polaroid {
+      flex: 0 0 170px; scroll-snap-align: center; background: #fff5f0; color: #3d1f2e; padding: 9px 9px 12px; border-radius: 6px; border: 0;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.4); transform: rotate(var(--tilt)); transition: transform 0.3s cubic-bezier(.2,.9,.3,1.3), box-shadow 0.3s; text-align: center;
+    }
+    .polaroid img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; border-radius: 2px; }
+    .polaroid p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 12px; margin-top: 8px; line-height: 1.35; }
+    .polaroid:hover, .polaroid:focus-visible { transform: rotate(0) scale(1.14) translateY(-10px); box-shadow: 0 22px 44px rgba(0,0,0,0.55); z-index: 3; position: relative; }
+
+    /* ── Lightbox ───────────────────────── */
+    .lightbox { position: fixed; inset: 0; z-index: 95; background: rgba(10,3,5,0.92); display: none; align-items: center; justify-content: center; flex-direction: column; padding: 24px 16px; }
+    .lightbox.show { display: flex; animation: rise 0.3s ease; }
+    .lightbox img { max-width: 100%; max-height: 74vh; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+    .lightbox p { font-family: 'Playfair Display', serif; font-style: italic; color: var(--pink-soft); margin-top: 16px; text-align: center; max-width: 420px; line-height: 1.5; }
+    .lightbox .close { position: absolute; top: 14px; right: 16px; background: none; border: 0; font-size: 28px; color: var(--ink); }
+
+    /* ── Sudoku ─────────────────────────── */
+    .sudoku { display: grid; grid-template-columns: repeat(9, 1fr); width: min(100%, 380px); margin: 8px auto 0; border: 2px solid var(--pink); border-radius: 10px; overflow: hidden; }
+    .sudoku button {
+      aspect-ratio: 1; border: 0; border-right: 1px solid rgba(240,160,190,0.18); border-bottom: 1px solid rgba(240,160,190,0.18);
+      background: rgba(18,6,8,0.6); font-size: clamp(15px, 4.6vw, 20px); color: var(--pink-soft); padding: 0; transition: background 0.2s;
+    }
+    .sudoku button.given { color: var(--ink); font-weight: 600; }
+    .sudoku button.c2, .sudoku button.c5 { border-right: 2px solid var(--pink); }
+    .sudoku button.r2, .sudoku button.r5 { border-bottom: 2px solid var(--pink); }
+    .sudoku button.peer { background: rgba(139,58,82,0.22); }
+    .sudoku button.same { background: rgba(194,82,122,0.35); }
+    .sudoku button.sel { background: rgba(240,160,190,0.45); color: #fff; }
+    .sudoku button.bad { color: #ff6b6b; }
+    .sudoku button.boxdone { animation: glow 1.2s ease; }
+    @keyframes glow { 40% { background: rgba(255,207,90,0.35); } }
+    .numpad { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; width: min(100%, 380px); margin: 14px auto 0; }
+    .numpad button { padding: 11px 0; border-radius: 10px; border: 1px solid var(--card-border); background: rgba(240,160,190,0.08); font-size: 17px; }
+    .numpad button:active { background: rgba(240,160,190,0.25); }
+    .sudoku-notes { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 16px; }
+    .sudoku-notes span { font-size: 11px; padding: 5px 10px; border-radius: 99px; background: rgba(240,160,190,0.1); border: 1px solid rgba(240,160,190,0.25); color: var(--pink-soft); }
+
+    /* ── Image puzzle ───────────────────── */
+    .puzzle { display: grid; grid-template-columns: repeat(3, 1fr); width: min(100%, 330px); aspect-ratio: 1; margin: 8px auto 0; border-radius: 12px; overflow: hidden; background: #000; }
+    .tile { border: 0; padding: 0; background-repeat: no-repeat; transition: transform 0.2s, box-shadow 0.3s; box-shadow: inset 0 0 0 1.5px rgba(18,6,8,0.85); }
+    .tile.sel { box-shadow: inset 0 0 0 3px var(--pink); transform: scale(0.94); }
+    .puzzle.solved .tile { box-shadow: none; }
+    .puzzle-meta { text-align: center; font-size: 12px; color: var(--muted); margin-top: 10px; }
+
+    /* ── 3D ring ────────────────────────── */
+    .ring-stage { height: 330px; perspective: 1000px; display: flex; align-items: center; justify-content: center; touch-action: pan-y; cursor: grab; user-select: none; margin: 0 -16px; overflow: hidden; }
+    .ring { position: relative; width: 130px; height: 180px; transform-style: preserve-3d; }
+    .ring figure {
+      position: absolute; inset: 0; border-radius: 12px; overflow: hidden; border: 2px solid rgba(255,245,240,0.85);
+      box-shadow: 0 0 24px rgba(240,160,190,0.35); background: #000;
+    }
+    .ring img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+    .ring-floor { width: 260px; height: 40px; margin: -20px auto 0; border-radius: 50%; background: radial-gradient(ellipse, rgba(240,160,190,0.25), transparent 70%); }
+
+    /* ── Love bomb ──────────────────────── */
+    .bomb-btn { font-size: 54px; background: none; border: 0; filter: drop-shadow(0 0 20px rgba(240,160,190,0.4)); transition: transform 0.15s; }
+    .bomb-btn:active { transform: scale(0.85) rotate(-10deg); }
+    .bomb-line { font-family: 'Playfair Display', serif; font-style: italic; font-size: 20px; color: var(--pink-soft); min-height: 64px; margin-top: 14px; line-height: 1.5; }
+    .bomb-count { font-size: 11px; letter-spacing: 2px; color: var(--faint); text-transform: uppercase; margin-top: 8px; }
+
+    /* ── Floating hearts ────────────────── */
+    .float-heart { position: fixed; z-index: 70; pointer-events: none; font-size: 22px; animation: floatUp 2.2s ease-out forwards; }
+    .float-text { position: fixed; z-index: 70; pointer-events: none; font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; color: var(--pink-soft); white-space: nowrap; animation: floatUp 2.6s ease-out forwards; text-shadow: 0 2px 10px rgba(0,0,0,0.6); transform: translateX(-50%); }
+    @keyframes floatUp { from { opacity: 1; translate: 0 0; } to { opacity: 0; translate: 0 -120px; } }
+
+    /* ── Intro overlay (balloons) ───────── */
+    .intro { position: fixed; inset: 0; z-index: 75; background: radial-gradient(ellipse at 50% 40%, #2a0b14, #0b0305 75%); display: none; overflow: hidden; }
+    .intro.show { display: block; }
+    .intro.hide { opacity: 0; transition: opacity 0.8s; pointer-events: none; }
+    .intro-text { position: absolute; left: 0; right: 0; top: 16%; text-align: center; padding: 0 20px; z-index: 3; pointer-events: none; text-shadow: 0 2px 18px rgba(11,3,5,0.9); }
+    #balloons { position: absolute; inset: 0; z-index: 1; }
+    .intro-text h2 { font-family: 'Playfair Display', serif; font-weight: 400; font-size: clamp(30px, 8vw, 52px); line-height: 1.15; }
+    .intro-text h2 em { color: var(--pink); }
+    .intro-text p { font-size: 13px; color: var(--muted); margin-top: 12px; letter-spacing: 1px; }
+    .intro-actions { position: absolute; left: 0; right: 0; bottom: 8%; text-align: center; z-index: 3; }
+    .skip { background: none; border: 0; color: var(--faint); font-size: 12px; text-decoration: underline; margin-top: 12px; display: block; margin-left: auto; margin-right: auto; }
+    .balloon {
+      position: absolute; bottom: -160px; width: 64px; height: 80px; border: 0; padding: 0; background: none;
+      animation: balloonUp var(--dur) linear var(--delay) infinite;
+    }
+    .balloon::before {
+      content: ''; position: absolute; inset: 0; border-radius: 50% 50% 48% 48% / 55% 55% 45% 45%;
+      background:
+        radial-gradient(circle at 32% 26%, rgba(255,255,255,0.75), rgba(255,255,255,0) 16%),
+        radial-gradient(circle at 40% 35%, var(--c) 45%, color-mix(in srgb, var(--c) 65%, #000) 100%);
+      box-shadow: inset -6px -8px 14px rgba(0,0,0,0.18);
+    }
+    .balloon::after { content: ''; position: absolute; left: 50%; top: 79px; width: 1px; height: 60px; background: rgba(255,255,255,0.35); }
+    .balloon.popped { animation-play-state: paused; }
+    .balloon.popped::before { transform: scale(1.5); opacity: 0; transition: all 0.18s ease-out; }
+    .balloon.popped::after { opacity: 0; }
+    @keyframes balloonUp {
+      0%   { transform: translate(0, 0) rotate(-4deg); }
+      50%  { transform: translate(14px, -60vh) rotate(4deg); }
+      100% { transform: translate(-8px, -125vh) rotate(-4deg); }
+    }
+
+    .fab { position: fixed; right: 16px; bottom: 18px; z-index: 60; width: 52px; height: 52px; border-radius: 50%; border: 1px solid rgba(240,160,190,0.4); background: rgba(42,11,20,0.85); font-size: 24px; backdrop-filter: blur(6px); box-shadow: 0 6px 24px rgba(0,0,0,0.45); }
+    .toast { position: fixed; left: 50%; bottom: 84px; transform: translate(-50%, 20px); z-index: 92; opacity: 0; pointer-events: none; transition: all 0.4s; background: rgba(42,11,20,0.95); border: 1px solid rgba(240,160,190,0.4); color: var(--pink-soft); padding: 11px 18px; border-radius: 14px; font-size: 13px; max-width: calc(100% - 32px); text-align: center; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    footer { text-align: center; font-size: 11px; color: var(--faint); letter-spacing: 2px; margin-top: 50px; }
+    footer a { color: var(--muted); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .balloon { animation-duration: 30s !important; }
+      .star, .vinyl { animation: none; }
+    }
+  </style>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R7HVEC5HC5"></script>
+  <script src="/analytics.js"></script>
+  <script>(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","x0p6ub2n2r");</script>
+</head>
+<body>
+  <div class="bg-layer"></div>
+  <div class="stars" id="stars"></div>
+  <canvas id="fx"></canvas>
+
+  <div class="page">
+    <header class="hero" id="hero"></header>
+
+    <div class="divider"><div class="divider-line"></div><span>🎂</span><div class="divider-line"></div></div>
+
+    <p class="section-label" id="scheduleLabel">aaj ka schedule</p>
+    <p class="section-sub" id="scheduleSub">Har kuch ghante mein kuch naya khulega. Patience rakho, chatpati ladki.</p>
+    <div class="schedule" id="schedule"></div>
+
+    <footer>made with ♥ for tingu, by pingu 🐧 · <a href="/">ghar wapas</a></footer>
+  </div>
+
+  <div class="intro" id="intro">
+    <div class="intro-text" id="introText">
+      <h2>Pehle thode<br><em>balloons phodo</em> 🎈</h2>
+      <p id="popCount">7 balloons, aur phir surprise</p>
+    </div>
+    <div id="balloons"></div>
+    <div class="intro-actions" id="introActions">
+      <button class="skip" id="skipIntro">skip karo</button>
+    </div>
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <button class="close" aria-label="Close">×</button>
+    <img alt="" />
+    <p></p>
+  </div>
+
+  <button class="fab" id="fab" title="Sky shot" hidden>🎆</button>
+  <div class="toast" id="toast"></div>
+  <div class="preview-pill" id="previewPill" hidden></div>
+
+<script>
+// ═════════════════════════════════════════════════════════════════
+//  EDIT HERE
+//  · Birthday: 31 Oct 2026, every time below is IST.
+//  · ?preview=true  unlocks everything (for Pingu to check).
+//  · ?at=2026-10-31T09:00  pretends it is that IST time (for testing).
+//  · An item with no video id / song file is hidden from Tingu
+//    (it still shows in preview, so you can see the placeholder).
+// ═════════════════════════════════════════════════════════════════
+
+const BDAY = { year: 2026, month: 10, day: 31 };
+
+const SCHEDULE = [
+  { time: '00:00', type: 'video',    icon: '🎥', title: 'Pehla wish, mera',         hint: 'Sabse pehle, hamesha main',          yt: 'dcEMo6JAGDs',
+    note: 'Baaki sab baad mein. Pehla wish hamesha mera hi hoga.' },
+  { time: '00:00', type: 'cake',     icon: '🎂', title: 'Candles bujhao',           hint: 'Phoonk maarne ki taiyari rakho' },
+  { time: '01:00', type: 'song',     icon: '🎶', title: 'Apke liye ek gaana',       hint: 'Kuch banaya hai, sunogi?' },
+  { time: '08:00', type: 'carousel', icon: '📸', title: 'Good morning, birthday girl', hint: 'Subah subah kuch pyaara' },
+  { time: '09:00', type: 'video',    icon: '💌', title: 'Piyush ki taraf se',       hint: 'Ek dost ka message',                  yt: 'kyrZHRjhjWs' },
+  { time: '10:00', type: 'sudoku',   icon: '🔢', title: 'Apka favourite game',      hint: 'Dimaag lagao, birthday girl' },
+  { time: '12:00', type: 'video',    icon: '💌', title: 'Tilak ki taraf se',        hint: 'Ek aur dost, ek aur wish',            yt: 'A7rAjR6mH2A' },
+  { time: '14:00', type: 'puzzle',   icon: '🧩', title: 'Hum, tukdon mein',         hint: 'Jodna padega, aap expert ho' },
+  { time: '16:00', type: 'ring',     icon: '🌀', title: 'Hum, 3D mein',             hint: 'Ghuma ke dekho' },
+  { time: '18:00', type: 'lovebomb', icon: '💣', title: 'Love bomb',                hint: 'Sambhal ke kholna' },
+  { time: '23:00', type: 'finale',   icon: '🎆', title: 'Aakhri surprise',          hint: 'Raat ka aasmaan dekhna' },
+];
+
+// Song: put the mp3 at /birthday/song.mp3 and set src. Lyrics come from the
+// timing tool (open /birthday?preview=true&timing=1, paste lyrics, tap along).
+const SONG = {
+  src: '',               // e.g. '/birthday/song.mp3'
+  title: 'Tingu ji ke liye',
+  lyrics: [],            // [{ t: 12.4, l: 'first line' }, ...]
+};
+
+const PHOTOS = [
+  { src: 'photos/01.jpg', cap: 'Mirror wali photo. Hum dono ek saath, aur dono ache lag rahe hain. Rare.' },
+  { src: 'photos/02.jpg', cap: 'Ek selfie, aur mera favourite insaan' },
+  { src: 'photos/03.jpg', cap: 'Ye photo DP nahi, poster banne layak hai' },
+  { src: 'photos/04.jpg', cap: 'Is photo pe mera dil ek second ke liye ruk gaya tha' },
+  { src: 'photos/05.jpg', cap: 'Phool, note, aur ye wali smile. Sab apki wajah se' },
+  { src: 'photos/06.jpg', cap: 'Hoodie IIM ki, topper ye ladki' },
+  { src: 'photos/07.jpg', cap: 'Apka Pingu 🐧 birthday duty pe tainaat' },
+  { src: 'photos/08.jpg', cap: 'Ye cake yaad hai? Aaj ka isse bhi pyaara hoga' },
+  { src: 'photos/09.jpg', cap: 'Apka rubber band. Ab mera hai. Wapas nahi milega' },
+];
+const PUZZLE_PHOTO = { src: 'photos/02.jpg', w: 825, h: 1100, focusY: 0.42 };
+const CANDLES = 5;
+
+const LOVE_LINES = [
+  'Happy Birthday Tingu ji! Aaj apka din hai, baaki sab extras hain.',
+  'Duniya ke saare Gems ek taraf, aap ek taraf. Gems haar gaye.',
+  'Aaj apko daantne ki permission kisi ke paas nahi hai. Mere paas bhi nahi.',
+  'Breaking news: ek chatpati ladki aaj aur bhi cute ho gayi hai.',
+  'Aap sudoku solve karti ho, main aapko samajhne ki koshish karta hu. Dono mein maza hai.',
+  '94 messages wala din yaad hai? Aaj main 95 bhejunga.',
+  'Mrs. Nakra, apka birthday officially shuru ho chuka hai.',
+  'Aaj ke din ki saari calories maaf. Cake double.',
+  'Pingu ki taraf se 1 crore hugs, lifetime validity ke saath.',
+  'Aapke bina Spotify jam bhi adhoora lagta hai.',
+  'Aap meri sabse favourite notification ho.',
+  'Is saal bas ek wish hai: aap hasti raho, baaki main sambhal lunga.',
+  'RCB ne bhi cup jeeta, maine bhi. Aapko. Mera trophy zyada pyaara hai.',
+  'Lizards aaj aapke aas paas bhi nahi aayengi. Maine baat kar li hai.',
+  'Cherry red nail polish aur aap. Dono mein se zyada pyaari kaun? Aap, obviously.',
+  'Saath mein Maggi banana ab bhi meri top 3 dates mein hai.',
+  'Aaj aap jo bolo, sab manzoor. Sirf aaj. Shayad kal bhi.',
+  'Aapki hasi ka screenshot le pata toh wallpaper wahi hota.',
+  'Distance kitna bhi ho, wish sabse pehle main hi karunga. Aaj bhi kiya.',
+  'Is website ka har pixel aapke liye hai.',
+  'Birthday girl alert 🚨 Sab log line mein lag jao.',
+  'Jab We Met ki Geet bhi aaj aapse thodi jealous hai.',
+  '31 October. Halloween nahi, aaj Tingu-ween hai 🎃',
+  'Kitni bhi door ho, aap mera ghar ho.',
+  'Aap meri life ko sudoku ki tarah sort kar deti ho. Rows, columns, boxes, sab.',
+  'Ek aur saal aapko pyaar karne ka mauka. Thank you, universe.',
+  'Aap meri sabse acchi aadat ho.',
+  'Aaj raat chaand bhi aapko wish karne aayega. Maine bola hai usse.',
+  'Agar aap emoji hoti toh 🥹 hoti. Ya 🌸. Ya dono.',
+  'Birthday wishes: 1. Aap khush raho. 2. Point 1 dobara padho.',
+  'Aapka "hmm" bhi cute lagta hai. Aaj toh poora sentence bolo.',
+  'Bangla Sahib mein jo maanga tha, wo aap hi thi.',
+  'Ama ka cheese bread achha tha. Aap ke saath aur achha tha.',
+  'Har din aapke saath ek naya favourite din ban jaata hai.',
+  'Aaj ka dress code: aap, smile ke saath. Bas.',
+  'Aapke birthday pe gift dhoondhna mushkil hai. Sabse acchi cheez toh aap khud ho.',
+  'Pingu officially aapka fan club president hai. Akela member bhi.',
+  'Aaj ka din bhi aap jaisa hai: pyaara, thoda filmy, aur bahut special.',
+];
+
+const SUDOKU_PUZZLE = '070000105000080000000673290750300040063240051040000900439825000020710000010004028';
+const SUDOKU_SOLUTION = '376492185294581376185673294751369842963248751842157963439825617528716439617934528';
+const SUDOKU_NOTES = [
+  '3 April: jab sab shuru hua 💬',
+  '25 April: pehli mulaqat 🌸',
+  '8 June: INA metro pe aap wait kar rahi thi',
+  '9 June: Bangla Sahib aur Saravana Bhawan',
+  '10 June: Maggi, aur aapka "haan" ❤️',
+  '11 June: Ama ka cheese bread',
+  '17 June: 94 messages 😭',
+  '4 July: pehli virtual date, orange dress',
+  '31 October: aaj, aapka din 🎂',
+];
+
+// ═════════════════════════════════════════════════════════════════
+
+const $ = (s, el = document) => el.querySelector(s);
+const params = new URLSearchParams(location.search);
+const PREVIEW = params.get('preview') === 'true';
+const TIMING = params.has('timing');
+const AT = params.get('at');
+
+function istTime(y, mo, d, h = 0, mi = 0) {
+  return new Date(Date.UTC(y, mo - 1, d, h - 5, mi - 30, 0));
+}
+const simOffset = AT ? (new Date(AT + '+05:30').getTime() - Date.now()) || 0 : 0;
+const now = () => Date.now() + simOffset;
+
+const BDAY_START = istTime(BDAY.year, BDAY.month, BDAY.day).getTime();
+const isBirthday = () => PREVIEW || now() >= BDAY_START;
+
+SCHEDULE.forEach((s, i) => {
+  const [h, m] = s.time.split(':').map(Number);
+  s.unlock = istTime(BDAY.year, BDAY.month, BDAY.day, h, m).getTime();
+  s.idx = i;
+});
+const isOpen = s => PREVIEW || now() >= s.unlock;
+const hasContent = s => (s.type === 'video' ? !!s.yt : s.type === 'song' ? !!SONG.src : true);
+const visible = s => PREVIEW || TIMING || hasContent(s);
+
+function fmtClock(t) {
+  const [h, m] = t.split(':').map(Number);
+  const hr = h % 12 || 12, ap = h < 12 ? 'AM' : 'PM';
+  return { big: m ? `${hr}:${String(m).padStart(2, '0')}` : `${hr}`, ap };
+}
+function fmtLeft(ms) {
+  const s = Math.max(0, Math.floor(ms / 1000));
+  const d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60);
+  if (d) return `${d}d ${h}h`;
+  if (h) return `${h}h ${m}m`;
+  if (m) return `${m}m`;
+  return `${s}s`;
+}
+const rand = (a, b) => a + Math.random() * (b - a);
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+const store = {
+  get(k) { try { return JSON.parse(localStorage.getItem('bday:' + k)); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem('bday:' + k, JSON.stringify(v)); } catch (e) {} },
+};
+
+function toast(msg, ms = 2800) {
+  const t = $('#toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), ms);
+}
+
+// ─── Stars ───────────────────────────────────────────────────────
+(function () {
+  const wrap = $('#stars');
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement('i');
+    s.className = 'star';
+    s.style.cssText = `left:${rand(0, 100)}%;top:${rand(0, 100)}%;animation-delay:${rand(0, 3)}s;opacity:${rand(0.1, 0.4)}`;
+    wrap.appendChild(s);
+  }
+})();
+
+// ─── Sky shots / fireworks / confetti ────────────────────────────
+const FX = (function () {
+  const c = $('#fx'), ctx = c.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W, H, dpr, rockets = [], parts = [], running = false;
+  const COLORS = ['#f0a0be', '#ffcf5a', '#fff5f0', '#ff7aa8', '#ffd6e4', '#e8a0ff'];
+  function resize() {
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight;
+    c.width = W * dpr; c.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  addEventListener('resize', resize); resize();
+
+  function burst(x, y, color, n = reduce ? 30 : 70) {
+    for (let i = 0; i < n; i++) {
+      const a = Math.random() * Math.PI * 2, sp = rand(1, 5.5);
+      parts.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: rand(55, 90), max: 90, color: Math.random() < 0.2 ? '#fff5f0' : color, size: rand(1.2, 2.6), g: 0.05, kind: 'spark' });
+    }
+    start();
+  }
+  function skyShot(x) {
+    x = x ?? rand(W * 0.15, W * 0.85);
+    rockets.push({ x, y: H + 10, px: x, py: H + 10, vx: rand(-1, 1), vy: -rand(H * 0.011 + 6, H * 0.011 + 9), color: pick(COLORS) });
+    start();
+  }
+  function confetti(n = reduce ? 40 : 120) {
+    for (let i = 0; i < n; i++) {
+      parts.push({ x: rand(0, W), y: rand(-H * 0.3, -10), vx: rand(-1.2, 1.2), vy: rand(1.5, 3.5), life: rand(160, 240), max: 240, color: pick(COLORS), size: rand(5, 9), rot: rand(0, 6), vr: rand(-0.2, 0.2), g: 0.02, kind: 'conf' });
+    }
+    start();
+  }
+  function celebrate(n = 8, span = 2600) {
+    for (let i = 0; i < n; i++) setTimeout(() => skyShot(), i * span / n + rand(0, 200));
+  }
+  function start() { if (!running) { running = true; requestAnimationFrame(loop); } }
+  function loop() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'lighter';
+    rockets = rockets.filter(r => {
+      r.px = r.x; r.py = r.y;
+      r.x += r.vx; r.y += r.vy; r.vy += 0.15;
+      ctx.strokeStyle = r.color; ctx.lineWidth = 2.2; ctx.globalAlpha = 0.9;
+      ctx.beginPath(); ctx.moveTo(r.px, r.py + 10); ctx.lineTo(r.x, r.y); ctx.stroke();
+      if (Math.random() < 0.6) parts.push({ x: r.x, y: r.y + 4, vx: rand(-0.3, 0.3), vy: rand(0.5, 1.5), life: 20, max: 20, color: '#ffcf5a', size: 1.2, g: 0, kind: 'spark' });
+      if (r.vy >= -1.2) { burst(r.x, r.y, r.color); return false; }
+      return true;
+    });
+    parts = parts.filter(p => {
+      p.x += p.vx; p.y += p.vy; p.vy += p.g; p.life--;
+      const a = Math.max(0, p.life / p.max);
+      if (p.kind === 'spark') {
+        p.vx *= 0.985; p.vy *= 0.985;
+        ctx.globalAlpha = a; ctx.fillStyle = p.color;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+      } else {
+        ctx.globalCompositeOperation = 'source-over';
+        p.rot += p.vr; p.x += Math.sin(p.life / 12) * 0.6;
+        ctx.globalAlpha = Math.min(1, a * 2); ctx.fillStyle = p.color;
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2); ctx.restore();
+        ctx.globalCompositeOperation = 'lighter';
+      }
+      return p.life > 0 && p.y < H + 20;
+    });
+    ctx.globalAlpha = 1;
+    if (rockets.length || parts.length) requestAnimationFrame(loop);
+    else { running = false; ctx.clearRect(0, 0, W, H); }
+  }
+  return { skyShot, burst, confetti, celebrate };
+})();
+
+// ─── Floating hearts (love bomb everywhere) ──────────────────────
+function floatHeart(x, y, withText) {
+  const h = document.createElement('div');
+  h.className = 'float-heart';
+  h.textContent = pick(['💗', '💕', '🌸', '💖', '✨', '🎀']);
+  h.style.left = (x - 11) + 'px'; h.style.top = (y - 11) + 'px';
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 2300);
+  if (withText) {
+    const t = document.createElement('div');
+    t.className = 'float-text';
+    t.textContent = pick(['love you', 'Tingu ji 🌸', 'birthday girl!', 'meri jaan', 'cutie', 'Mrs. Nakra', 'aww', 'pyaari']);
+    t.style.left = Math.min(Math.max(x, 70), innerWidth - 70) + 'px'; t.style.top = (y - 34) + 'px';
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 2700);
+  }
+}
+document.addEventListener('pointerdown', e => {
+  if (!isBirthday()) return;
+  if (e.target.closest('button, a, input, textarea, iframe, .sudoku, .puzzle, .ring-stage, .carousel, .intro, .lightbox')) return;
+  floatHeart(e.clientX, e.clientY, Math.random() < 0.5);
+});
+
+// ─── Hero ────────────────────────────────────────────────────────
+let tickerTimer;
+function renderHero() {
+  const hero = $('#hero');
+  if (isBirthday()) {
+    hero.innerHTML = `
+      <p class="eyebrow">31 october · aapka din</p>
+      <h1>Happy Birthday,<em>Tingu ji</em></h1>
+      <p class="hero-sub">aaj ka poora din aapke naam. har kuch ghante mein ek naya surprise.<br>kahin bhi tap karo, pyaar niklega 💗</p>
+      <p class="ticker" id="ticker"></p>`;
+  } else {
+    hero.innerHTML = `
+      <p class="eyebrow">31 october · ek khaas din</p>
+      <h1>Countdown to<em>Tingu ji's birthday</em></h1>
+      <div class="big-countdown" id="bigCountdown"></div>
+      <p class="hero-sub">thoda sa wait aur. sab taiyar ho raha hai 🤫</p>
+      <p class="ticker" id="ticker"></p>`;
+  }
+  startTicker();
+}
+function startTicker() {
+  clearInterval(tickerTimer);
+  const lines = isBirthday() ? LOVE_LINES : [
+    'Kuch bahut pyaara aa raha hai aapke liye.',
+    'Pingu raat bhar jaag ke bana raha hai ye sab.',
+    'Countdown dekh ke excitement badh rahi hai na? Meri bhi.',
+    'Spoiler: aapko bahut saara pyaar milne wala hai.',
+    'Birthday girl ke liye red carpet bichh raha hai.',
+  ];
+  let i = Math.floor(Math.random() * lines.length);
+  const el = $('#ticker');
+  const show = () => {
+    el.classList.add('out');
+    setTimeout(() => { el.textContent = lines[i++ % lines.length]; el.classList.remove('out'); }, 450);
+  };
+  show();
+  tickerTimer = setInterval(show, 4500);
+}
+function updateBigCountdown() {
+  const el = $('#bigCountdown');
+  if (!el) return;
+  const s = Math.max(0, Math.floor((BDAY_START - now()) / 1000));
+  const parts = [[Math.floor(s / 86400), 'days'], [Math.floor(s % 86400 / 3600), 'hrs'], [Math.floor(s % 3600 / 60), 'min'], [s % 60, 'sec']];
+  el.innerHTML = parts.map(([n, l]) => `<div class="cd-unit"><span class="cd-num">${String(n).padStart(2, '0')}</span><span class="cd-label">${l}</span></div>`).join('');
+}
+
+// ─── Schedule ────────────────────────────────────────────────────
+const built = new Set();
+function renderSchedule() {
+  const wrap = $('#schedule');
+  wrap.innerHTML = '';
+  built.clear();
+  if (!isBirthday()) {
+    $('#scheduleLabel').textContent = 'birthday pe kya kya khulega';
+    $('#scheduleSub').textContent = 'Sab 31 October ko, ek ek karke. Abhi sirf hints 👀';
+  } else {
+    $('#scheduleLabel').textContent = 'aaj ka schedule';
+    $('#scheduleSub').textContent = 'Har kuch ghante mein kuch naya khulega. Patience rakho, chatpati ladki.';
+  }
+  SCHEDULE.filter(visible).forEach(s => {
+    const el = document.createElement('section');
+    el.className = 'slot';
+    el.id = 'slot-' + s.idx;
+    const c = fmtClock(s.time);
+    el.innerHTML = `
+      <button class="slot-head">
+        <div class="slot-time"><span>${c.big}</span>${c.ap}</div>
+        <div class="slot-meta">
+          <div class="slot-title">${s.icon} ${s.title}</div>
+          <div class="slot-hint">${s.hint}${!hasContent(s) ? ' · <i>(preview: abhi content nahi hai)</i>' : ''}</div>
+        </div>
+        <div class="slot-status"></div>
+      </button>
+      <div class="slot-body"></div>`;
+    el.querySelector('.slot-head').addEventListener('click', () => toggleSlot(s));
+    wrap.appendChild(el);
+  });
+  updateStatuses(true);
+}
+function newestGroupTime() {
+  const open = SCHEDULE.filter(s => visible(s) && now() >= s.unlock);
+  return open.length ? Math.max(...open.map(s => s.unlock)) : null;
+}
+const wasOpen = new Set();
+function updateStatuses(first) {
+  const newest = isBirthday() && !PREVIEW ? newestGroupTime() : null;
+  SCHEDULE.filter(visible).forEach(s => {
+    const el = $('#slot-' + s.idx);
+    if (!el) return;
+    const open = isOpen(s);
+    el.classList.toggle('locked', !open);
+    el.classList.toggle('new', open && s.unlock === newest);
+    const st = el.querySelector('.slot-status');
+    if (open) {
+      st.innerHTML = `${s.unlock === newest ? '<span class="badge-new">new</span>' : ''}<span class="chev">▾</span>`;
+      if (!first && !wasOpen.has(s.idx)) {
+        toast(`Naya surprise khul gaya: ${s.icon} ${s.title}`);
+        FX.celebrate(3, 1200);
+      }
+      wasOpen.add(s.idx);
+    } else {
+      st.innerHTML = `🔒<br><span style="font-size:11px">${fmtLeft(s.unlock - now())}</span>`;
+    }
+  });
+}
+function toggleSlot(s, forceOpen) {
+  if (!isOpen(s)) {
+    toast(`Abhi nahi 🙈 ${fmtClock(s.time).big} ${fmtClock(s.time).ap} tak ruko`);
+    return;
+  }
+  const el = $('#slot-' + s.idx);
+  const willOpen = forceOpen || !el.classList.contains('open');
+  el.classList.toggle('open', willOpen);
+  if (willOpen && !built.has(s.idx)) {
+    built.add(s.idx);
+    BUILDERS[s.type](el.querySelector('.slot-body'), s);
+  }
+  if (willOpen && s.type === 'lovebomb') FX.celebrate(6, 2000);
+  if (willOpen && s.type === 'finale') { FX.celebrate(14, 5000); setTimeout(() => FX.confetti(), 1500); }
+}
+
+// ─── Builders ────────────────────────────────────────────────────
+const BUILDERS = {
+  video(body, s) {
+    if (!s.yt) { body.innerHTML = '<p class="note">Yahan video aayega. YouTube link daalna baaki hai.</p>'; return; }
+    body.innerHTML = `
+      <div class="video-frame">
+        <img src="https://i.ytimg.com/vi/${s.yt}/hqdefault.jpg" alt="" />
+        <button class="play"><span class="play-circle">▶</span>tap karke dekho</button>
+      </div>
+      ${s.note ? `<p class="note serif">${s.note}</p>` : ''}`;
+    $('.play', body).addEventListener('click', () => {
+      $('.video-frame', body).innerHTML = `<iframe src="https://www.youtube.com/embed/${s.yt}?autoplay=1&playsinline=1&rel=0&modestbranding=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+    });
+  },
+
+  cake(body) {
+    body.innerHTML = `
+      <div class="cake-wrap">
+        <div class="cake">
+          <div class="candles">${Array.from({ length: CANDLES }, (_, i) => `<div class="candle" data-i="${i}"><button class="flame" aria-label="Candle"></button></div>`).join('')}</div>
+          <div class="tier top"></div>
+          <div class="tier bottom"></div>
+        </div>
+        <div class="plate"></div>
+      </div>
+      <div class="mic-meter"><i></i></div>
+      <p class="note" id="cakeMsg">Ek wish socho, phir phoonk maaro.<br><small style="color:var(--muted)">Mic se phoonko, ya flame pe tap karo.</small></p>
+      <div class="row"><button class="btn" id="micBtn">🌬️ Mic se phoonko</button></div>`;
+    const candles = [...body.querySelectorAll('.candle')];
+    let stream, raf;
+    const left = () => candles.filter(c => !c.classList.contains('out'));
+    function putOut(c) {
+      if (c.classList.contains('out')) return;
+      c.classList.add('out');
+      if (!left().length) done();
+    }
+    function done() {
+      stopMic();
+      $('.mic-meter', body).style.display = 'none';
+      $('#micBtn', body).remove();
+      $('#cakeMsg', body).innerHTML = '<span class="serif" style="font-family:Playfair Display,serif;font-style:italic;font-size:19px;color:var(--pink-soft)">Wish maang li? Batana mat. Bas poori ho jayegi 🤫</span><br>Happy Birthday, meri pyari Tingu ji 🎂';
+      FX.confetti(); FX.celebrate(6, 2400);
+    }
+    candles.forEach(c => c.querySelector('.flame').addEventListener('click', () => putOut(c)));
+    function stopMic() { cancelAnimationFrame(raf); stream && stream.getTracks().forEach(t => t.stop()); stream = null; }
+    $('#micBtn', body).addEventListener('click', async () => {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      } catch (e) {
+        toast('Mic nahi mila. Koi baat nahi, flames pe tap karke bujhao 🕯️');
+        return;
+      }
+      $('#micBtn', body).textContent = '🌬️ Ab phoonko!';
+      const meter = $('.mic-meter', body); meter.style.display = 'block';
+      const ac = new (window.AudioContext || window.webkitAudioContext)();
+      const an = ac.createAnalyser(); an.fftSize = 512;
+      ac.createMediaStreamSource(stream).connect(an);
+      const data = new Uint8Array(an.fftSize);
+      let blowMs = 0, last = performance.now();
+      (function listen(t) {
+        an.getByteTimeDomainData(data);
+        let sum = 0; for (const v of data) { const x = (v - 128) / 128; sum += x * x; }
+        const rms = Math.sqrt(sum / data.length);
+        meter.firstElementChild.style.width = Math.min(100, rms * 400) + '%';
+        const dt = (t || performance.now()) - last; last = t || performance.now();
+        if (rms > 0.12) { blowMs += dt; if (blowMs > 220) { blowMs = 0; const l = left(); l.length && putOut(pick(l)); } }
+        else blowMs = Math.max(0, blowMs - dt / 2);
+        if (stream) raf = requestAnimationFrame(listen);
+      })();
+    });
+  },
+
+  song(body) {
+    body.innerHTML = `
+      <div class="song-card">
+        <div class="vinyl"></div>
+        <p class="note serif" style="margin-top:0">${SONG.title}</p>
+        <div class="row"><button class="btn" id="songPlay">▶ Play</button></div>
+        <input type="range" class="song-progress" min="0" max="1000" value="0" />
+        <div class="lyrics">${SONG.lyrics.map((x, i) => `<p class="lyric" data-i="${i}">${x.l}</p>`).join('') || (SONG.src ? '' : '<p class="note">Gaana jaldi aa raha hai 🎶</p>')}</div>
+      </div>`;
+    const audio = new Audio();
+    if (SONG.src) audio.src = SONG.src;
+    audio.preload = 'metadata';
+    const playBtn = $('#songPlay', body), vinyl = $('.vinyl', body), bar = $('.song-progress', body), lyricBox = $('.lyrics', body);
+    playBtn.addEventListener('click', () => {
+      if (!audio.src) { toast('Abhi gaana upload nahi hua'); return; }
+      audio.paused ? audio.play() : audio.pause();
+    });
+    audio.addEventListener('play', () => { playBtn.textContent = '❚❚ Pause'; vinyl.classList.add('playing'); });
+    audio.addEventListener('pause', () => { playBtn.textContent = '▶ Play'; vinyl.classList.remove('playing'); });
+    bar.addEventListener('input', () => { if (audio.duration) audio.currentTime = bar.value / 1000 * audio.duration; });
+    let active = -1;
+    audio.addEventListener('timeupdate', () => {
+      if (audio.duration) bar.value = audio.currentTime / audio.duration * 1000;
+      let i = -1;
+      SONG.lyrics.forEach((x, k) => { if (audio.currentTime >= x.t) i = k; });
+      if (i !== active) {
+        lyricBox.querySelectorAll('.lyric').forEach(p => p.classList.toggle('active', +p.dataset.i === i));
+        const p = lyricBox.querySelector(`[data-i="${i}"]`);
+        if (p) lyricBox.scrollTop = p.offsetTop - lyricBox.clientHeight / 2 + p.clientHeight / 2;
+        active = i;
+      }
+    });
+    if (TIMING) buildTimingTool(body, audio);
+  },
+
+  carousel(body) {
+    body.innerHTML = `
+      <p class="note serif" style="margin-top:0">Good morning, birthday girl ☀️ Kuch photos, jo mujhe har baar smile de deti hain.</p>
+      <div class="carousel">${PHOTOS.map((p, i) => `
+        <button class="polaroid" style="--tilt:${(i % 2 ? 1 : -1) * rand(1.5, 4).toFixed(1)}deg" data-i="${i}">
+          <img src="${p.src}" alt="" loading="lazy" /><p>${p.cap}</p>
+        </button>`).join('')}
+      </div>
+      <p class="note" style="font-size:12px;color:var(--muted)">swipe karo, photo pe tap karo</p>`;
+    body.querySelectorAll('.polaroid').forEach(b => b.addEventListener('click', () => openLightbox(PHOTOS[b.dataset.i])));
+  },
+
+  sudoku(body) {
+    body.innerHTML = `
+      <p class="note serif" style="margin-top:0">Aapko sudoku pasand hai, toh ye aapke liye. Har box poora karo, ek yaad khulegi.</p>
+      <div class="sudoku"></div>
+      <div class="numpad">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => `<button data-n="${n}">${n}</button>`).join('')}<button data-n="0">⌫</button></div>
+      <div class="sudoku-notes"></div>
+      <div class="row"><button class="btn ghost" id="sdReset">Shuru se</button></div>`;
+    const grid = $('.sudoku', body), notesEl = $('.sudoku-notes', body);
+    let cur = (store.get('sudoku') || SUDOKU_PUZZLE).split('').map(Number);
+    let doneBoxes = new Set(store.get('sudokuBoxes') || []);
+    let sel = -1, won = false;
+    const cells = [];
+    for (let i = 0; i < 81; i++) {
+      const r = Math.floor(i / 9), c = i % 9;
+      const b = document.createElement('button');
+      b.className = `c${c} r${r}` + (SUDOKU_PUZZLE[i] !== '0' ? ' given' : '');
+      b.addEventListener('click', () => { sel = i; paint(); });
+      grid.appendChild(b); cells.push(b);
+    }
+    const boxOf = i => Math.floor(Math.floor(i / 9) / 3) * 3 + Math.floor(i % 9 / 3);
+    function paint() {
+      const sv = sel >= 0 ? cur[sel] : 0;
+      cells.forEach((b, i) => {
+        b.textContent = cur[i] || '';
+        const peer = sel >= 0 && (Math.floor(i / 9) === Math.floor(sel / 9) || i % 9 === sel % 9 || boxOf(i) === boxOf(sel));
+        b.classList.toggle('peer', peer);
+        b.classList.toggle('same', sv > 0 && cur[i] === sv && i !== sel);
+        b.classList.toggle('sel', i === sel);
+        b.classList.toggle('bad', cur[i] > 0 && SUDOKU_PUZZLE[i] === '0' && String(cur[i]) !== SUDOKU_SOLUTION[i]);
+      });
+      notesEl.innerHTML = [...doneBoxes].map((_, k) => `<span>${SUDOKU_NOTES[k]}</span>`).join('');
+    }
+    function input(n) {
+      if (sel < 0 || SUDOKU_PUZZLE[sel] !== '0' || won) return;
+      cur[sel] = n;
+      store.set('sudoku', cur.join(''));
+      const bx = boxOf(sel);
+      if (!doneBoxes.has(bx)) {
+        const idx = cells.map((_, i) => i).filter(i => boxOf(i) === bx);
+        if (idx.every(i => String(cur[i]) === SUDOKU_SOLUTION[i])) {
+          doneBoxes.add(bx); store.set('sudokuBoxes', [...doneBoxes]);
+          idx.forEach(i => { cells[i].classList.remove('boxdone'); void cells[i].offsetWidth; cells[i].classList.add('boxdone'); });
+          toast('Box poora! ' + SUDOKU_NOTES[doneBoxes.size - 1], 3600);
+        }
+      }
+      paint();
+      if (cur.join('') === SUDOKU_SOLUTION) win();
+    }
+    function win() {
+      won = true;
+      FX.confetti(); FX.celebrate(5, 2000);
+      body.querySelector('.row').insertAdjacentHTML('beforebegin', '<p class="note serif">Sudoku queen 👑 Poori grid solve! Aap meri life bhi aise hi sort kar deti ho.</p>');
+    }
+    body.querySelectorAll('.numpad button').forEach(b => b.addEventListener('click', () => input(+b.dataset.n)));
+    body.addEventListener('keydown', e => { if (/^[0-9]$/.test(e.key)) input(+e.key); if (e.key === 'Backspace') input(0); });
+    $('#sdReset', body).addEventListener('click', () => {
+      if (!confirm('Sab mita ke shuru se?')) return;
+      cur = SUDOKU_PUZZLE.split('').map(Number); doneBoxes = new Set(); won = false;
+      store.set('sudoku', null); store.set('sudokuBoxes', []); paint();
+    });
+    paint();
+    if (cur.join('') === SUDOKU_SOLUTION) won = true;
+  },
+
+  puzzle(body) {
+    body.innerHTML = `
+      <p class="note serif" style="margin-top:0">Ek photo, 9 tukde. Do tiles pe tap karo, wo jagah badal lengi.</p>
+      <div class="puzzle"></div>
+      <p class="puzzle-meta"><span id="pzMoves">0</span> moves</p>
+      <div class="row"><button class="btn ghost" id="pzPeek">👀 Asli photo</button><button class="btn ghost" id="pzShuffle">Shuffle</button></div>`;
+    const board = $('.puzzle', body);
+    let perm, sel = -1, moves = 0, solved = false;
+    function shuffle() {
+      do { perm = [...Array(9).keys()].sort(() => Math.random() - 0.5); } while (perm.filter((v, i) => v === i).length > 2);
+      moves = 0; solved = false; sel = -1; board.classList.remove('solved'); draw();
+    }
+    function bgFor(piece) {
+      const W = board.clientWidth || 300, t = W / 3;
+      const h = W * PUZZLE_PHOTO.h / PUZZLE_PHOTO.w;
+      const y0 = Math.max(0, Math.min(h - W, h * PUZZLE_PHOTO.focusY - W / 2));
+      return `url(${PUZZLE_PHOTO.src}) ${-(piece % 3) * t}px ${-(Math.floor(piece / 3) * t + y0)}px / ${W}px ${h}px no-repeat`;
+    }
+    function draw() {
+      board.innerHTML = '';
+      perm.forEach((piece, i) => {
+        const b = document.createElement('button');
+        b.className = 'tile' + (i === sel ? ' sel' : '');
+        b.style.background = bgFor(piece);
+        b.addEventListener('click', () => tap(i));
+        board.appendChild(b);
+      });
+      $('#pzMoves', body).textContent = moves;
+    }
+    function tap(i) {
+      if (solved) return;
+      if (sel < 0) { sel = i; draw(); return; }
+      if (sel !== i) { [perm[sel], perm[i]] = [perm[i], perm[sel]]; moves++; }
+      sel = -1; draw();
+      if (perm.every((v, k) => v === k)) {
+        solved = true; board.classList.add('solved');
+        FX.confetti(); FX.celebrate(4, 1600);
+        body.querySelector('.puzzle-meta').innerHTML = `Solved in ${moves} moves 🎉<br><span style="font-family:Playfair Display,serif;font-style:italic;font-size:16px;color:var(--pink-soft)">Tukde kitne bhi ho, hum hamesha jud jaate hain.</span>`;
+      }
+    }
+    $('#pzShuffle', body).addEventListener('click', shuffle);
+    $('#pzPeek', body).addEventListener('click', () => openLightbox({ src: PUZZLE_PHOTO.src, cap: 'Cheating allowed, aaj aapka birthday hai 😌' }));
+    addEventListener('resize', () => perm && draw());
+    shuffle();
+  },
+
+  ring(body) {
+    const list = PHOTOS.slice(0, 8);
+    body.innerHTML = `
+      <p class="note serif" style="margin-top:0">Hum, har angle se. Swipe karke ghumao.</p>
+      <div class="ring-stage"><div class="ring">${list.map(p => `<figure><img src="${p.src}" alt="" /></figure>`).join('')}</div></div>
+      <div class="ring-floor"></div>`;
+    const stage = $('.ring-stage', body), ring = $('.ring', body), figs = [...ring.children];
+    const n = figs.length, step = 360 / n;
+    const radius = Math.round(130 / 2 / Math.tan(Math.PI / n)) + 30;
+    figs.forEach((f, i) => { f.style.transform = `rotateY(${i * step}deg) translateZ(${radius}px)`; });
+    let angle = 0, vel = 0.25, tilt = -8, dragging = false, lastX = 0, moved = 0;
+    (function spin() {
+      if (!dragging) { angle += vel; vel += (0.25 - vel) * 0.02; }
+      ring.style.transform = `translateZ(-${radius}px) rotateX(${tilt}deg) rotateY(${angle}deg)`;
+      if (document.body.contains(ring)) requestAnimationFrame(spin);
+    })();
+    stage.addEventListener('pointerdown', e => { dragging = true; lastX = e.clientX; moved = 0; stage.setPointerCapture(e.pointerId); });
+    stage.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      const dx = e.clientX - lastX; lastX = e.clientX; moved += Math.abs(dx);
+      angle += dx * 0.4; vel = dx * 0.4;
+    });
+    stage.addEventListener('pointerup', e => {
+      dragging = false;
+      if (moved < 6) {
+        const hit = document.elementsFromPoint(e.clientX, e.clientY).find(x => x.tagName === 'FIGURE' && ring.contains(x));
+        if (hit) openLightbox(list[figs.indexOf(hit)]);
+      }
+    });
+  },
+
+  lovebomb(body) {
+    const seen = new Set();
+    body.innerHTML = `
+      <div class="center">
+        <p class="note" style="margin-top:0">Bomb pe tap karo. Jitni baar chahiye.</p>
+        <button class="bomb-btn" aria-label="Love bomb">💣</button>
+        <p class="bomb-line"></p>
+        <p class="bomb-count">0 / ${LOVE_LINES.length} baatein</p>
+      </div>`;
+    $('.bomb-btn', body).addEventListener('click', e => {
+      let i; do { i = Math.floor(Math.random() * LOVE_LINES.length); } while (seen.size < LOVE_LINES.length && seen.has(i));
+      seen.add(i);
+      $('.bomb-line', body).textContent = LOVE_LINES[i];
+      $('.bomb-count', body).textContent = `${seen.size} / ${LOVE_LINES.length} baatein` + (seen.size === LOVE_LINES.length ? ' · sab padh li! 💗' : '');
+      const r = e.currentTarget.getBoundingClientRect();
+      FX.burst(r.left + r.width / 2, r.top + r.height / 2, pick(['#f0a0be', '#ff7aa8', '#ffcf5a']), 50);
+      for (let k = 0; k < 6; k++) setTimeout(() => floatHeart(r.left + rand(0, r.width), r.top + rand(0, r.height), k === 0), k * 80);
+    });
+  },
+
+  finale(body) {
+    body.innerHTML = `
+      <p class="note serif" style="margin-top:0;font-size:19px">Aaj ka din yahin khatam nahi hota, bas date badalti hai.</p>
+      <p class="note">Apka ye saal hasi, sukoon, aur bahut saari jeeti hui sudoku wala ho. Jo bhi maango, wo mile, aur jo na maango, wo bhi. Aur haan, agle birthday pe ye sab main apke saamne baith ke karunga.</p>
+      <p class="note serif">Happy Birthday, meri pyari Tingu ji.<br>Hamesha apka, Pingu 🐧</p>
+      <div class="row"><button class="btn" id="moreFw">🎆 Aur sky shots</button></div>`;
+    $('#moreFw', body).addEventListener('click', () => FX.celebrate(10, 3000));
+  },
+};
+
+// ─── Song timing tool (for Pingu) ────────────────────────────────
+function buildTimingTool(body, audio) {
+  const box = document.createElement('div');
+  box.className = 'timing-tool';
+  box.innerHTML = `
+    <b>Lyrics timing tool</b> (sirf aapko dikhta hai with ?timing=1)<br>
+    1. Mp3 chuno (agar SONG.src abhi khaali hai) <input type="file" accept="audio/*" /><br>
+    2. Lyrics paste karo, ek line per row.
+    <textarea id="lyIn" placeholder="Pehli line&#10;Doosri line"></textarea>
+    3. Start dabao. Jab bhi nayi line shuru ho, "Tap" dabao (ya spacebar).
+    <div class="current" id="lyCur"></div>
+    <div class="row" style="justify-content:flex-start"><button class="btn" id="lyStart">Start</button><button class="btn" id="lyTap">Tap</button><button class="btn ghost" id="lyUndo">Undo</button></div>
+    4. Ye copy karke SONG.lyrics mein paste karo:
+    <textarea id="lyOut" readonly></textarea>`;
+  body.appendChild(box);
+  let lines = [], stamps = [], k = 0;
+  $('input[type=file]', box).addEventListener('change', e => { const f = e.target.files[0]; if (f) audio.src = URL.createObjectURL(f); });
+  const show = () => {
+    $('#lyCur', box).textContent = k < lines.length ? `Agli line: ${lines[k]}` : 'Sab lines ho gayi ✅';
+    $('#lyOut', box).value = 'lyrics: [\n' + stamps.map(s => `  { t: ${s.t.toFixed(2)}, l: ${JSON.stringify(s.l)} },`).join('\n') + '\n],';
+  };
+  $('#lyStart', box).addEventListener('click', () => {
+    lines = $('#lyIn', box).value.split('\n').map(x => x.trim()).filter(Boolean);
+    stamps = []; k = 0; audio.currentTime = 0; audio.play(); show();
+  });
+  const tap = () => { if (k < lines.length) { stamps.push({ t: audio.currentTime, l: lines[k++] }); show(); } };
+  $('#lyTap', box).addEventListener('click', tap);
+  $('#lyUndo', box).addEventListener('click', () => { if (k) { k--; stamps.pop(); show(); } });
+  document.addEventListener('keydown', e => { if (e.code === 'Space' && e.target.tagName !== 'TEXTAREA') { e.preventDefault(); tap(); } });
+}
+
+// ─── Lightbox ────────────────────────────────────────────────────
+function openLightbox(p) {
+  const lb = $('#lightbox');
+  $('img', lb).src = p.src; $('p', lb).textContent = p.cap || '';
+  lb.classList.add('show');
+}
+$('#lightbox').addEventListener('click', e => { if (e.target.tagName !== 'IMG') $('#lightbox').classList.remove('show'); });
+
+// ─── Balloon intro ───────────────────────────────────────────────
+function runIntro() {
+  const intro = $('#intro'), wrap = $('#balloons');
+  const NEED = 7;
+  let popped = 0;
+  intro.classList.add('show');
+  const colors = ['#f0a0be', '#c2527a', '#ffcf5a', '#ff7aa8', '#e8a0ff', '#fff0f5', '#d4956a'];
+  for (let i = 0; i < 16; i++) {
+    const b = document.createElement('button');
+    b.className = 'balloon';
+    b.setAttribute('aria-label', 'Balloon');
+    b.style.cssText = `left:${rand(2, 84)}%;--c:${pick(colors)};--dur:${rand(7, 12)}s;--delay:${-rand(0, 10)}s;transform-origin:center`;
+    b.addEventListener('pointerdown', e => {
+      if (b.classList.contains('popped')) return;
+      b.classList.add('popped');
+      FX.burst(e.clientX, e.clientY, getComputedStyle(b).getPropertyValue('--c').trim() || '#f0a0be', 28);
+      popped++;
+      $('#popCount').textContent = popped < NEED ? `${NEED - popped} aur...` : 'Bas! 🎉';
+      setTimeout(() => { b.classList.remove('popped'); b.style.left = rand(2, 84) + '%'; }, 1200);
+      if (popped === NEED) finish();
+    });
+    wrap.appendChild(b);
+  }
+  function finish() {
+    $('#skipIntro').remove();
+    setTimeout(() => {
+      $('#introText').innerHTML = '<h2>Happy Birthday,<br><em>Tingu ji</em> 🎂</h2><p>31 October · aapka din shuru</p>';
+      FX.celebrate(12, 4200);
+      setTimeout(() => FX.confetti(), 800);
+      setTimeout(() => {
+        $('#introActions').innerHTML = '<button class="btn" id="enter">Chalo, aapka din dekhte hain →</button>';
+        $('#enter').addEventListener('click', close);
+      }, 2600);
+    }, 400);
+  }
+  function close() {
+    store.set('introSeen', true);
+    intro.classList.add('hide');
+    setTimeout(() => { intro.classList.remove('show', 'hide'); wrap.innerHTML = ''; openNewest(); }, 800);
+  }
+  $('#skipIntro').addEventListener('click', finish);
+}
+
+function openNewest() {
+  const t = newestGroupTime();
+  if (t == null) return;
+  const s = SCHEDULE.find(x => visible(x) && x.unlock === t);
+  toggleSlot(s, true);
+  setTimeout(() => $('#slot-' + s.idx).scrollIntoView({ behavior: 'smooth', block: 'start' }), 300);
+}
+
+// ─── Boot ────────────────────────────────────────────────────────
+let mode;
+function boot() {
+  mode = isBirthday();
+  renderHero();
+  renderSchedule();
+  updateBigCountdown();
+  $('#fab').hidden = !mode;
+  if (mode) {
+    SCHEDULE.forEach(s => { if (isOpen(s)) wasOpen.add(s.idx); });
+    if (!store.get('introSeen') || params.has('intro')) runIntro();
+    else if (!PREVIEW) openNewest();
+  }
+}
+if (PREVIEW || AT) {
+  const pill = $('#previewPill');
+  pill.hidden = false;
+  pill.textContent = PREVIEW ? 'preview mode · sab khula hai' : `test time: ${AT} IST`;
+}
+$('#fab').addEventListener('click', () => FX.skyShot());
+boot();
+setInterval(() => {
+  if (isBirthday() !== mode) { boot(); return; }
+  updateBigCountdown();
+  updateStatuses(false);
+}, 1000);
+</script>
+</body>
+</html>

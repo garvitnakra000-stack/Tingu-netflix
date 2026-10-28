@@ -13,7 +13,8 @@
       { "id": "t2", "icon": "🌸", "label": "we first met",            "dateKey": "firstMet",       "future": false },
       { "id": "t3", "icon": "🤗", "label": "last time we hugged",     "dateKey": "lastHug",        "future": false },
       { "id": "t5", "icon": "❤️", "label": "Time since you said yes", "dateKey": "Officalyes",     "future": false },
-      { "id": "t4", "icon": "🧸", "label": "next time we meet",       "dateKey": "nextMeet",       "future": true  }
+      { "id": "t4", "icon": "🧸", "label": "next time we meet",       "dateKey": "nextMeet",       "future": true  },
+      { "id": "t6", "icon": "🎂", "label": "your birthday",           "dateKey": "birthday",       "future": true  }
     ]
   },
 
@@ -35,6 +36,14 @@
         "title": "With Love,\nFor You",
         "sub": "little gifts",
         "desc": "things i made, just because"
+      },
+      {
+        "href": "/birthday",
+        "iconEmoji": "🎂",
+        "iconClass": "icon-birthday",
+        "title": "Birthday\nSpecial",
+        "sub": "31 october",
+        "desc": "aapka din, ek ek ghanta karke"
       }
     ]
   },
