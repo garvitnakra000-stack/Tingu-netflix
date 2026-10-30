@@ -729,11 +729,14 @@ const simOffset = AT ? (new Date(AT + '+05:30').getTime() - Date.now()) || 0 : 0
 const now = () => Date.now() + simOffset;
 
 const BDAY_START = istTime(BDAY.year, BDAY.month, BDAY.day).getTime();
-const isBirthday = () => PREVIEW || now() >= BDAY_START;
+// Night lock: nothing opens before this (IST). Midnight items unlock here too.
+const OPEN_AT = istTime(BDAY.year, BDAY.month, BDAY.day, 8, 0).getTime();
+const isBirthday = () => PREVIEW || now() >= OPEN_AT;
+const nightLock = () => !PREVIEW && now() >= BDAY_START && now() < OPEN_AT;
 
 SCHEDULE.forEach((s, i) => {
   const [h, m] = s.time.split(':').map(Number);
-  s.unlock = istTime(BDAY.year, BDAY.month, BDAY.day, h, m).getTime();
+  s.unlock = Math.max(istTime(BDAY.year, BDAY.month, BDAY.day, h, m).getTime(), OPEN_AT);
   s.idx = i;
 });
 const isOpen = s => PREVIEW || now() >= s.unlock;
@@ -1023,6 +1026,13 @@ function renderHero() {
       <h1>Happy Birthday,<em>${wave('Tingu ji')}</em></h1>
       <p class="hero-sub">aaj ka poora din (aur baaki ki zindagi) aapke naam.<br>har thodi der mein ek naya surprise.<br>kahin bhi tap karo, pyaar niklega 💗</p>
       <p class="ticker" id="ticker"></p>`;
+  } else if (nightLock()) {
+    hero.innerHTML = `
+      <p class="eyebrow">31 october · aapka din</p>
+      <h1>Happy Birthday,<em>${wave('Tingu ji')}</em></h1>
+      <p class="hero-sub">Abhi so jao, birthday girl 😴<br>Aapke saare surprises subah 8 baje khulenge.</p>
+      <div class="big-countdown" id="bigCountdown"></div>
+      <p class="ticker" id="ticker"></p>`;
   } else {
     hero.innerHTML = `
       <p class="eyebrow">31 october · ek khaas din</p>
@@ -1054,7 +1064,7 @@ function startTicker() {
 function updateBigCountdown() {
   const el = $('#bigCountdown');
   if (!el) return;
-  const s = Math.max(0, Math.floor((BDAY_START - now()) / 1000));
+  const s = Math.max(0, Math.floor(((nightLock() ? OPEN_AT : BDAY_START) - now()) / 1000));
   const parts = [[Math.floor(s / 86400), 'days'], [Math.floor(s % 86400 / 3600), 'hrs'], [Math.floor(s % 3600 / 60), 'min'], [s % 60, 'sec']];
   el.innerHTML = parts.map(([n, l]) => `<div class="cd-unit"><span class="cd-num">${String(n).padStart(2, '0')}</span><span class="cd-label">${l}</span></div>`).join('');
 }
@@ -1066,8 +1076,8 @@ function renderSchedule() {
   wrap.innerHTML = '';
   built.clear();
   if (!isBirthday()) {
-    $('#scheduleLabel').textContent = 'birthday pe kya kya khulega';
-    $('#scheduleSub').textContent = 'Sab 31 October ko, ek ek karke. Abhi sirf hints 👀';
+    $('#scheduleLabel').textContent = nightLock() ? 'subah kya kya khulega' : 'birthday pe kya kya khulega';
+    $('#scheduleSub').textContent = nightLock() ? 'Sab subah 8 baje se, ek ek karke. Abhi so jao 😴' : 'Sab 31 October ko, ek ek karke. Abhi sirf hints 👀';
   } else {
     $('#scheduleLabel').textContent = 'aaj ka schedule';
     $('#scheduleSub').textContent = 'Har kuch ghante mein kuch naya khulega. Patience rakho, chatpati ladki.';
@@ -1603,7 +1613,7 @@ function runIntro() {
     }, 400);
   }
   function close() {
-    store.set('introSeen', true);
+    store.set('introSeenAM', true);
     intro.classList.add('hide');
     setTimeout(() => { intro.classList.remove('show', 'hide'); wrap.innerHTML = ''; openNewest(); }, 800);
   }
@@ -1630,7 +1640,7 @@ function boot() {
   setupTeddy();
   if (mode) {
     SCHEDULE.forEach(s => { if (isOpen(s)) wasOpen.add(s.idx); });
-    if (!store.get('introSeen') || params.has('intro')) runIntro();
+    if (!store.get('introSeenAM') || params.has('intro')) runIntro();
     else if (!PREVIEW) openNewest();
   }
 }
