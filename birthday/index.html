@@ -519,12 +519,6 @@
     <p class="section-sub" id="scheduleSub">Har kuch ghante mein kuch naya khulega. Patience rakho, chatpati ladki.</p>
     <div class="schedule" id="schedule"></div>
 
-    <section class="secret" id="secret" hidden>
-      <div class="secret-emoji">🙈</div>
-      <p class="secret-title">Ek secret surprise bhi hai</p>
-      <p class="secret-sub">Ye wala website pe nahi milega. Mujhe WhatsApp karo, phir dekhte hain 😌</p>
-      <a class="btn" id="secretBtn" target="_blank" rel="noopener">WhatsApp karo 🙈</a>
-    </section>
 
     <footer>made with ♥ for tingu, by pingu 🐧 · <a href="/">ghar wapas</a></footer>
   </div>
@@ -701,7 +695,7 @@ const LOVE_LINES = [
   'Aapke birthday pe gift dhoondhna mushkil hai. Sabse acchi cheez toh aap khud ho.',
   'Pingu officially aapka fan club president hai. Akela member bhi.',
   'Aaj ka din bhi aap jaisa hai: pyaara, thoda filmy, aur bahut special.',
-  'Psst... ek secret surprise bhi hai. Neeche dekho, phir WhatsApp karo 🙈',
+  'Psst... 2:30 baje ek secret surprise khulega. Yaad rakhna 🙈',
 ];
 
 const SUDOKU_PUZZLE = '070000105000080000000673290750300040063240051040000900439825000020710000010004028';
@@ -1512,8 +1506,9 @@ const BUILDERS = {
     body.innerHTML = `
       <div class="center">
         <div class="secret-emoji">🙈</div>
-        <p class="note serif" style="margin-top:6px">Ek din wala secret surprise bhi hai.<br>Ye website pe nahi milega 😌</p>
-        <div class="row"><a class="btn" target="_blank" rel="noopener" href="https://wa.me/${WHATSAPP.number}?text=${encodeURIComponent('Pingu, mujhe din wala secret surprise chahiye 🙈')}">WhatsApp karo 🙈</a></div>
+        <p class="secret-title">Ek secret surprise bhi hai</p>
+        <p class="secret-sub">Ye wala website pe nahi milega. Mujhe WhatsApp karo, phir dekhte hain 😌</p>
+        <a class="btn" target="_blank" rel="noopener" href="https://wa.me/${WHATSAPP.number}?text=${encodeURIComponent(WHATSAPP.text)}">WhatsApp karo 🙈</a>
       </div>`;
   },
 
@@ -1631,10 +1626,8 @@ function boot() {
   renderSchedule();
   updateBigCountdown();
   $('#fab').hidden = !mode;
-  $('#secret').hidden = !mode;
   placeStickers();
   setupTeddy();
-  $('#secretBtn').href = `https://wa.me/${WHATSAPP.number}?text=${encodeURIComponent(WHATSAPP.text)}`;
   if (mode) {
     SCHEDULE.forEach(s => { if (isOpen(s)) wasOpen.add(s.idx); });
     if (!store.get('introSeen') || params.has('intro')) runIntro();
