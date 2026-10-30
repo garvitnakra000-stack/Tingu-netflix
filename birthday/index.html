@@ -579,6 +579,7 @@ const SCHEDULE = [
   { time: '13:00', type: 'text',     icon: '💬', title: 'Surprise 3',               hint: 'Ek message, dil se',          sent: '10:26 pm',
     message: 'Happyy Birthhdayy bhavs..first time hai thoda properly wish karne ka last time bhul gya tha lel ...you would be busy pretty sure but thanks for everything and every chakalas ka duh..made my life more tedious with your dumb ahh humor but yea jo chiz exist nii karti uspe nii baat karenge ..anywayssss\nHave fun, climb some more mountains, eat some more tacos and most of all try not to od on snacks..\nAnd sorry planned gift nii mil payega this time..\nYeaahhh soo thanks once again and a very happy birthday. 🕺🕺' },
   { time: '14:00', type: 'puzzle',   icon: '🧩', title: 'Hum, tukdon mein',         hint: 'Jodna padega, aap expert ho' },
+  { time: '14:30', type: 'secret',   icon: '🙈', title: 'Ek secret surprise',       hint: 'Psst... sirf aapke liye' },
   { time: '15:00', type: 'book',     icon: '📖', title: 'Ek kahani, part 2',        hint: 'Kahani aage badhti hai', part: 1 },
   { time: '16:00', type: 'ring',     icon: '🌀', title: 'Hum, 3D mein',             hint: 'Ghuma ke dekho' },
   { time: '16:30', type: 'gift',     icon: '🎁', title: 'Ding dong, phir se!',      hint: 'Ek aur delivery',             show: false,
@@ -594,16 +595,15 @@ const SCHEDULE = [
   { time: '21:30', type: 'book',     icon: '📖', title: 'Ek kahani, part 3',        hint: 'Kahani ka mod', part: 2 },
   { time: '22:00', type: 'video',    icon: '💌', title: 'Surprise 7',               hint: 'Ek aur dost, ek aur pyaar',   yt: 'FbxYi4-r-6g' },
   { time: '22:30', type: 'video',    icon: '💌', title: 'Surprise 8',               hint: 'Last but not least',          yt: '' },
-  { time: '23:00', type: 'book',     icon: '📖', title: 'Ek kahani, part 4',        hint: 'Kahani ka aakhri hissa', part: 3 },
   { time: '23:30', type: 'finale',   icon: '🎆', title: 'Aakhri surprise',          hint: 'Raat ka aasmaan dekhna' },
 ];
   
 // Book: write each part in /birthday/book/partN.txt, then set ready: true.
 // First line starting with "# " becomes the chapter title; blank lines split paragraphs.
 const BOOK = [
-  { file: '/birthday/book/part1.txt', ready: false },
-  { file: '/birthday/book/part2.txt', ready: false },
-  { file: '/birthday/book/part3.txt', ready: false },
+  { file: '/birthday/book/part1.txt', ready: true },
+  { file: '/birthday/book/part2.txt', ready: true },
+  { file: '/birthday/book/part3.txt', ready: true },
   { file: '/birthday/book/part4.txt', ready: false },
 ];
 
@@ -1445,6 +1445,7 @@ const BUILDERS = {
         <p class="book-kicker">Part ${s.part + 1} / ${parts.length}</p>
         ${title ? `<h3 class="book-title">${title}</h3>` : ''}
         <div class="book-text">${paras.map(x => `<p>${x.replace(/\n/g, '<br>')}</p>`).join('')}</div>
+        <div class="row"><a class="btn" target="_blank" rel="noopener" href="https://wa.me/${WHATSAPP.number}?text=${encodeURIComponent(`Pingu, mujhe kahani ka part ${s.part + 1} chahiye 📖`)}">WhatsApp karo 📖</a></div>
         <p class="book-next">${next ? `Agla part ${fmtClock(next.time).big} ${fmtClock(next.time).ap} pe khulega 🤫` : 'The end... abhi ke liye. Kahani toh chalti rahegi 🤍'}</p>`;
     }).catch(() => { page.innerHTML = '<p class="book-loading">Ye part abhi likha ja raha hai ✍️</p>'; });
   },
@@ -1505,6 +1506,15 @@ const BUILDERS = {
       e.currentTarget.textContent = moodOn ? '💡 Lights on' : '🕯️ Mood set karo';
       if (moodOn) toast('Lights dim, candles on. Ab date shuru 🕯️');
     });
+  },
+
+  secret(body) {
+    body.innerHTML = `
+      <div class="center">
+        <div class="secret-emoji">🙈</div>
+        <p class="note serif" style="margin-top:6px">Ek din wala secret surprise bhi hai.<br>Ye website pe nahi milega 😌</p>
+        <div class="row"><a class="btn" target="_blank" rel="noopener" href="https://wa.me/${WHATSAPP.number}?text=${encodeURIComponent('Pingu, mujhe din wala secret surprise chahiye 🙈')}">WhatsApp karo 🙈</a></div>
+      </div>`;
   },
 
   finale(body) {
