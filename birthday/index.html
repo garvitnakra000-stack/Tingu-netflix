@@ -567,10 +567,10 @@ const BDAY = { year: 2026, month: 10, day: 31 };
 const SCHEDULE = [
   { time: '00:00', type: 'video',    icon: '🎥', title: 'Pehla wish, mera',         hint: 'Sabse pehle, hamesha main',          yt: 'dcEMo6JAGDs',
     note: 'Baaki sab baad mein. Pehla wish hamesha mera hi hoga.' },
-  { time: '00:00', type: 'cake',     icon: '🎂', title: 'Candles bujhao',           hint: 'Phoonk maarne ki taiyari rakho' },
-  { time: '01:00', type: 'book',     icon: '📖', title: 'Ek kahani, part 1',        hint: 'Sone se pehle ek kahani', part: 0 },
   { time: '08:00', type: 'carousel', icon: '📸', title: 'Good morning, birthday girl', hint: 'Subah subah kuch pyaara' },
+  { time: '08:30', type: 'cake',     icon: '🎂', title: 'Candles bujhao',           hint: 'Phoonk maarne ki taiyari rakho' },
   { time: '09:00', type: 'video',    icon: '💌', title: 'Surprise 1',               hint: 'Kisi khaas ka message',       yt: 'kyrZHRjhjWs' },
+  { time: '09:30', type: 'book',     icon: '📖', title: 'Ek kahani, part 1',        hint: 'Chai ke saath ek kahani', part: 0 },
   { time: '10:00', type: 'sudoku',   icon: '🔢', title: 'Apka favourite game',      hint: 'Dimaag lagao, birthday girl' },
   // Physical gifts: set the time to the delivery slot and show: true once it's confirmed.
   { time: '11:00', type: 'gift',     icon: '🎁', title: 'Ding dong!',               hint: 'Darwaze pe kuch hai',         show: false,
@@ -585,18 +585,19 @@ const SCHEDULE = [
     note: 'Phir se darwaza! Ek aur cheez aayi hai 🎀' },
   { time: '17:00', type: 'video',    icon: '💌', title: 'Surprise 4',               hint: 'Ek aur pyaara sa message',    yt: 'ZVgpvyIizuQ' },
   { time: '18:00', type: 'lovebomb', icon: '💣', title: 'Love bomb',                hint: 'Sambhal ke kholna' },
+  { time: '18:30', type: 'video',    icon: '💌', title: 'Surprise 5',               hint: 'Shaam se pehle ek aur',       yt: '4DWDL66ZYPc' },
   { time: '19:00', type: 'song',     icon: '🎶', title: 'Ek Shaam Tingu Ji Ke Naam', hint: 'Shaam ka gaana, sirf aapke liye' },
   { time: '19:30', type: 'gift',     icon: '🎁', title: 'Last delivery',            hint: 'Aakhri dabba',                show: false,
     note: 'Ye wala sabse khaas hai. Kholo 🤍' },
   { time: '20:00', type: 'dinner',   icon: '🕯️', title: 'Dinner date',              hint: 'Aaj raat, aap aur main' },
-  { time: '21:00', type: 'video',    icon: '💌', title: 'Surprise 5',               hint: 'Raat wala surprise',          yt: 'VSWpMjyXbI0' },
+  { time: '21:00', type: 'video',    icon: '💌', title: 'Surprise 6',               hint: 'Raat wala surprise',          yt: 'VSWpMjyXbI0' },
   { time: '21:30', type: 'book',     icon: '📖', title: 'Ek kahani, part 3',        hint: 'Kahani ka mod', part: 2 },
-  { time: '22:00', type: 'video',    icon: '💌', title: 'Surprise 6',               hint: 'Ek aur dost, ek aur pyaar',   yt: 'FbxYi4-r-6g' },
-  { time: '22:30', type: 'video',    icon: '💌', title: 'Surprise 7',               hint: 'Last but not least',          yt: '' },
+  { time: '22:00', type: 'video',    icon: '💌', title: 'Surprise 7',               hint: 'Ek aur dost, ek aur pyaar',   yt: 'FbxYi4-r-6g' },
+  { time: '22:30', type: 'video',    icon: '💌', title: 'Surprise 8',               hint: 'Last but not least',          yt: '' },
   { time: '23:00', type: 'book',     icon: '📖', title: 'Ek kahani, part 4',        hint: 'Kahani ka aakhri hissa', part: 3 },
   { time: '23:30', type: 'finale',   icon: '🎆', title: 'Aakhri surprise',          hint: 'Raat ka aasmaan dekhna' },
 ];
-
+  
 // Book: write each part in /birthday/book/partN.txt, then set ready: true.
 // First line starting with "# " becomes the chapter title; blank lines split paragraphs.
 const BOOK = [
@@ -608,11 +609,11 @@ const BOOK = [
 
 const DINNER = {
   menu: {
-    Starter: ['Cheese bread (Ama wala)', 'Hash browns', 'McD fries'],
-    Main: ['Fried rice', '4 cheese pizza', 'Maggi, saath mein'],
+    Starter: ['Cheesy crispy fries', 'Chili lime hash brown bites'],
+    Main: ['Regular rice bowl (Mexican beans, no sour cream)'],
     Dessert: ['Chocolate cake', 'Gems 🍬', 'Ice cream'],
   },
-  dress: 'Aapki favourite dress. Main white shirt mein aaunga, pehli virtual date jaisa 🤍',
+  dress: 'Aapki favourite dress. Main black shirt mein aaunga, pehli virtual date jaisa 🤍',
 };
 
 // Song: put the mp3 at /birthday/song.mp3 and set src. Lyrics come from the
