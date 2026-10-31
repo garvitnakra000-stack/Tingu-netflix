@@ -490,6 +490,27 @@
     }
     .night.on { opacity: 0.88; }
 
+    /* Finale show: photos that pop up over the night sky */
+    .pop-photo {
+      position: fixed; z-index: 79; pointer-events: none; width: min(44vw, 190px);
+      background: #fff; padding: 7px 7px 30px; border-radius: 4px; box-shadow: 0 14px 40px rgba(0,0,0,0.5);
+      animation: popPhoto 4.6s cubic-bezier(.2,.9,.3,1.2) forwards;
+    }
+    .pop-photo img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; border-radius: 2px; }
+    .pop-photo span { position: absolute; left: 0; right: 0; bottom: 4px; text-align: center; font-family: 'Caveat', cursive; font-size: 19px; color: #c2527a; }
+    @keyframes popPhoto {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.2) rotate(var(--r)); }
+      14% { opacity: 1; transform: translate(-50%, -50%) scale(1.06) rotate(var(--r)); }
+      22%, 72% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(var(--r)); }
+      100% { opacity: 0; transform: translate(-50%, -90%) scale(0.85) rotate(calc(var(--r) * -1)); }
+    }
+    .show-ctrl {
+      position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 91; display: none;
+      padding: 10px 18px; border-radius: 99px; border: 1px solid rgba(255,255,255,0.35);
+      background: rgba(20,8,26,0.75); color: #ffd6e5; font: 600 14px 'Quicksand', sans-serif; backdrop-filter: blur(6px);
+    }
+    .show-ctrl.on { display: block; }
+
     @media (prefers-reduced-motion: reduce) {
       .party .hero h1 .w, .teddy { animation: none; }
     }
@@ -588,7 +609,6 @@ const SCHEDULE = [
   { time: '21:00', type: 'video',    icon: '💌', title: 'Surprise 6',               hint: 'Raat wala surprise',          yt: 'VSWpMjyXbI0' },
   { time: '21:30', type: 'book',     icon: '📖', title: 'Ek kahani, part 3',        hint: 'Kahani ka mod', part: 2 },
   { time: '22:00', type: 'video',    icon: '💌', title: 'Surprise 7',               hint: 'Ek aur dost, ek aur pyaar',   yt: 'FbxYi4-r-6g' },
-  { time: '22:30', type: 'video',    icon: '💌', title: 'Surprise 8',               hint: 'Last but not least',          yt: '' },
   { time: '23:30', type: 'finale',   icon: '🎆', title: 'Aakhri surprise',          hint: 'Raat ka aasmaan dekhna' },
 ];
   
@@ -787,7 +807,7 @@ const FX = (function () {
   const c = $('#fx'), ctx = c.getContext('2d');
   const night = $('#night');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let W, H, dpr, rockets = [], parts = [], running = false, nightOn = false, nightTimer;
+  let W, H, dpr, rockets = [], parts = [], running = false, nightOn = false, nightTimer, sfx = null, linger = 1;
   const NIGHT_COLORS = ['#ff8fb8', '#ffd27a', '#ffffff', '#d9b3ff', '#ffb38a', '#ff5c93', '#9fe8ff'];
   const DAY_COLORS = PARTY ? ['#ff4f8b', '#ff9a3d', '#f5b800', '#b56cff', '#f06292', '#3fc48c'] : NIGHT_COLORS;
   const colors = () => (nightOn || !PARTY ? NIGHT_COLORS : DAY_COLORS);
@@ -801,9 +821,13 @@ const FX = (function () {
 
   const scale = reduce ? 0.4 : 1;
   function spark(x, y, vx, vy, color, o = {}) {
-    parts.push(Object.assign({ x, y, vx, vy, color, life: rand(60, 95), max: 95, size: rand(1.4, 2.8), g: 0.045, drag: 0.982, kind: 'spark' }, o));
+    const p = Object.assign({ x, y, vx, vy, color, life: rand(60, 95), max: 95, size: rand(1.4, 2.8), g: 0.045, drag: 0.982, kind: 'spark' }, o);
+    // Finale show: sparks hang in the sky longer and fall slower.
+    if (linger > 1) { p.life *= linger; p.max *= linger; p.g /= linger; p.drag = Math.min(0.99, p.drag + 0.006); }
+    parts.push(p);
   }
   function burst(x, y, color, n = 80, type = 'peony') {
+    if (sfx) sfx('boom', type, y / H);
     n = Math.round(n * scale);
     const second = pick(colors());
     if (type === 'ring') {
@@ -831,6 +855,7 @@ const FX = (function () {
     // Pick the burst height (15% to 55% from the top), then launch just fast enough to reach it.
     const rise = H * rand(0.5, 0.85);
     rockets.push({ x, y: H + 10, vx: rand(-1, 1), vy: -Math.sqrt(2 * 0.15 * rise), color: pick(colors()), type: type || pick(TYPES) });
+    if (sfx) sfx('launch');
     start();
   }
   function confetti(n = 140) {
@@ -910,7 +935,9 @@ const FX = (function () {
     if (rockets.length || parts.length) requestAnimationFrame(loop);
     else { running = false; ctx.clearRect(0, 0, W, H); }
   }
-  return { skyShot, burst, confetti, celebrate, grand, sparkle, setNight };
+  const setSfx = fn => { sfx = fn; };
+  const setLinger = k => { linger = k; };
+  return { skyShot, burst, confetti, celebrate, grand, sparkle, setNight, setSfx, setLinger };
 })();
 
 // ─── Floating kisses & hearts (love bomb everywhere) ─────────────
@@ -1141,8 +1168,155 @@ function toggleSlot(s, forceOpen) {
     BUILDERS[s.type](el.querySelector('.slot-body'), s);
   }
   if (willOpen && s.type === 'lovebomb') FX.grand(5000);
-  if (willOpen && s.type === 'finale') { FX.grand(10000); setTimeout(() => FX.confetti(), 8000); }
+  if (willOpen && s.type === 'finale') FX.celebrate(6);
 }
+
+// ─── Finale show: music + fireworks sounds + photos ──────────────
+// The 11:30 PM show plays this Spotify track and runs until it ends. If Spotify
+// can't play (not logged in gives a 30s preview, or it never starts), the
+// fallback mp3 carries the show to the end instead.
+const FINALE_MUSIC = { spotify: '6G8vN5EUtcDxOXOXadF6kp', fallback: '/birthday/song.mp3', volume: 0.75 };
+
+const Spot = { ctl: null, started: false };
+function mountSpotify(el) {
+  window.onSpotifyIframeApiReady = api => api.createController(el,
+    { uri: 'spotify:track:' + FINALE_MUSIC.spotify, width: '100%', height: 80 },
+    ctl => {
+      Spot.ctl = ctl;
+      ctl.addListener('playback_update', e => {
+        const { isPaused, position, duration } = e.data;
+        if (!isPaused && position > 0 && !Spot.started) { Spot.started = true; Show.spotifyPlaying(); }
+        if (Spot.started && isPaused && duration && (position === 0 || position >= duration - 1500)) {
+          Spot.started = false;
+          Show.musicEnded(duration < 35000);
+        }
+      });
+    });
+  const sc = document.createElement('script');
+  sc.src = 'https://open.spotify.com/embed/iframe-api/v1'; sc.async = true;
+  document.body.appendChild(sc);
+}
+
+const Show = (function () {
+  let ac, sfxGain, noiseBuf, music, timers = [], on = false, photoIdx = 0, onEnd = null;
+  // Only shows up when the browser blocks sound and needs one more tap.
+  const ctrl = document.createElement('button');
+  ctrl.className = 'show-ctrl'; ctrl.textContent = '🔊 Tap karo, awaaz ke liye';
+  ctrl.addEventListener('click', () => {
+    ctrl.classList.remove('on');
+    try { ac.resume(); } catch (e) {}
+    if (music) music.play().catch(() => {});
+  });
+  document.body.appendChild(ctrl);
+
+  let primed = null;
+  function playLocal() {
+    if (!on || music) return;
+    music = primed || new Audio(FINALE_MUSIC.fallback);
+    primed = null;
+    music.muted = false;
+    music.volume = FINALE_MUSIC.volume;
+    music.addEventListener('ended', () => stop());
+    music.play().catch(() => ctrl.classList.add('on'));
+  }
+  function spotifyPlaying() {
+    if (music) { music.pause(); music = null; }
+    ctrl.classList.remove('on');
+  }
+  function musicEnded(wasPreview) {
+    if (!on) return;
+    if (wasPreview) playLocal(); else stop();
+  }
+
+  function audio() {
+    if (ac) return;
+    ac = new (window.AudioContext || window.webkitAudioContext)();
+    sfxGain = ac.createGain(); sfxGain.gain.value = 0.55; sfxGain.connect(ac.destination);
+    noiseBuf = ac.createBuffer(1, ac.sampleRate * 2, ac.sampleRate);
+    const d = noiseBuf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  }
+  function noise(t, dur, filterType, f0, f1, vol) {
+    const src = ac.createBufferSource(); src.buffer = noiseBuf;
+    const f = ac.createBiquadFilter(); f.type = filterType;
+    f.frequency.setValueAtTime(f0, t); f.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    const g = ac.createGain();
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    src.connect(f); f.connect(g); g.connect(sfxGain);
+    src.start(t, rand(0, 1)); src.stop(t + dur + 0.05);
+  }
+  // Synthesised so there is nothing extra to download: a soft whoosh up, a deep boom, then crackle.
+  function sound(kind, type, height = 0.4) {
+    if (!ac) return;
+    const t = ac.currentTime;
+    if (kind === 'launch') { noise(t, 0.9, 'bandpass', 500, 2400, 0.05); return; }
+    const far = 0.6 + (1 - height) * 0.4;
+    noise(t, 1.4, 'lowpass', 900, 60, 0.9 * far);
+    const o = ac.createOscillator(), g = ac.createGain();
+    o.frequency.setValueAtTime(90, t); o.frequency.exponentialRampToValueAtTime(35, t + 0.5);
+    g.gain.setValueAtTime(0.7 * far, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.6);
+    o.connect(g); g.connect(sfxGain); o.start(t); o.stop(t + 0.65);
+    const pops = type === 'glitter' || type === 'crossette' ? 22 : type === 'willow' ? 10 : 6;
+    for (let i = 0; i < pops; i++) noise(t + 0.3 + Math.random() * 2, 0.03, 'highpass', 2500, 5000, rand(0.08, 0.22));
+  }
+
+  function popPhoto() {
+    const list = PHOTOS.filter(p => p.src);
+    const p = list[photoIdx++ % list.length];
+    const el = document.createElement('div');
+    el.className = 'pop-photo';
+    el.style.left = rand(28, 72) + '%'; el.style.top = rand(30, 66) + '%';
+    el.style.setProperty('--r', rand(-9, 9).toFixed(1) + 'deg');
+    el.innerHTML = `<img src="${p.src}" alt=""><span>${pick(['us 🩷', 'aap 💋', 'hum ✨', 'meri Tingu', 'forever', 'my favourite'])}</span>`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 4800);
+  }
+
+  function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
+  function loop() {
+    if (!on) return;
+    FX.grand(12000, { night: false });
+    later(loop, 12500);
+  }
+  function start(done) {
+    if (on) return;
+    on = true; onEnd = done;
+    try { audio(); ac.resume(); FX.setSfx(sound); } catch (e) {}
+    document.querySelectorAll('audio').forEach(a => a.pause());
+    Spot.started = false;
+    // Unlock the fallback mp3 during the tap, so phones let it play a few seconds later.
+    primed = new Audio(FINALE_MUSIC.fallback);
+    primed.muted = true;
+    primed.play().then(() => { if (primed) { primed.pause(); primed.currentTime = 0; } }).catch(() => {});
+    if (Spot.ctl) { try { Spot.ctl.restart(); } catch (e) { Spot.ctl.play(); } }
+    // Give Spotify a few seconds to start, otherwise play the mp3.
+    later(() => { if (!Spot.started) playLocal(); }, Spot.ctl ? 4000 : 0);
+    FX.setNight(true);
+    FX.setLinger(1.8);
+    loop();
+    later(popPhoto, 1800);
+    timers.push(setInterval(popPhoto, 3200));
+    timers.push(setInterval(() => FX.confetti(60), 15000));
+    // Safety net: if no music ever plays, wrap up after eight minutes.
+    later(() => { if (!Spot.started && (!music || music.paused)) stop(); }, 480000);
+  }
+  function stop() {
+    if (!on) return;
+    on = false;
+    timers.forEach(t => { clearTimeout(t); clearInterval(t); }); timers = [];
+    if (music) { music.pause(); music = null; }
+    if (Spot.started && Spot.ctl) Spot.ctl.pause();
+    Spot.started = false;
+    FX.setSfx(null);
+    FX.setLinger(1);
+    ctrl.classList.remove('on');
+    FX.confetti();
+    setTimeout(() => FX.setNight(false), 2500);
+    toast('Happy Birthday, Tingu ji 🩷');
+    if (onEnd) onEnd();
+  }
+  return { start, stop, spotifyPlaying, musicEnded, get on() { return on; } };
+})();
 
 // ─── Builders ────────────────────────────────────────────────────
 const BUILDERS = {
@@ -1524,11 +1698,17 @@ const BUILDERS = {
 
   finale(body) {
     body.innerHTML = `
-      <p class="note serif" style="margin-top:0;font-size:19px">Aaj ka din yahin khatam nahi hota, bas date badalti hai.</p>
-      <p class="note">Apka ye saal hasi, sukoon, aur bahut saari jeeti hui sudoku wala ho. Jo bhi maango, wo mile, aur jo na maango, wo bhi. Aur haan, agle birthday pe ye sab main apke saamne baith ke karunga.</p>
-      <p class="note serif">Happy Birthday, meri pyari Tingu ji.<br>Hamesha apka, Pingu 🐧</p>
-      <div class="row"><button class="btn" id="moreFw">🎆 Aur sky shots</button></div>`;
-    $('#moreFw', body).addEventListener('click', () => FX.grand(7000));
+      <p class="note serif" style="margin-top:0;font-size:21px">Aaj ka day mera fav hai, I love this day so much</p>
+      <p class="note">Thank you for coming into my life. Because of you, my life is full of laughter, positivity and colour. I can't tell you how much you mean to me. Thank you for everything you have done for me. You are incredible, really funny, smart, caring, nice and pretty, and most importantly, you are mine. Just mine.</p>
+      <p class="note serif">Hamesha apka, Pingu 🐧</p>
+      <div style="max-width:420px;margin:16px auto 0"><div id="finaleSpotify"></div></div>
+      <div class="row"><button class="btn" id="showStart">Start</button></div>`;
+    mountSpotify($('#finaleSpotify', body));
+    const btn = $('#showStart', body);
+    btn.addEventListener('click', () => {
+      btn.hidden = true;
+      Show.start(() => { btn.hidden = false; });
+    });
   },
 };
 
