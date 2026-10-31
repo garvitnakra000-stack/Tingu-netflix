@@ -1172,28 +1172,30 @@ function toggleSlot(s, forceOpen) {
 }
 
 // ─── Finale show: music + fireworks sounds + photos ──────────────
-// The 11:30 PM show plays this Spotify track and runs until it ends. If Spotify
-// can't play (not logged in gives a 30s preview, or it never starts), the
-// fallback mp3 carries the show to the end instead.
-const FINALE_MUSIC = { spotify: '6G8vN5EUtcDxOXOXadF6kp', fallback: '/birthday/song.mp3', volume: 0.75 };
+// The 11:30 PM show plays this YouTube song (audio only, the player is hidden)
+// and runs until it ends. If YouTube can't play it, the fallback mp3 carries the show.
+const FINALE_MUSIC = { yt: 'N7jDUBRVQVA', fallback: '/birthday/song.mp3', volume: 75 };
 
-const Spot = { ctl: null, started: false };
-function mountSpotify(el) {
-  window.onSpotifyIframeApiReady = api => api.createController(el,
-    { uri: 'spotify:track:' + FINALE_MUSIC.spotify, width: '100%', height: 80 },
-    ctl => {
-      Spot.ctl = ctl;
-      ctl.addListener('playback_update', e => {
-        const { isPaused, position, duration } = e.data;
-        if (!isPaused && position > 0 && !Spot.started) { Spot.started = true; Show.spotifyPlaying(); }
-        if (Spot.started && isPaused && duration && (position === 0 || position >= duration - 1500)) {
-          Spot.started = false;
-          Show.musicEnded(duration < 35000);
-        }
-      });
+const Track = { player: null, ready: false, started: false };
+function mountTrack(el) {
+  const boot = () => {
+    Track.player = new YT.Player(el, {
+      videoId: FINALE_MUSIC.yt, width: 200, height: 113,
+      playerVars: { playsinline: 1, controls: 0, rel: 0 },
+      events: {
+        onReady: () => { Track.ready = true; },
+        onStateChange: e => {
+          if (e.data === YT.PlayerState.PLAYING && !Track.started) { Track.started = true; Show.trackPlaying(); }
+          if (e.data === YT.PlayerState.ENDED) { Track.started = false; Show.musicEnded(false); }
+        },
+        onError: () => { Track.ready = false; if (Track.started) { Track.started = false; Show.musicEnded(true); } },
+      },
     });
+  };
+  if (window.YT && YT.Player) return boot();
+  window.onYouTubeIframeAPIReady = boot;
   const sc = document.createElement('script');
-  sc.src = 'https://open.spotify.com/embed/iframe-api/v1'; sc.async = true;
+  sc.src = 'https://www.youtube.com/iframe_api'; sc.async = true;
   document.body.appendChild(sc);
 }
 
@@ -1219,7 +1221,7 @@ const Show = (function () {
     music.addEventListener('ended', () => stop());
     music.play().catch(() => ctrl.classList.add('on'));
   }
-  function spotifyPlaying() {
+  function trackPlaying() {
     if (music) { music.pause(); music = null; }
     ctrl.classList.remove('on');
   }
@@ -1283,14 +1285,18 @@ const Show = (function () {
     on = true; onEnd = done;
     try { audio(); ac.resume(); FX.setSfx(sound); } catch (e) {}
     document.querySelectorAll('audio').forEach(a => a.pause());
-    Spot.started = false;
+    Track.started = false;
     // Unlock the fallback mp3 during the tap, so phones let it play a few seconds later.
     primed = new Audio(FINALE_MUSIC.fallback);
     primed.muted = true;
     primed.play().then(() => { if (primed) { primed.pause(); primed.currentTime = 0; } }).catch(() => {});
-    if (Spot.ctl) { try { Spot.ctl.restart(); } catch (e) { Spot.ctl.play(); } }
-    // Give Spotify a few seconds to start, otherwise play the mp3.
-    later(() => { if (!Spot.started) playLocal(); }, Spot.ctl ? 4000 : 0);
+    if (Track.ready) {
+      Track.player.setVolume(FINALE_MUSIC.volume);
+      Track.player.seekTo(0, true);
+      Track.player.playVideo();
+    }
+    // Give YouTube a few seconds to start, otherwise play the mp3.
+    later(() => { if (!Track.started) playLocal(); }, Track.ready ? 5000 : 0);
     FX.setNight(true);
     FX.setLinger(1.8);
     loop();
@@ -1298,15 +1304,15 @@ const Show = (function () {
     timers.push(setInterval(popPhoto, 3200));
     timers.push(setInterval(() => FX.confetti(60), 15000));
     // Safety net: if no music ever plays, wrap up after eight minutes.
-    later(() => { if (!Spot.started && (!music || music.paused)) stop(); }, 480000);
+    later(() => { if (!Track.started && (!music || music.paused)) stop(); }, 480000);
   }
   function stop() {
     if (!on) return;
     on = false;
     timers.forEach(t => { clearTimeout(t); clearInterval(t); }); timers = [];
     if (music) { music.pause(); music = null; }
-    if (Spot.started && Spot.ctl) Spot.ctl.pause();
-    Spot.started = false;
+    if (Track.ready) Track.player.pauseVideo();
+    Track.started = false;
     FX.setSfx(null);
     FX.setLinger(1);
     ctrl.classList.remove('on');
@@ -1315,7 +1321,7 @@ const Show = (function () {
     toast('Happy Birthday, Tingu ji 🩷');
     if (onEnd) onEnd();
   }
-  return { start, stop, spotifyPlaying, musicEnded, get on() { return on; } };
+  return { start, stop, trackPlaying, musicEnded, get on() { return on; } };
 })();
 
 // ─── Builders ────────────────────────────────────────────────────
@@ -1701,9 +1707,9 @@ const BUILDERS = {
       <p class="note serif" style="margin-top:0;font-size:21px">Aaj ka day mera fav hai, I love this day so much</p>
       <p class="note">Thank you for coming into my life. Because of you, my life is full of laughter, positivity and colour. I can't tell you how much you mean to me. Thank you for everything you have done for me. You are incredible, really funny, smart, caring, nice and pretty, and most importantly, you are mine. Just mine.</p>
       <p class="note serif">Hamesha apka, Pingu 🐧</p>
-      <div style="max-width:420px;margin:16px auto 0"><div id="finaleSpotify"></div></div>
+      <div style="position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none"><div id="finaleTrack"></div></div>
       <div class="row"><button class="btn" id="showStart">Start</button></div>`;
-    mountSpotify($('#finaleSpotify', body));
+    mountTrack($('#finaleTrack', body));
     const btn = $('#showStart', body);
     btn.addEventListener('click', () => {
       btn.hidden = true;
